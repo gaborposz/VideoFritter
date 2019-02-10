@@ -1,0 +1,102 @@
+﻿<Window x:Class="VideoFritter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VideoFritter"
+        xmlns:VideoPlayer="clr-namespace:VideoFritter.VideoPlayer"
+        xmlns:Converters="clr-namespace:VideoFritter.Converters"
+        xmlns:VideoSlice="clr-namespace:VideoFritter.VideoSlice"
+        mc:Ignorable="d"
+        Title="Video Fritter" Height="600" Width="1000">
+    <Window.Resources>
+        <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
+    </Window.Resources>    
+    <Grid x:Name="mainLayoutGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open" Click="Menu_File_Open"/>
+                <MenuItem Header="_Export Slice" Click="Menu_Export_Click"/>
+            </MenuItem>
+        </Menu>
+        
+        <VideoPlayer:VideoPlayer 
+            x:Name="videoPlayer" 
+            Grid.Row="1"
+            MouseLeftButtonDown="VideoPlayer_MouseLeftButtonDown"
+            VideoOpened="VideoPlayer_VideoOpened"
+            IsPlayingChanged="VideoPlayer_IsPlayingChanged"
+            />
+
+        <Slider x:Name="slider" 
+                Grid.Row="2" 
+                IsMoveToPointEnabled="True"
+                Maximum="{Binding ElementName=videoPlayer, Path=Length, Converter={StaticResource timeSpanToMillisecondsConverter}}"
+                Value="{Binding ElementName=videoPlayer, Path=Position, Mode=TwoWay, Converter={StaticResource timeSpanToMillisecondsConverter}}" />
+
+        <Grid x:Name="controllerGrid"
+              Grid.Row="3" 
+              HorizontalAlignment="Center" 
+              ShowGridLines="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.DataContext>
+                <VideoSlice:VideoSliceViewModel />
+            </Grid.DataContext>
+            
+            <Label x:Name="videoLengthLabel" 
+                   Grid.Row="0" 
+                   Grid.Column="0"
+                   Content="{Binding ElementName=videoPlayer, Path=Length}" ContentStringFormat="Length: {0:hh\:mm\:ss\.fff}" />
+            
+            <Label x:Name="videoPositionLabel" 
+                   Grid.Row="0" 
+                   Grid.Column="1" 
+                   Content="{Binding ElementName=videoPlayer, Path=Position}" ContentStringFormat="Position: {0:hh\:mm\:ss\.fff}"/>
+
+            <Label x:Name="sliceStartLabel" 
+                   Grid.Row="0" 
+                   Grid.Column="2" 
+                   Content="{Binding SliceStart}" ContentStringFormat="Start: {0:hh\:mm\:ss\.fff}" />
+
+            <Label x:Name="sliceEndLabel" 
+                   Grid.Row="0" 
+                   Grid.Column="3" 
+                   Content="{Binding SliceEnd}" ContentStringFormat="Start: {0:hh\:mm\:ss\.fff}" />
+
+            <Button x:Name="playButton" Grid.Row="1" Grid.Column="0" Margin="5" Content="Play" Click="PlayButton_Click"/>
+            <Button x:Name="stopButton" Grid.Row="1" Grid.Column="1" Margin="5" Content="Stop" Click="StopButton_Click"/>
+            <Button x:Name="sectionStartButton" Grid.Row="1" Grid.Column="2" Margin="5" Content="[" Click="SectionStartButton_Click"/>
+            <Button x:Name="sectionEndButton" Grid.Row="1" Grid.Column="3" Margin="5" Content="]" Click="SectionEndButton_Click"/>
+
+            <Slider x:Name="volumeControl" 
+                    Grid.Column="4" 
+                    Grid.RowSpan="2" 
+                    Margin="5" 
+                    Orientation="Vertical" 
+                    Maximum="1.0"
+                    Value="{Binding ElementName=videoPlayer, Path=Volume}"/>
+        </Grid>
+    </Grid>
+</Window>
