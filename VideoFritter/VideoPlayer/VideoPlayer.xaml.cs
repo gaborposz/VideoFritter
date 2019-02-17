@@ -30,7 +30,8 @@ namespace VideoFritter.VideoPlayer
             DependencyProperty.Register(
                 "Length",
                 typeof(TimeSpan),
-                typeof(VideoPlayer));
+                typeof(VideoPlayer), 
+                new PropertyMetadata(TimeSpan.FromSeconds(10)));
 
         public static readonly DependencyProperty PositionProperty =
             DependencyProperty.Register(

@@ -7,11 +7,16 @@
         xmlns:VideoPlayer="clr-namespace:VideoFritter.VideoPlayer"
         xmlns:Converters="clr-namespace:VideoFritter.Converters"
         xmlns:VideoSlice="clr-namespace:VideoFritter.VideoSlice"
+        xmlns:SlicingSlider="clr-namespace:VideoFritter.SlicingSlider"
         mc:Ignorable="d"
         Title="Video Fritter" Height="600" Width="1000">
     <Window.Resources>
         <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
-    </Window.Resources>    
+    </Window.Resources>
+    <Window.DataContext>
+        <VideoSlice:VideoSliceViewModel />
+    </Window.DataContext>
+
     <Grid x:Name="mainLayoutGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -38,11 +43,17 @@
             IsPlayingChanged="VideoPlayer_IsPlayingChanged"
             />
 
-        <Slider x:Name="slider" 
+        <SlicingSlider:SlicingSlider x:Name="slider" 
                 Grid.Row="2" 
                 IsMoveToPointEnabled="True"
+                TickPlacement="BottomRight" 
+                TickFrequency="1000" 
+                IsSelectionRangeEnabled="True"
+                SelectionStart="{Binding Path=SliceStart, Converter={StaticResource timeSpanToMillisecondsConverter}}"
+                SelectionEnd="{Binding Path=SliceEnd, Converter={StaticResource timeSpanToMillisecondsConverter}}"
                 Maximum="{Binding ElementName=videoPlayer, Path=Length, Converter={StaticResource timeSpanToMillisecondsConverter}}"
-                Value="{Binding ElementName=videoPlayer, Path=Position, Mode=TwoWay, Converter={StaticResource timeSpanToMillisecondsConverter}}" />
+                Value="{Binding ElementName=videoPlayer, Path=Position, Mode=TwoWay, Converter={StaticResource timeSpanToMillisecondsConverter}}" 
+                />
 
         <Grid x:Name="controllerGrid"
               Grid.Row="3" 
@@ -61,15 +72,11 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Grid.DataContext>
-                <VideoSlice:VideoSliceViewModel />
-            </Grid.DataContext>
-            
             <Label x:Name="videoLengthLabel" 
                    Grid.Row="0" 
                    Grid.Column="0"
                    Content="{Binding ElementName=videoPlayer, Path=Length}" ContentStringFormat="Length: {0:hh\:mm\:ss\.fff}" />
-            
+
             <Label x:Name="videoPositionLabel" 
                    Grid.Row="0" 
                    Grid.Column="1" 

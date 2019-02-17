@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Input;
 
 using Microsoft.Win32;
 
@@ -17,6 +18,10 @@ namespace VideoFritter
         public MainWindow()
         {
             InitializeComponent();
+
+            this.viewModel = (VideoSliceViewModel)this.DataContext;
+
+            this.viewModel.SliceEnd = this.videoPlayer.Length;
         }
 
         private void OpenFile()
@@ -35,18 +40,19 @@ namespace VideoFritter
 
         private string videoFileName;
 
+        private VideoSliceViewModel viewModel;
+
         private void Menu_File_Open(object sender, RoutedEventArgs e)
         {
             OpenFile();
         }
 
-        private void VideoPlayer_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void VideoPlayer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.videoPlayer.PlayOrPause();
             if (e.ClickCount == 2)
             {
                 OpenFile();
-
             }
         }
 
@@ -64,6 +70,8 @@ namespace VideoFritter
         {
             VideoOpenedEventArgs videoOpenedArgs = (VideoOpenedEventArgs)e;
             this.slider.Value = 0;
+            this.viewModel.SliceStart = TimeSpan.Zero;
+            this.viewModel.SliceEnd = this.videoPlayer.Length;
 
             CalculateWindowSizeToVideoSize(videoOpenedArgs.VideoWidth, videoOpenedArgs.VideoHeight);
         }
@@ -115,21 +123,18 @@ namespace VideoFritter
 
         private void SectionStartButton_Click(object sender, RoutedEventArgs e)
         {
-            VideoSliceViewModel videoSliceViewModel = (VideoSliceViewModel)this.controllerGrid.DataContext;
-            videoSliceViewModel.SliceStart = this.videoPlayer.Position;
+            this.viewModel.SliceStart = this.videoPlayer.Position;
         }
 
         private void SectionEndButton_Click(object sender, RoutedEventArgs e)
         {
-            VideoSliceViewModel videoSliceViewModel = (VideoSliceViewModel)this.controllerGrid.DataContext;
-            videoSliceViewModel.SliceEnd = this.videoPlayer.Position;
+            this.viewModel.SliceEnd = this.videoPlayer.Position;
         }
 
         private void Menu_Export_Click(object sender, RoutedEventArgs e)
         {
-            VideoSliceViewModel videoSliceViewModel = (VideoSliceViewModel)this.controllerGrid.DataContext;
             string exportedVideoFileName = Path.GetFileNameWithoutExtension(this.videoFileName) + "_1" + Path.GetExtension(this.videoFileName);
-            videoSliceViewModel.Export(this.videoFileName, exportedVideoFileName);
+            this.viewModel.Export(this.videoFileName, exportedVideoFileName);
         }
     }
 }
