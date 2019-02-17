@@ -57,7 +57,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\AbstractViewModelBase.cs" />
     <Compile Include="Converters\TimeSpanToMillisecondsConverter.cs" />
+    <Compile Include="Exporter\FFMpegExporter.cs" />
+    <Compile Include="ProcessingQueue\ProcessingItem.cs" />
+    <Compile Include="ProcessingQueue\ProcessingQueueViewModel.cs" />
+    <Compile Include="ProcessingQueue\ProcessingQueueWindow.xaml.cs">
+      <DependentUpon>ProcessingQueueWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SlicingSlider\SlicingSlider.cs" />
     <Compile Include="VideoPlayer\IsPlayingChangedEventArgs.cs" />
     <Compile Include="VideoPlayer\VideoOpenedEventArgs.cs" />
@@ -65,7 +72,7 @@
       <DependentUpon>VideoPlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="VideoPlayer\VideoPositionChangedEventArgs.cs" />
-    <Compile Include="VideoSlice\VideoSliceViewModel.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,6 +85,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProcessingQueue\ProcessingQueueWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -117,6 +128,9 @@
     <Content Include="ffmpeg\ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="VideoSlice\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
-using Microsoft.Win32;
-
+using VideoFritter.ProcessingQueue;
 using VideoFritter.VideoPlayer;
-using VideoFritter.VideoSlice;
 
 namespace VideoFritter
 {
@@ -19,28 +16,16 @@ namespace VideoFritter
         {
             InitializeComponent();
 
-            this.viewModel = (VideoSliceViewModel)this.DataContext;
-
+            this.viewModel = (MainWindowViewModel)this.DataContext;
             this.viewModel.SliceEnd = this.videoPlayer.Length;
         }
 
-        private void OpenFile()
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Filter = "Video files |*.mp4;*.mpg;*.mpeg;*.mov|All files |*.*"
-            };
 
-            if (openFileDialog.ShowDialog() == true)
-            {
-                this.videoFileName = openFileDialog.FileName;
-                this.videoPlayer.OpenFile(this.videoFileName);
-            }
-        }
 
-        private string videoFileName;
+        private MainWindowViewModel viewModel;
+        private ProcessingQueueWindow processingQueueWindow;
+        private ProcessingQueueViewModel processingQueueViewModel = new ProcessingQueueViewModel();
 
-        private VideoSliceViewModel viewModel;
 
         private void Menu_File_Open(object sender, RoutedEventArgs e)
         {
@@ -74,6 +59,15 @@ namespace VideoFritter
             this.viewModel.SliceEnd = this.videoPlayer.Length;
 
             CalculateWindowSizeToVideoSize(videoOpenedArgs.VideoWidth, videoOpenedArgs.VideoHeight);
+        }
+
+        private void OpenFile()
+        {
+            this.viewModel.OpenFile();
+            if (this.viewModel.IsFileOpened)
+            {
+                this.videoPlayer.OpenFile(this.viewModel.OpenedFileName);
+            }
         }
 
         private void CalculateWindowSizeToVideoSize(double videoWidth, double videoHeight)
@@ -133,8 +127,21 @@ namespace VideoFritter
 
         private void Menu_Export_Click(object sender, RoutedEventArgs e)
         {
-            string exportedVideoFileName = Path.GetFileNameWithoutExtension(this.videoFileName) + "_1" + Path.GetExtension(this.videoFileName);
-            this.viewModel.Export(this.videoFileName, exportedVideoFileName);
+            this.viewModel.ExportCurrentSlice();
+        }
+
+        private void Menu_Queue_View_Click(object sender, RoutedEventArgs e)
+        {
+            this.processingQueueWindow = new ProcessingQueueWindow
+            {
+                DataContext = this.processingQueueViewModel,
+            };
+            this.processingQueueWindow.Show();
+        }
+
+        private void AddToQueueButton_Click(object sender, RoutedEventArgs e)
+        {
+            processingQueueViewModel.AddToQueue(this.viewModel.OpenedFileName, this.viewModel.SliceStart, this.viewModel.SliceEnd);
         }
     }
 }

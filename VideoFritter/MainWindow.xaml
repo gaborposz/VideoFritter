@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:VideoFritter"
         xmlns:VideoPlayer="clr-namespace:VideoFritter.VideoPlayer"
         xmlns:Converters="clr-namespace:VideoFritter.Converters"
-        xmlns:VideoSlice="clr-namespace:VideoFritter.VideoSlice"
         xmlns:SlicingSlider="clr-namespace:VideoFritter.SlicingSlider"
         mc:Ignorable="d"
         Title="Video Fritter" Height="600" Width="1000">
@@ -14,7 +13,7 @@
         <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
     </Window.Resources>
     <Window.DataContext>
-        <VideoSlice:VideoSliceViewModel />
+        <local:MainWindowViewModel />
     </Window.DataContext>
 
     <Grid x:Name="mainLayoutGrid">
@@ -31,7 +30,10 @@
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open" Click="Menu_File_Open"/>
-                <MenuItem Header="_Export Slice" Click="Menu_Export_Click"/>
+                <MenuItem Header="_Export current selection" IsEnabled="{Binding IsFileOpened}" Click="Menu_Export_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Queue">
+                <MenuItem Header="_View" Click="Menu_Queue_View_Click"/>
             </MenuItem>
         </Menu>
         
@@ -70,6 +72,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Label x:Name="videoLengthLabel" 
@@ -96,9 +99,10 @@
             <Button x:Name="stopButton" Grid.Row="1" Grid.Column="1" Margin="5" Content="Stop" Click="StopButton_Click"/>
             <Button x:Name="sectionStartButton" Grid.Row="1" Grid.Column="2" Margin="5" Content="[" Click="SectionStartButton_Click"/>
             <Button x:Name="sectionEndButton" Grid.Row="1" Grid.Column="3" Margin="5" Content="]" Click="SectionEndButton_Click"/>
+            <Button x:Name="addToQueueButton" Grid.Row="1" Grid.Column="4" Margin="5" Content="Add to queue" Click="AddToQueueButton_Click"/>
 
             <Slider x:Name="volumeControl" 
-                    Grid.Column="4" 
+                    Grid.Column="5" 
                     Grid.RowSpan="2" 
                     Margin="5" 
                     Orientation="Vertical" 
