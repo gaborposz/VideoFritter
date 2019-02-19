@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace VideoFritter.Exporter
 {
@@ -23,7 +24,7 @@ namespace VideoFritter.Exporter
             return exportedVideoFileName;
         }
 
-        public void Export(string sourceFileName, string targetFileName, TimeSpan sliceStart, TimeSpan sliceEnd)
+        public Task ExportAsync(string sourceFileName, string targetFileName, TimeSpan sliceStart, TimeSpan sliceEnd, CancellationToken cancellationToken, IProgress<double> progressHandler)
         {
             if (string.IsNullOrWhiteSpace(sourceFileName))
             {
@@ -32,40 +33,93 @@ namespace VideoFritter.Exporter
 
             if (string.IsNullOrWhiteSpace(targetFileName))
             {
-                throw new ArgumentNullException(nameof(sourceFileName), "The source file name cannot be null or empty!");
+                throw new ArgumentNullException(nameof(sourceFileName), "The target file name cannot be null or empty!");
             }
 
-            string targetDirectory = Path.GetDirectoryName(targetFileName);
-            if (!Directory.Exists(targetDirectory))
+
+            return Task.Run(() =>
             {
-                Directory.CreateDirectory(targetDirectory);
-            }
+                string targetDirectory = Path.GetDirectoryName(targetFileName);
+                if (!Directory.Exists(targetDirectory))
+                {
+                    Directory.CreateDirectory(targetDirectory);
+                }
 
-            string ffmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg", "ffmpeg.exe");
+                string ffmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg", "ffmpeg.exe");
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = ffmpegPath,
-                Arguments = $"-i {sourceFileName} -ss {sliceStart} -t {sliceEnd - sliceStart} -vcodec copy -acodec copy {targetFileName}",
-                WindowStyle = ProcessWindowStyle.Hidden,
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-            };
+                string progressFile = Path.GetTempFileName();
 
-            Process ffmpegProc = new Process
-            {
-                StartInfo = startInfo
-            };
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = ffmpegPath,
+                    Arguments = $"-noaccurate_seek -i {sourceFileName} -ss {sliceStart} -to {sliceEnd} -y -vcodec copy -acodec copy -report -progress {progressFile} {targetFileName}",
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                };
 
-            ffmpegProc.Start();
-            ffmpegProc.WaitForExit();
+                Process ffmpegProc = new Process
+                {
+                    StartInfo = startInfo
+                };
 
-            if (ffmpegProc.ExitCode != 0)
-            {
-                MessageBox.Show(ffmpegProc.StandardError.ReadToEnd());
-            }
+                double exportLengthInMs = sliceEnd.Subtract(sliceStart).TotalMilliseconds;
+
+                bool exportFinished = false;
+                Task progressWatcherTask;
+
+                if (progressHandler != null)
+                {
+                    progressWatcherTask = Task.Run(() =>
+                    {
+                        using (StreamReader streamReader =
+                                    new StreamReader(new FileStream(progressFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                        {
+                            while (!exportFinished)
+                            {
+                                while (!streamReader.EndOfStream)
+                                {
+                                    string line = streamReader.ReadLine();
+
+                                    if (line.StartsWith("out_time="))
+                                    {
+                                        TimeSpan actualTimeStamp = TimeSpan.Parse(line.Substring(9));
+                                        double progress = actualTimeStamp.TotalMilliseconds / exportLengthInMs;
+                                        progressHandler.Report(progress);
+                                    }
+                                }
+                                Thread.Sleep(100);
+                            }
+                        }
+                        progressHandler.Report(1);
+                    });
+                }
+                else
+                {
+                    progressWatcherTask = Task.CompletedTask;
+                }
+
+
+                ffmpegProc.Start();
+                ffmpegProc.BeginOutputReadLine();
+                ffmpegProc.BeginErrorReadLine();
+
+                ffmpegProc.WaitForExit();
+
+                exportFinished = true;
+                progressWatcherTask.Wait();
+
+                File.Delete(progressFile);
+
+                if (ffmpegProc.ExitCode != 0)
+                {
+                    throw new InvalidOperationException("Export failed:\n" + ffmpegProc.StandardError.ReadToEnd());
+                }
+
+
+            }, cancellationToken);
         }
     }
 }

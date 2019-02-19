@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using VideoFritter.Common;
@@ -7,7 +9,7 @@ using VideoFritter.Exporter;
 
 namespace VideoFritter
 {
-    internal class MainWindowViewModel : AbstractViewModelBase
+    internal class MainWindowViewModel : AbstractExportingViewModel
     {
         public TimeSpan SliceStart
         {
@@ -22,7 +24,6 @@ namespace VideoFritter
                 OnPropertyChanged();
             }
         }
-
 
         public TimeSpan SliceEnd
         {
@@ -92,16 +93,21 @@ namespace VideoFritter
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                exporter.Export(OpenedFileName, saveFileDialog.FileName, SliceStart, SliceEnd);
+                IsExporting = true;
+                Task exportTask = exporter.ExportAsync(OpenedFileName, saveFileDialog.FileName, SliceStart, SliceEnd, CancellationToken.None, this);
+                exportTask.ContinueWith((task) =>
+                {
+                    IsExporting = false;
+                    ExportProgress = 0; // Reset the progress bar
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+
                 ExportFilePath = Path.GetDirectoryName(saveFileDialog.FileName);
             }
         }
 
         private string openedFileName;
-
         private TimeSpan sliceStart;
         private TimeSpan sliceEnd;
-
         private string exportFilePath;
 
         private string ExportFilePath

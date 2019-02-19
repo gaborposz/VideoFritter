@@ -8,9 +8,10 @@
         xmlns:Converters="clr-namespace:VideoFritter.Converters"
         xmlns:SlicingSlider="clr-namespace:VideoFritter.SlicingSlider"
         mc:Ignorable="d"
-        Title="Video Fritter" Height="600" Width="1000">
+        Title="Video Fritter" Height="660" Width="900">
     <Window.Resources>
         <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
+        <Converters:InverseBoolConverter x:Key="inverseBoolConverter" />
     </Window.Resources>
     <Window.DataContext>
         <local:MainWindowViewModel />
@@ -30,10 +31,14 @@
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open" Click="Menu_File_Open"/>
-                <MenuItem Header="_Export current selection" IsEnabled="{Binding IsFileOpened}" Click="Menu_Export_Click"/>
+                <MenuItem Header="_Export current selection" IsEnabled="{Binding IsFileOpened}" Click="Menu_File_Export"/>
+                <MenuItem Header="E_xit" Click="Menu_File_Exit" />
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="_Resize window to fit video" Click="Menu_View_Resize" />
             </MenuItem>
             <MenuItem Header="_Queue">
-                <MenuItem Header="_View" Click="Menu_Queue_View_Click"/>
+                <MenuItem Header="_View" Click="Menu_Queue_View"/>
             </MenuItem>
         </Menu>
         
@@ -53,8 +58,8 @@
                 IsSelectionRangeEnabled="True"
                 SelectionStart="{Binding Path=SliceStart, Converter={StaticResource timeSpanToMillisecondsConverter}}"
                 SelectionEnd="{Binding Path=SliceEnd, Converter={StaticResource timeSpanToMillisecondsConverter}}"
-                Maximum="{Binding ElementName=videoPlayer, Path=Length, Converter={StaticResource timeSpanToMillisecondsConverter}}"
-                Value="{Binding ElementName=videoPlayer, Path=Position, Mode=TwoWay, Converter={StaticResource timeSpanToMillisecondsConverter}}" 
+                Maximum="{Binding ElementName=videoPlayer, Path=VideoLength, Converter={StaticResource timeSpanToMillisecondsConverter}}"
+                Value="{Binding ElementName=videoPlayer, Path=VideoPosition, Mode=TwoWay, Converter={StaticResource timeSpanToMillisecondsConverter}}" 
                 />
 
         <Grid x:Name="controllerGrid"
@@ -73,17 +78,18 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Label x:Name="videoLengthLabel" 
                    Grid.Row="0" 
                    Grid.Column="0"
-                   Content="{Binding ElementName=videoPlayer, Path=Length}" ContentStringFormat="Length: {0:hh\:mm\:ss\.fff}" />
+                   Content="{Binding ElementName=videoPlayer, Path=VideoLength}" ContentStringFormat="Length: {0:hh\:mm\:ss\.fff}" />
 
             <Label x:Name="videoPositionLabel" 
                    Grid.Row="0" 
                    Grid.Column="1" 
-                   Content="{Binding ElementName=videoPlayer, Path=Position}" ContentStringFormat="Position: {0:hh\:mm\:ss\.fff}"/>
+                   Content="{Binding ElementName=videoPlayer, Path=VideoPosition}" ContentStringFormat="Position: {0:hh\:mm\:ss\.fff}"/>
 
             <Label x:Name="sliceStartLabel" 
                    Grid.Row="0" 
@@ -93,21 +99,32 @@
             <Label x:Name="sliceEndLabel" 
                    Grid.Row="0" 
                    Grid.Column="3" 
-                   Content="{Binding SliceEnd}" ContentStringFormat="Start: {0:hh\:mm\:ss\.fff}" />
+                   Content="{Binding SliceEnd}" ContentStringFormat="End: {0:hh\:mm\:ss\.fff}" />
 
             <Button x:Name="playButton" Grid.Row="1" Grid.Column="0" Margin="5" Content="Play" Click="PlayButton_Click"/>
             <Button x:Name="stopButton" Grid.Row="1" Grid.Column="1" Margin="5" Content="Stop" Click="StopButton_Click"/>
             <Button x:Name="sectionStartButton" Grid.Row="1" Grid.Column="2" Margin="5" Content="[" Click="SectionStartButton_Click"/>
             <Button x:Name="sectionEndButton" Grid.Row="1" Grid.Column="3" Margin="5" Content="]" Click="SectionEndButton_Click"/>
             <Button x:Name="addToQueueButton" Grid.Row="1" Grid.Column="4" Margin="5" Content="Add to queue" Click="AddToQueueButton_Click"/>
+            <Button x:Name="exportButton" Grid.Row="0" Grid.Column="4" Margin="5" Content="Export" IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" Click="Menu_File_Export"/>
+
+            <ProgressBar 
+                x:Name="exportProgressBar" 
+                Grid.Row="0" 
+                Grid.Column="5" 
+                Width="150" 
+                Margin="10"
+                Minimum="0" 
+                Maximum="1" 
+                Value="{Binding ExportProgress, Mode=OneWay}"/>
 
             <Slider x:Name="volumeControl" 
-                    Grid.Column="5" 
+                    Grid.Column="6" 
                     Grid.RowSpan="2" 
                     Margin="5" 
                     Orientation="Vertical" 
                     Maximum="1.0"
-                    Value="{Binding ElementName=videoPlayer, Path=Volume}"/>
+                    Value="{Binding ElementName=videoPlayer, Path=VideoVolume}"/>
         </Grid>
     </Grid>
 </Window>

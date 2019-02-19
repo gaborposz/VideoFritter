@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+
 using VideoFritter.Common;
 using VideoFritter.Exporter;
 
 namespace VideoFritter.ProcessingQueue
 {
-    internal class ProcessingQueueViewModel : AbstractViewModelBase
+    internal class ProcessingQueueViewModel : AbstractExportingViewModel
     {
         public ProcessingQueueViewModel()
         {
@@ -21,46 +23,31 @@ namespace VideoFritter.ProcessingQueue
 
         public void AddToQueue(string fileName, TimeSpan sliceStart, TimeSpan sliceEnd)
         {
-            lock (this.queueLock)
-            {
-                Queue.Add(new ProcessingItem(fileName, sliceStart, sliceEnd));
-            }
+            Queue.Add(new ProcessingItem(fileName, sliceStart, sliceEnd));
         }
 
         public void ExportQueue()
         {
-            /*Task.Run(() =>
-            {*/
-                FFMpegExporter exporter = new FFMpegExporter();
-
-                while (TryGetNextItem(out ProcessingItem processingItem))
-                {
-                    string targetDirectory = Path.Combine(Path.GetDirectoryName(processingItem.FileName), "TEMP");
-                    string targetFileName = exporter.GenerateFileName(processingItem.FileName, targetDirectory);
-                    exporter.Export(processingItem.FileName, targetFileName, processingItem.SliceStart, processingItem.SliceEnd);
-                }
-            //});
-
-        }
-
-        private readonly object queueLock = new object();
-
-        private bool TryGetNextItem(out ProcessingItem processingItem)
-        {
-            lock (this.queueLock)
+            if (Queue.Count > 0)
             {
-                if (Queue.Count > 0)
+                IsExporting = true;
+                ProcessingItem processingItem = Queue[0];
+                string targetDirectory = Path.Combine(Path.GetDirectoryName(processingItem.FileName), "TEMP");
+                string targetFileName = this.exporter.GenerateFileName(processingItem.FileName, targetDirectory);
+                Task exportTask = this.exporter.ExportAsync(processingItem.FileName, targetFileName, processingItem.SliceStart, processingItem.SliceEnd, CancellationToken.None, this);
+                exportTask.ContinueWith((task) =>
                 {
-                    processingItem = Queue[0];
-                    Queue.RemoveAt(0);
-                    return true;
-                }
-                else
-                {
-                    processingItem = null;
-                    return false;
-                }
+                    Queue.Remove(processingItem);
+                    ExportProgress = 0;
+                    ExportQueue(); // Take the next item
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+            else
+            {
+                IsExporting = false;
             }
         }
+
+        private readonly FFMpegExporter exporter = new FFMpegExporter();
     }
 }

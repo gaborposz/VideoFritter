@@ -57,7 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\AbstractExportingViewModel.cs" />
     <Compile Include="Common\AbstractViewModelBase.cs" />
+    <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\TimeSpanToMillisecondsConverter.cs" />
     <Compile Include="Exporter\FFMpegExporter.cs" />
     <Compile Include="ProcessingQueue\ProcessingItem.cs" />

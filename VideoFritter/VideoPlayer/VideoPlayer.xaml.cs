@@ -28,26 +28,26 @@ namespace VideoFritter.VideoPlayer
 
         public static readonly DependencyProperty LengthProperty =
             DependencyProperty.Register(
-                "Length",
+                "VideoLength",
                 typeof(TimeSpan),
-                typeof(VideoPlayer), 
+                typeof(VideoPlayer),
                 new PropertyMetadata(TimeSpan.FromSeconds(10)));
 
         public static readonly DependencyProperty PositionProperty =
             DependencyProperty.Register(
-                "Position",
+                "VideoPosition",
                 typeof(TimeSpan),
                 typeof(VideoPlayer),
                 new FrameworkPropertyMetadata(TimeSpan.Zero, PositionPropertyChangedCallback));
 
         public static readonly DependencyProperty VolumeProperty =
             DependencyProperty.Register(
-                "Volume",
+                "VideoVolume",
                 typeof(double),
                 typeof(VideoPlayer),
                 new FrameworkPropertyMetadata(0d, VolumePropertyChangedCallback));
 
-        public TimeSpan Length
+        public TimeSpan VideoLength
         {
             get
             {
@@ -55,7 +55,7 @@ namespace VideoFritter.VideoPlayer
             }
         }
 
-        public TimeSpan Position
+        public TimeSpan VideoPosition
         {
             get
             {
@@ -67,7 +67,7 @@ namespace VideoFritter.VideoPlayer
             }
         }
 
-        public double Volume
+        public double VideoVolume
         {
             get
             {
@@ -89,6 +89,22 @@ namespace VideoFritter.VideoPlayer
         {
             add { AddHandler(IsPlayingChangedEvent, value); }
             remove { RemoveHandler(IsPlayingChangedEvent, value); }
+        }
+
+        public int VideoWidth
+        {
+            get
+            {
+                return this.mediaElement.NaturalVideoWidth;
+            }
+        }
+
+        public int VideoHeight
+        {
+            get
+            {
+                return this.mediaElement.NaturalVideoHeight;
+            }
         }
 
         public double ActualVideoWidth
