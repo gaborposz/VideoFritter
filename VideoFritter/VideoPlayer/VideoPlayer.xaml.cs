@@ -138,7 +138,7 @@ namespace VideoFritter.VideoPlayer
             this.mediaElement.Pause();
         }
 
-        public void PlayOrPause()
+        public void PlayOrPause(TimeSpan from, TimeSpan to)
         {
             if (!this.isVideoLoaded)
             {
@@ -154,14 +154,21 @@ namespace VideoFritter.VideoPlayer
             }
             else
             {
-                if (this.mediaElement.Position != this.desiredPosition)
+                if (this.mediaElement.Position != from)
                 {
-                    this.mediaElement.Position = this.desiredPosition;
+                    this.mediaElement.Position = from;
                 }
+
+                this.endOfPlayback = to;
 
                 this.mediaElement.Play();
                 IsPlaying = true;
             }
+        }
+
+        public void PlayOrPause()
+        {
+            PlayOrPause(this.desiredPosition, this.VideoLength);
         }
 
         public void Stop()
@@ -195,6 +202,7 @@ namespace VideoFritter.VideoPlayer
         private DispatcherTimer videoPlaybackTimer;
         private bool isPlaying;
         private TimeSpan desiredPosition;
+        private TimeSpan endOfPlayback;
         private bool isVideoLoaded = false;
         private bool positionSetByTimer;
 
@@ -251,6 +259,7 @@ namespace VideoFritter.VideoPlayer
             IsPlaying = false;
             SetValue(LengthProperty, this.mediaElement.NaturalDuration.TimeSpan);
             SetValue(VolumeProperty, this.mediaElement.Volume);
+            this.endOfPlayback = this.mediaElement.NaturalDuration.TimeSpan;
 
             RaiseVideoOpenedEvent();
         }
@@ -264,6 +273,12 @@ namespace VideoFritter.VideoPlayer
 
         private void VideoPlaybackTimer_Tick(object sender, EventArgs e)
         {
+            if (this.mediaElement.Position >= this.endOfPlayback)
+            {
+                this.mediaElement.Pause();
+                IsPlaying = false;
+            }
+
             this.positionSetByTimer = true;
             SetValue(PositionProperty, this.mediaElement.Position);
             this.positionSetByTimer = false;
