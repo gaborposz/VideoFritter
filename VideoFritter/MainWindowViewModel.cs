@@ -20,7 +20,15 @@ namespace VideoFritter
 
             set
             {
-                this.sliceStart = value;
+                if (value < SliceEnd)
+                {
+                    this.sliceStart = value;
+                }
+                else
+                {
+                    this.sliceStart = SliceEnd;
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -34,7 +42,15 @@ namespace VideoFritter
 
             set
             {
-                this.sliceEnd = value;
+                if (value > SliceStart)
+                {
+                    this.sliceEnd = value;
+                }
+                else
+                {
+                    this.sliceEnd = SliceStart;
+                }
+
                 OnPropertyChanged();
             }
         }
