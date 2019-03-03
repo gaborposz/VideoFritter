@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace VideoFritter.VideoPlayer
 {
@@ -15,9 +15,15 @@ namespace VideoFritter.VideoPlayer
         {
             InitializeComponent();
 
-            this.videoPlaybackTimer = new DispatcherTimer();
-            this.videoPlaybackTimer.Tick += VideoPlaybackTimer_Tick;
-            this.videoPlaybackTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            this.mediaTimeline = new MediaTimeline();
+            this.mediaTimeline.CurrentTimeInvalidated += MediaTimelineTimeChangedHandler;
+            this.mediaTimeline.Completed += MediaTimeline_Completed;
+        }
+
+        private void MediaTimeline_Completed(object sender, EventArgs e)
+        {
+            MediaController.Pause();
+            IsPlaying = false;
         }
 
         public static readonly RoutedEvent VideoOpenedEvent =
@@ -26,19 +32,19 @@ namespace VideoFritter.VideoPlayer
         public static readonly RoutedEvent IsPlayingChangedEvent =
             EventManager.RegisterRoutedEvent("IsPlayingChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(VideoPlayer));
 
-        public static readonly DependencyProperty LengthProperty =
+        public static readonly DependencyProperty VideoLengthProperty =
             DependencyProperty.Register(
                 "VideoLength",
                 typeof(TimeSpan),
                 typeof(VideoPlayer),
                 new PropertyMetadata(TimeSpan.FromSeconds(10)));
 
-        public static readonly DependencyProperty PositionProperty =
+        public static readonly DependencyProperty VideoPositionProperty =
             DependencyProperty.Register(
                 "VideoPosition",
                 typeof(TimeSpan),
                 typeof(VideoPlayer),
-                new FrameworkPropertyMetadata(TimeSpan.Zero, PositionPropertyChangedCallback));
+                new FrameworkPropertyMetadata(TimeSpan.Zero, VideoPositionPropertyChangedCallback));
 
         public static readonly DependencyProperty VolumeProperty =
             DependencyProperty.Register(
@@ -51,7 +57,7 @@ namespace VideoFritter.VideoPlayer
         {
             get
             {
-                return (TimeSpan)GetValue(LengthProperty);
+                return (TimeSpan)GetValue(VideoLengthProperty);
             }
         }
 
@@ -59,11 +65,11 @@ namespace VideoFritter.VideoPlayer
         {
             get
             {
-                return (TimeSpan)GetValue(PositionProperty);
+                return (TimeSpan)GetValue(VideoPositionProperty);
             }
             set
             {
-                SetValue(PositionProperty, value);
+                SetValue(VideoPositionProperty, value);
             }
         }
 
@@ -123,19 +129,18 @@ namespace VideoFritter.VideoPlayer
             }
         }
 
-        public bool IsEnded
-        {
-            get
-            {
-                return this.mediaElement.NaturalDuration.TimeSpan == this.mediaElement.Position;
-            }
-        }
-
         public void OpenFile(string fileName)
         {
-            this.mediaElement.Source = new Uri(fileName);
-            this.mediaElement.Play();
-            this.mediaElement.Pause();
+            this.mediaTimeline.Source = new Uri(fileName);
+
+            MediaClock clock = this.mediaTimeline.CreateClock();
+            clock.Controller.Pause();
+            this.mediaElement.Clock = clock;
+        }
+
+        public void PlayOrPause()
+        {
+            PlayOrPause(TimeSpan.Zero, VideoLength);
         }
 
         public void PlayOrPause(TimeSpan from, TimeSpan to)
@@ -147,35 +152,28 @@ namespace VideoFritter.VideoPlayer
 
             if (IsPlaying)
             {
-                this.mediaElement.Pause();
-                Thread.Sleep(50);
-                this.desiredPosition = this.mediaElement.Position;
+                MediaController.Pause();
                 IsPlaying = false;
             }
             else
             {
-                if (this.mediaElement.Position != from)
+                if (CurrentMediaTime < from || CurrentMediaTime >= to)
                 {
-                    this.mediaElement.Position = from;
+                    MediaController.Seek(from, TimeSeekOrigin.BeginTime);
                 }
 
                 this.endOfPlayback = to;
 
-                this.mediaElement.Play();
+                MediaController.Resume();
                 IsPlaying = true;
             }
-        }
-
-        public void PlayOrPause()
-        {
-            PlayOrPause(this.desiredPosition, this.VideoLength);
         }
 
         public void Stop()
         {
             this.mediaElement.Stop();
             IsPlaying = false;
-            SetValue(PositionProperty, TimeSpan.Zero);
+            SetValue(VideoPositionProperty, TimeSpan.Zero);
         }
 
         protected virtual void RaiseVideoOpenedEvent()
@@ -199,37 +197,11 @@ namespace VideoFritter.VideoPlayer
             RaiseEvent(args);
         }
 
-        private DispatcherTimer videoPlaybackTimer;
+        private MediaTimeline mediaTimeline;
         private bool isPlaying;
-        private TimeSpan desiredPosition;
-        private TimeSpan endOfPlayback;
+        private TimeSpan endOfPlayback = TimeSpan.MaxValue;
         private bool isVideoLoaded = false;
         private bool positionSetByTimer;
-
-        private static void PositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            VideoPlayer videoPlayer = (VideoPlayer)d;
-            TimeSpan newValue = (TimeSpan)e.NewValue;
-
-            if (!videoPlayer.isVideoLoaded || videoPlayer.positionSetByTimer)
-            {
-                return;
-            }
-
-            videoPlayer.SetValue(PositionProperty, newValue);
-
-            videoPlayer.desiredPosition = newValue;
-            videoPlayer.mediaElement.Position = newValue;
-        }
-
-        private static void VolumePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            VideoPlayer videoPlayer = (VideoPlayer)d;
-            double newValue = (double)e.NewValue;
-
-            videoPlayer.mediaElement.Volume = newValue;
-            videoPlayer.SetValue(VolumeProperty, newValue);
-        }
 
         private bool IsPlaying
         {
@@ -241,46 +213,76 @@ namespace VideoFritter.VideoPlayer
             {
                 this.isPlaying = value;
                 RaiseIsPlayingChangedEvent();
-
-                if (this.isPlaying)
-                {
-                    this.videoPlaybackTimer.Start();
-                }
-                else
-                {
-                    this.videoPlaybackTimer.Stop();
-                }
             }
         }
+
+        private TimeSpan CurrentMediaTime
+        {
+            get
+            {
+                return this.mediaElement.Clock.CurrentTime.Value;
+            }
+        }
+
+        private ClockController MediaController
+        {
+            get
+            {
+                return this.mediaElement.Clock.Controller;
+            }
+        }
+
+        private static void VideoPositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue == e.OldValue)
+            {
+                return;
+            }
+
+            VideoPlayer videoPlayer = (VideoPlayer)d;
+            TimeSpan newValue = (TimeSpan)e.NewValue;
+
+            if (!videoPlayer.isVideoLoaded || videoPlayer.positionSetByTimer)
+            {
+                return;
+            }
+
+            videoPlayer.SetValue(VideoPositionProperty, newValue);
+
+            videoPlayer.MediaController.Seek(newValue, TimeSeekOrigin.BeginTime);
+        }
+
+        private static void VolumePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            VideoPlayer videoPlayer = (VideoPlayer)d;
+            double newValue = (double)e.NewValue;
+
+            videoPlayer.mediaElement.Volume = newValue;
+            videoPlayer.SetValue(VolumeProperty, newValue);
+        }
+
 
         private void VideoPlayer_MediaOpened(object sender, RoutedEventArgs e)
         {
             this.isVideoLoaded = true;
             IsPlaying = false;
-            SetValue(LengthProperty, this.mediaElement.NaturalDuration.TimeSpan);
+            SetValue(VideoLengthProperty, this.mediaElement.NaturalDuration.TimeSpan);
             SetValue(VolumeProperty, this.mediaElement.Volume);
-            this.endOfPlayback = this.mediaElement.NaturalDuration.TimeSpan;
+            this.endOfPlayback = TimeSpan.MaxValue;
 
             RaiseVideoOpenedEvent();
         }
 
-        private void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        private void MediaTimelineTimeChangedHandler(object sender, EventArgs e)
         {
-            this.mediaElement.Pause();
-            this.desiredPosition = TimeSpan.Zero;
-            IsPlaying = false;
-        }
-
-        private void VideoPlaybackTimer_Tick(object sender, EventArgs e)
-        {
-            if (this.mediaElement.Position >= this.endOfPlayback)
+            if (CurrentMediaTime >= this.endOfPlayback)
             {
-                this.mediaElement.Pause();
+                MediaController.Pause();
                 IsPlaying = false;
             }
 
             this.positionSetByTimer = true;
-            SetValue(PositionProperty, this.mediaElement.Position);
+            SetValue(VideoPositionProperty, CurrentMediaTime);
             this.positionSetByTimer = false;
         }
     }

@@ -78,7 +78,7 @@ namespace VideoFritter
         {
             if (string.IsNullOrEmpty(OpenedFileName))
             {
-                throw new InvalidOperationException("Export is not available if nothing is opened.");
+                return;
             }
 
             FFMpegExporter exporter = new FFMpegExporter();
