@@ -12,6 +12,7 @@
                         <Slider
                             Minimum="{TemplateBinding Minimum}"
                             Maximum="{TemplateBinding Maximum}"
+                            IsMoveToPointEnabled="True"
                             IsSelectionRangeEnabled="{TemplateBinding IsSelectionRangeEnabled}"
                             SelectionStart="{TemplateBinding SelectionStart}"
                             SelectionEnd="{TemplateBinding SelectionEnd}"
