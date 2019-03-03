@@ -118,6 +118,7 @@
                 Margin="10"
                 Minimum="0" 
                 Maximum="1" 
+                IsIndeterminate="{Binding IsIndeterminateProgess, Mode=OneWay}"
                 Value="{Binding ExportProgress, Mode=OneWay}"/>
 
             <Slider x:Name="volumeControl" 

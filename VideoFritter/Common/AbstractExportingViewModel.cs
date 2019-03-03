@@ -18,6 +18,28 @@ namespace VideoFritter.Common
                     this.isExporting = value;
                     OnPropertyChanged();
                 }
+
+                if (this.isExporting)
+                {
+                    IsIndeterminateProgess = true;
+                }
+            }
+        }
+
+        public bool IsIndeterminateProgess
+        {
+            get
+            {
+                return this.isIndeterminateProgess;
+            }
+
+            private set
+            {
+                if (this.isIndeterminateProgess != value)
+                {
+                    this.isIndeterminateProgess = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -40,10 +62,15 @@ namespace VideoFritter.Common
 
         void IProgress<double>.Report(double value)
         {
+            if (value > 0)
+            {
+                IsIndeterminateProgess = false;
+            }
             ExportProgress = value;
         }
 
         private bool isExporting;
+        private bool isIndeterminateProgess;
         private double exportProgress;
 
     }

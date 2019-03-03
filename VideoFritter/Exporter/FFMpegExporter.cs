@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -45,28 +46,11 @@ namespace VideoFritter.Exporter
                     Directory.CreateDirectory(targetDirectory);
                 }
 
-                string ffmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg", "ffmpeg.exe");
+                DateTime creationTime = GetCreationTimeFromFile(sourceFileName);
+                creationTime = creationTime.Add(sliceStart);
 
                 string progressFile = Path.GetTempFileName();
-
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    FileName = ffmpegPath,
-                    Arguments = $"-noaccurate_seek -i {sourceFileName} -ss {sliceStart} -to {sliceEnd} -y -vcodec copy -acodec copy -report -progress {progressFile} {targetFileName}",
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                };
-
-                Process ffmpegProc = new Process
-                {
-                    StartInfo = startInfo
-                };
-
                 double exportLengthInMs = sliceEnd.Subtract(sliceStart).TotalMilliseconds;
-
                 bool exportFinished = false;
                 Task progressWatcherTask;
 
@@ -101,25 +85,83 @@ namespace VideoFritter.Exporter
                     progressWatcherTask = Task.CompletedTask;
                 }
 
-
-                ffmpegProc.Start();
-                ffmpegProc.BeginOutputReadLine();
-                ffmpegProc.BeginErrorReadLine();
-
-                ffmpegProc.WaitForExit();
-
-                exportFinished = true;
-                progressWatcherTask.Wait();
-
-                File.Delete(progressFile);
-
-                if (ffmpegProc.ExitCode != 0)
+                try
                 {
-                    throw new InvalidOperationException("Export failed:\n" + ffmpegProc.StandardError.ReadToEnd());
+                    ExecuteFFmpegProcess(
+                        $"-noaccurate_seek -i {sourceFileName} -ss {sliceStart} -to {sliceEnd} -y -metadata creation_time=\"{creationTime.ToString("yyyy-MM-dd HH:mm:ss")}\" -vcodec copy -acodec copy -report -progress {progressFile} {targetFileName}");
+                }
+                finally
+                {
+                    exportFinished = true;
+                    progressWatcherTask.Wait();
+                    File.Delete(progressFile);
                 }
 
-
+                // Also restore the file modification date...
+                DateTime fileModificationTime = File.GetLastWriteTime(sourceFileName);
+                fileModificationTime = fileModificationTime.Add(sliceStart);
+                File.SetLastWriteTime(targetFileName, fileModificationTime);
             }, cancellationToken);
+        }
+
+        private void ExecuteFFmpegProcess(string arguments)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg", "ffmpeg.exe"),
+                Arguments = arguments,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+            };
+
+            Process ffmpegProc = new Process
+            {
+                StartInfo = startInfo
+            };
+
+            ffmpegProc.Start();
+            ffmpegProc.BeginOutputReadLine();
+
+            Task<string> errorOutput = ffmpegProc.StandardError.ReadToEndAsync();
+
+            ffmpegProc.WaitForExit();
+
+            if (ffmpegProc.ExitCode != 0)
+            {
+                throw new InvalidOperationException($"Export failed!\nCommand line: ffmpeg {arguments}\nError: {errorOutput.Result}");
+            }
+        }
+
+        private DateTime GetCreationTimeFromFile(string fileName)
+        {
+            string metadataFileName = Path.GetTempFileName();
+            try
+            {
+                ExecuteFFmpegProcess($"-i {fileName} -map_metadata 0 -y -f ffmetadata {metadataFileName}");
+                IEnumerable<string> metadataFile = File.ReadLines(metadataFileName);
+                foreach (string line in metadataFile)
+                {
+                    if (line.StartsWith("creation_time="))
+                    {
+                        string creationTimeText = line.Split('=')[1];
+                        if (DateTime.TryParse(creationTimeText, out DateTime creationTime))
+                        {
+                            return creationTime;
+                        }
+                        break;
+                    }
+                }
+            }
+            finally
+            {
+                File.Delete(metadataFileName);
+            }
+
+            // Use modification date as fallback
+            return File.GetLastWriteTimeUtc(fileName);
         }
     }
 }
