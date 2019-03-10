@@ -5,23 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VideoFritter"
         xmlns:VideoPlayer="clr-namespace:VideoFritter.VideoPlayer"
-        xmlns:Converters="clr-namespace:VideoFritter.Converters"
         xmlns:SlicingSlider="clr-namespace:VideoFritter.SlicingSlider"
+        xmlns:p="clr-namespace:VideoFritter.Properties"
         mc:Ignorable="d"
-        Title="Video Fritter" Height="660" Width="900">
-    <Window.Resources>
-        <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
-        <Converters:InverseBoolConverter x:Key="inverseBoolConverter" />
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="2,3" />
-            <Setter Property="Padding" Value="10,2" />
-        </Style>
-    </Window.Resources>
+        Title="{x:Static p:Resources.WindowTitle}" 
+        Height="660" 
+        Width="900"   
+        Style="{StaticResource DefaultWindowStyle}"
+        >
+    
     <Window.DataContext>
         <local:MainWindowViewModel />
     </Window.DataContext>
+    
 
     <Grid x:Name="mainLayoutGrid">
         <Grid.RowDefinitions>
@@ -34,17 +30,17 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Menu Grid.Row="0">
-            <MenuItem Header="_File">
-                <MenuItem Header="_Open" Click="Menu_File_Open"/>
-                <MenuItem Header="_Export current selection" IsEnabled="{Binding IsFileOpened}" Click="Menu_File_Export"/>
-                <MenuItem Header="E_xit" Click="Menu_File_Exit" />
+        <Menu IsMainMenu="True" Grid.Row="0">
+            <MenuItem Header="{x:Static p:Resources.FileMenu}">
+                <MenuItem Header="{x:Static p:Resources.FileMenu_Open}" Click="Menu_File_Open"/>
+                <MenuItem Header="{x:Static p:Resources.FileMenu_Export}" IsEnabled="{Binding IsFileOpened}" Click="Menu_File_Export"/>
+                <MenuItem Header="{x:Static p:Resources.FileMenu_Exit}" Click="Menu_File_Exit" />
             </MenuItem>
-            <MenuItem Header="_View">
-                <MenuItem Header="_Resize window to fit video" Click="Menu_View_Resize" />
+            <MenuItem Header="{x:Static p:Resources.ViewMenu}">
+                <MenuItem Header="{x:Static p:Resources.ViewMenu_Resize}" Click="Menu_View_Resize" />
             </MenuItem>
-            <MenuItem Header="_Queue">
-                <MenuItem Header="_View" Click="Menu_Queue_View"/>
+            <MenuItem Header="{x:Static p:Resources.QueueMenu}">
+                <MenuItem Header="{x:Static p:Resources.QueueMenu_View}" Click="Menu_Queue_View"/>
             </MenuItem>
         </Menu>
         
@@ -67,9 +63,10 @@
                 Value="{Binding ElementName=videoPlayer, Path=VideoPosition, Mode=TwoWay, Converter={StaticResource timeSpanToMillisecondsConverter}}" 
                 />
 
-        <Grid x:Name="controllerGrid"
+        <Grid x:Name="controllerLayoutGrid"
               Grid.Row="3" 
-              HorizontalAlignment="Center" 
+              Margin="0,0,0,4"
+              IsEnabled="{Binding IsVideoLoaded, ElementName=videoPlayer}"
               ShowGridLines="False">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -77,51 +74,101 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Label x:Name="videoLengthLabel" 
                    Grid.Row="0" 
-                   Grid.Column="0"
-                   Content="{Binding ElementName=videoPlayer, Path=VideoLength}" ContentStringFormat="Length: {0:hh\:mm\:ss\.fff}" />
+                   Grid.Column="1"
+                   ToolTip="{x:Static p:Resources.VideoLength}"
+                   Content="{Binding ElementName=videoPlayer, Path=VideoLength}" ContentStringFormat="hh\:mm\:ss\.fff"/>
 
             <Label x:Name="videoPositionLabel" 
                    Grid.Row="0" 
-                   Grid.Column="1" 
-                   Content="{Binding ElementName=videoPlayer, Path=VideoPosition}" ContentStringFormat="Position: {0:hh\:mm\:ss\.fff}"/>
+                   Grid.Column="5" 
+                   ToolTip="{x:Static p:Resources.VideoPosition}"
+                   Content="{Binding ElementName=videoPlayer, Path=VideoPosition}" ContentStringFormat="hh\:mm\:ss\.fff"/>
 
             <Label x:Name="sliceStartLabel" 
-                   Grid.Row="0" 
-                   Grid.Column="3" 
-                   Content="{Binding SliceStart}" ContentStringFormat="Start: {0:hh\:mm\:ss\.fff}" />
+                   Grid.Row="1" 
+                   Grid.Column="1" 
+                   ToolTip="{x:Static p:Resources.SelectionStart}"
+                   Content="{Binding SliceStart}" ContentStringFormat="hh\:mm\:ss\.fff" />
 
             <Label x:Name="sliceEndLabel" 
-                   Grid.Row="0" 
-                   Grid.Column="4" 
-                   Content="{Binding SliceEnd}" ContentStringFormat="End: {0:hh\:mm\:ss\.fff}" />
+                   Grid.Row="1" 
+                   Grid.Column="5" 
+                   ToolTip="{x:Static p:Resources.SelectionEnd}"
+                   Content="{Binding SliceEnd}" ContentStringFormat="hh\:mm\:ss\.fff" />
 
-            <Button x:Name="selectionPreviewButton" Grid.Row="0" Grid.Column="5" Content="Preview selection" Click="SelectionPreviewButtonButton_Click"/>
-            <Button x:Name="exportButton" Grid.Row="0" Grid.Column="6" Content="Export" IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" Click="Menu_File_Export"/>
-            <Button x:Name="playButton" Grid.Row="1" Grid.Column="1" Content="Play" Click="PlayButton_Click"/>
-            <Button x:Name="sectionStartButton" Grid.Row="1" Grid.Column="3" Content="[" Click="SectionStartButton_Click"/>
-            <Button x:Name="sectionEndButton" Grid.Row="1" Grid.Column="4" Content="]" Click="SectionEndButton_Click"/>
-            <Button x:Name="backButton" Grid.Row="1" Grid.Column="0" Width="Auto" Content="&lt;&lt;" Click="BackButton_Click"/>
-            <Button x:Name="forwardButton" Grid.Row="1" Grid.Column="2" Content="&gt;&gt;" Click="ForwardButton_Click" />
-            <Button x:Name="addToQueueButton" Grid.Row="1" Grid.Column="7" Content="Add to queue" Click="AddToQueueButton_Click"/>
+            <Button x:Name="selectionPreviewButton"
+                    Grid.Row="1" 
+                    Grid.Column="3" 
+                    ToolTip="{x:Static p:Resources.PlaySelection}"
+                    Content="Preview selection" 
+                    Click="SelectionPreviewButtonButton_Click"/>
+            
+            <Button x:Name="exportButton" 
+                    Grid.Row="0" 
+                    Grid.Column="0" 
+                    ToolTip="{x:Static p:Resources.ExportSelection}"
+                    Content="Export" 
+                    IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" 
+                    Click="Menu_File_Export"/>
+            
+            <Button x:Name="playButton" 
+                    Grid.Row="0" 
+                    Grid.Column="3" 
+                    ToolTip="{x:Static p:Resources.Play}"
+                    Content="Play" 
+                    Click="PlayButton_Click"/>
+            
+            <Button x:Name="sectionStartButton" 
+                    Grid.Row="1" 
+                    Grid.Column="2" 
+                    ToolTip="{x:Static p:Resources.SetSelectionStart}"
+                    Content="[" 
+                    Click="SectionStartButton_Click"/>
+            
+            <Button x:Name="sectionEndButton" 
+                    Grid.Row="1" 
+                    Grid.Column="4" 
+                    ToolTip="{x:Static p:Resources.SetSelectionEnd}"
+                    Content="]" 
+                    Click="SectionEndButton_Click"/>
+            
+            <Button x:Name="backButton" 
+                    Grid.Row="0" 
+                    Grid.Column="2" 
+                    ToolTip="{x:Static p:Resources.Backward}"
+                    Content="&lt;&lt;" 
+                    Click="BackButton_Click"/>
+            
+            <Button x:Name="forwardButton" 
+                    Grid.Row="0" 
+                    Grid.Column="4" 
+                    ToolTip="{x:Static p:Resources.Forward}"
+                    Content="&gt;&gt;" 
+                    Click="ForwardButton_Click" />
+            
+            <Button x:Name="addToQueueButton" 
+                    Grid.Row="0" 
+                    Grid.Column="6" 
+                    ToolTip="{x:Static p:Resources.AddToQueue}"
+                    Content="Add to queue"
+                    Click="AddToQueueButton_Click"/>
 
             <ProgressBar 
                 x:Name="exportProgressBar" 
-                Grid.Row="0" 
-                Grid.Column="7" 
-                Width="150" 
+                Grid.Row="1" 
+                Grid.Column="0" 
                 Margin="10"
                 Minimum="0" 
                 Maximum="1" 
@@ -129,8 +176,8 @@
                 Value="{Binding ExportProgress, Mode=OneWay}"/>
 
             <Slider x:Name="volumeControl" 
-                    Grid.Column="8" 
                     Grid.RowSpan="2" 
+                    Grid.Column="7" 
                     Margin="5" 
                     Orientation="Vertical" 
                     Maximum="1.0"

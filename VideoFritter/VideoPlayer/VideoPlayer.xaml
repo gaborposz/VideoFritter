@@ -6,12 +6,11 @@
              xmlns:local="clr-namespace:VideoFritter.VideoPlayer"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
-    <Border x:Name="videoBorder" BorderThickness="3" BorderBrush="Black" Background="#FF0B3064">
+    <Border x:Name="videoBorder" Background="#000000">
         <MediaElement x:Name="mediaElement" 
-                          LoadedBehavior="Manual"
-                          ScrubbingEnabled="True"
-                          MediaOpened="VideoPlayer_MediaOpened" >
-
+                      LoadedBehavior="Manual"
+                      ScrubbingEnabled="True"
+                      MediaOpened="VideoPlayer_MediaOpened" >
         </MediaElement>
     </Border>
 </UserControl>

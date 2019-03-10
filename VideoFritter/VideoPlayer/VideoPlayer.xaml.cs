@@ -44,14 +44,21 @@ namespace VideoFritter.VideoPlayer
                 "VideoPosition",
                 typeof(TimeSpan),
                 typeof(VideoPlayer),
-                new FrameworkPropertyMetadata(TimeSpan.Zero, VideoPositionPropertyChangedCallback));
+                new PropertyMetadata(TimeSpan.Zero, VideoPositionPropertyChangedCallback));
 
         public static readonly DependencyProperty VolumeProperty =
             DependencyProperty.Register(
                 "VideoVolume",
                 typeof(double),
                 typeof(VideoPlayer),
-                new FrameworkPropertyMetadata(0d, VolumePropertyChangedCallback));
+                new PropertyMetadata(0.5d, VolumePropertyChangedCallback));
+
+        public static readonly DependencyProperty IsVideoLoadedProperty =
+            DependencyProperty.Register(
+                "IsVideoLoaded",
+                typeof(bool),
+                typeof(VideoPlayer),
+                new PropertyMetadata(false));
 
         public TimeSpan VideoLength
         {
@@ -95,6 +102,18 @@ namespace VideoFritter.VideoPlayer
             {
                 this.isPlaying = value;
                 RaiseIsPlayingChangedEvent();
+            }
+        }
+
+        public bool IsVideoLoaded
+        {
+            get
+            {
+                return (bool)GetValue(IsVideoLoadedProperty);
+            }
+            set
+            {
+                SetValue(IsVideoLoadedProperty, value);
             }
         }
 
@@ -153,7 +172,7 @@ namespace VideoFritter.VideoPlayer
 
         public void PlayOrPause()
         {
-            if (!this.isVideoLoaded)
+            if (!IsVideoLoaded)
             {
                 return;
             }
@@ -174,7 +193,7 @@ namespace VideoFritter.VideoPlayer
 
         public void Play(TimeSpan from, TimeSpan to)
         {
-            if (!this.isVideoLoaded)
+            if (!IsVideoLoaded)
             {
                 return;
             }
@@ -216,7 +235,6 @@ namespace VideoFritter.VideoPlayer
         private MediaTimeline mediaTimeline;
         private bool isPlaying;
         private TimeSpan endOfPlayback = TimeSpan.MaxValue;
-        private bool isVideoLoaded = false;
         private bool positionSetByTimer;
 
         private TimeSpan CurrentMediaTime
@@ -245,7 +263,7 @@ namespace VideoFritter.VideoPlayer
             VideoPlayer videoPlayer = (VideoPlayer)d;
             TimeSpan newValue = (TimeSpan)e.NewValue;
 
-            if (!videoPlayer.isVideoLoaded || videoPlayer.positionSetByTimer)
+            if (!videoPlayer.IsVideoLoaded || videoPlayer.positionSetByTimer)
             {
                 return;
             }
@@ -267,7 +285,7 @@ namespace VideoFritter.VideoPlayer
 
         private void VideoPlayer_MediaOpened(object sender, RoutedEventArgs e)
         {
-            this.isVideoLoaded = true;
+            IsVideoLoaded = true;
             IsPlaying = false;
             SetValue(VideoLengthProperty, this.mediaElement.NaturalDuration.TimeSpan);
             SetValue(VolumeProperty, this.mediaElement.Volume);

@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,90 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddToQueue" xml:space="preserve">
+    <value>Add to export queue</value>
+  </data>
+  <data name="Backward" xml:space="preserve">
+    <value>Step backward</value>
+  </data>
+  <data name="ClearExportQueue" xml:space="preserve">
+    <value>Clear the queue</value>
+  </data>
+  <data name="ExportQueueWindowTitle" xml:space="preserve">
+    <value>Export queue</value>
+  </data>
+  <data name="ExportSelection" xml:space="preserve">
+    <value>Export the current selection</value>
+  </data>
+  <data name="FileMenu" xml:space="preserve">
+    <value>_File</value>
+  </data>
+  <data name="FileMenu_Exit" xml:space="preserve">
+    <value>E_xit</value>
+  </data>
+  <data name="FileMenu_Export" xml:space="preserve">
+    <value>_Export selection</value>
+  </data>
+  <data name="FileMenu_Open" xml:space="preserve">
+    <value>_Open file</value>
+  </data>
+  <data name="Forward" xml:space="preserve">
+    <value>Step forward</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="PlaySelection" xml:space="preserve">
+    <value>Play selection</value>
+  </data>
+  <data name="QueueMenu" xml:space="preserve">
+    <value>_Queue</value>
+  </data>
+  <data name="QueueMenu_View" xml:space="preserve">
+    <value>View export queue</value>
+  </data>
+  <data name="RemoveFromExportQueue" xml:space="preserve">
+    <value>Remove the selected item</value>
+  </data>
+  <data name="SelectionEnd" xml:space="preserve">
+    <value>End of selection</value>
+  </data>
+  <data name="SelectionStart" xml:space="preserve">
+    <value>Start of selection</value>
+  </data>
+  <data name="SetSelectionEnd" xml:space="preserve">
+    <value>Set end of selection</value>
+  </data>
+  <data name="SetSelectionStart" xml:space="preserve">
+    <value>Set start of selection</value>
+  </data>
+  <data name="StartExportQueue" xml:space="preserve">
+    <value>Start processing of the queue</value>
+  </data>
+  <data name="VideoLength" xml:space="preserve">
+    <value>Video length</value>
+  </data>
+  <data name="VideoPosition" xml:space="preserve">
+    <value>Video postition</value>
+  </data>
+  <data name="ViewMenu" xml:space="preserve">
+    <value>_View</value>
+  </data>
+  <data name="ViewMenu_Resize" xml:space="preserve">
+    <value>Scale to fit screen</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Set audio volume</value>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Video Fritter</value>
+  </data>
 </root>

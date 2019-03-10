@@ -20,7 +20,7 @@
             TickFrequency="{Binding TickFrequency, ElementName=slicingSlider}"/>
 
         <Slider 
-            Margin="6,0,-6,0"
+            Margin="5,0,-7,0"
             Name="selectionStartSlider"
             Minimum="{Binding Minimum, ElementName=slicingSlider}"
             Maximum="{Binding Maximum, ElementName=slicingSlider}"
@@ -34,7 +34,7 @@
                                     <ControlTemplate>
                                         <Polygon 
                                             Points="0,30,0,18,10,30" 
-                                            Fill="Red" 
+                                            Fill="#E00000" 
                                             Stroke="Transparent" 
                                             StrokeThickness="3"/>
                                     </ControlTemplate>
@@ -47,7 +47,7 @@
         </Slider>
 
         <Slider 
-            Margin="6,0,5,0"
+            Margin="6,0,3,0"
             Name="selectionEndSlider"
             Minimum="{Binding Minimum, ElementName=slicingSlider}"
             Maximum="{Binding Maximum, ElementName=slicingSlider}"
@@ -61,7 +61,7 @@
                                     <ControlTemplate>
                                         <Polygon 
                                             Points="0,30,0,18,-10,30" 
-                                            Fill="Red" 
+                                            Fill="#E00000" 
                                             Stroke="Transparent" 
                                             StrokeThickness="3"/>
                                     </ControlTemplate>

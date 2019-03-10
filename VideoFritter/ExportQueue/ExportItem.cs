@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace VideoFritter.ProcessingQueue
+namespace VideoFritter.ExportQueue
 {
-    internal class ProcessingItem
+    internal class ExportItem
     {
-        public ProcessingItem(string fileName, TimeSpan sliceStart, TimeSpan sliceEnd)
+        public ExportItem(string fileName, TimeSpan sliceStart, TimeSpan sliceEnd)
         {
             FileName = fileName;
             SliceStart = sliceStart;
@@ -17,7 +17,7 @@ namespace VideoFritter.ProcessingQueue
 
         public override string ToString()
         {
-            return $"FileName: {FileName} Start: {SliceStart:hh\\:mm\\:ss\\.fff} End: {SliceEnd:hh\\:mm\\:ss\\.fff}";
+            return $"{FileName}     {SliceStart:hh\\:mm\\:ss\\.fff} - {SliceEnd:hh\\:mm\\:ss\\.fff}";
         }
     }
 }

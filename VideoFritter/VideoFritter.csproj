@@ -62,10 +62,10 @@
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\TimeSpanToMillisecondsConverter.cs" />
     <Compile Include="Exporter\FFMpegExporter.cs" />
-    <Compile Include="ProcessingQueue\ProcessingItem.cs" />
-    <Compile Include="ProcessingQueue\ProcessingQueueViewModel.cs" />
-    <Compile Include="ProcessingQueue\ProcessingQueueWindow.xaml.cs">
-      <DependentUpon>ProcessingQueueWindow.xaml</DependentUpon>
+    <Compile Include="ExportQueue\ExportItem.cs" />
+    <Compile Include="ExportQueue\ExportQueueViewModel.cs" />
+    <Compile Include="ExportQueue\ExportQueueWindow.xaml.cs">
+      <DependentUpon>ExportQueueWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SlicingSlider\SlicingSlider.xaml.cs">
       <DependentUpon>SlicingSlider.xaml</DependentUpon>
@@ -89,7 +89,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ProcessingQueue\ProcessingQueueWindow.xaml">
+    <Page Include="ExportQueue\ExportQueueWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shared.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -117,7 +121,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -133,8 +137,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="VideoSlice\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

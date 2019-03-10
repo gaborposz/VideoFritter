@@ -1,22 +1,22 @@
 ﻿using System.Windows;
 
-namespace VideoFritter.ProcessingQueue
+namespace VideoFritter.ExportQueue
 {
     /// <summary>
-    /// Interaction logic for ProcessingQueue.xaml
+    /// Interaction logic for ExportQueueWindow.xaml
     /// </summary>
-    public partial class ProcessingQueueWindow : Window
+    public partial class ExportQueueWindow : Window
     {
-        public ProcessingQueueWindow()
+        public ExportQueueWindow()
         {
             InitializeComponent();
         }
 
-        private ProcessingQueueViewModel ViewModel
+        private ExportQueueViewModel ViewModel
         {
             get
             {
-                return (ProcessingQueueViewModel)DataContext;
+                return (ExportQueueViewModel)DataContext;
             }
         }
 
@@ -27,7 +27,7 @@ namespace VideoFritter.ProcessingQueue
 
         private void DeleteSelectedButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Queue.RemoveAt(listBox.SelectedIndex);
+            ViewModel.Queue.RemoveAt(this.listBox.SelectedIndex);
         }
 
         private void StartQueueButton_Click(object sender, RoutedEventArgs e)

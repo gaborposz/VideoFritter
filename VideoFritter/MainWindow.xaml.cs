@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-using VideoFritter.ProcessingQueue;
+using VideoFritter.ExportQueue;
 using VideoFritter.VideoPlayer;
 
 namespace VideoFritter
@@ -21,8 +21,8 @@ namespace VideoFritter
         }
 
         private MainWindowViewModel viewModel;
-        private ProcessingQueueWindow processingQueueWindow;
-        private ProcessingQueueViewModel processingQueueViewModel = new ProcessingQueueViewModel();
+        private ExportQueueWindow processingQueueWindow;
+        private ExportQueueViewModel processingQueueViewModel = new ExportQueueViewModel();
 
 
         private void Menu_File_Open(object sender, RoutedEventArgs e)
@@ -73,7 +73,7 @@ namespace VideoFritter
 
         private void Menu_Queue_View(object sender, RoutedEventArgs e)
         {
-            this.processingQueueWindow = new ProcessingQueueWindow
+            this.processingQueueWindow = new ExportQueueWindow
             {
                 DataContext = this.processingQueueViewModel,
             };

@@ -22,7 +22,7 @@ namespace VideoFritter.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace VideoFritter.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VideoFritter.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,255 @@ namespace VideoFritter.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add to export queue.
+        /// </summary>
+        public static string AddToQueue {
+            get {
+                return ResourceManager.GetString("AddToQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step backward.
+        /// </summary>
+        public static string Backward {
+            get {
+                return ResourceManager.GetString("Backward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the queue.
+        /// </summary>
+        public static string ClearExportQueue {
+            get {
+                return ResourceManager.GetString("ClearExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export queue.
+        /// </summary>
+        public static string ExportQueueWindowTitle {
+            get {
+                return ResourceManager.GetString("ExportQueueWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export the current selection.
+        /// </summary>
+        public static string ExportSelection {
+            get {
+                return ResourceManager.GetString("ExportSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _File.
+        /// </summary>
+        public static string FileMenu {
+            get {
+                return ResourceManager.GetString("FileMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E_xit.
+        /// </summary>
+        public static string FileMenu_Exit {
+            get {
+                return ResourceManager.GetString("FileMenu_Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Export selection.
+        /// </summary>
+        public static string FileMenu_Export {
+            get {
+                return ResourceManager.GetString("FileMenu_Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Open file.
+        /// </summary>
+        public static string FileMenu_Open {
+            get {
+                return ResourceManager.GetString("FileMenu_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step forward.
+        /// </summary>
+        public static string Forward {
+            get {
+                return ResourceManager.GetString("Forward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        public static string Pause {
+            get {
+                return ResourceManager.GetString("Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play.
+        /// </summary>
+        public static string Play {
+            get {
+                return ResourceManager.GetString("Play", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play selection.
+        /// </summary>
+        public static string PlaySelection {
+            get {
+                return ResourceManager.GetString("PlaySelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Queue.
+        /// </summary>
+        public static string QueueMenu {
+            get {
+                return ResourceManager.GetString("QueueMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View export queue.
+        /// </summary>
+        public static string QueueMenu_View {
+            get {
+                return ResourceManager.GetString("QueueMenu_View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove the selected item.
+        /// </summary>
+        public static string RemoveFromExportQueue {
+            get {
+                return ResourceManager.GetString("RemoveFromExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End of selection.
+        /// </summary>
+        public static string SelectionEnd {
+            get {
+                return ResourceManager.GetString("SelectionEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start of selection.
+        /// </summary>
+        public static string SelectionStart {
+            get {
+                return ResourceManager.GetString("SelectionStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set end of selection.
+        /// </summary>
+        public static string SetSelectionEnd {
+            get {
+                return ResourceManager.GetString("SetSelectionEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set start of selection.
+        /// </summary>
+        public static string SetSelectionStart {
+            get {
+                return ResourceManager.GetString("SetSelectionStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start processing of the queue.
+        /// </summary>
+        public static string StartExportQueue {
+            get {
+                return ResourceManager.GetString("StartExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video length.
+        /// </summary>
+        public static string VideoLength {
+            get {
+                return ResourceManager.GetString("VideoLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video postition.
+        /// </summary>
+        public static string VideoPosition {
+            get {
+                return ResourceManager.GetString("VideoPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _View.
+        /// </summary>
+        public static string ViewMenu {
+            get {
+                return ResourceManager.GetString("ViewMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scale to fit screen.
+        /// </summary>
+        public static string ViewMenu_Resize {
+            get {
+                return ResourceManager.GetString("ViewMenu_Resize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set audio volume.
+        /// </summary>
+        public static string Volume {
+            get {
+                return ResourceManager.GetString("Volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video Fritter.
+        /// </summary>
+        public static string WindowTitle {
+            get {
+                return ResourceManager.GetString("WindowTitle", resourceCulture);
             }
         }
     }
