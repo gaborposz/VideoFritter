@@ -122,12 +122,10 @@ namespace VideoFritter
             if (isPlayingChangedEventArgs.NewIsPlaying)
             {
                 this.playButton.Content = "Pause";
-                this.sectionPlayButton.Content = "Pause";
             }
             else
             {
                 this.playButton.Content = "Play";
-                this.sectionPlayButton.Content = "Section Play";
             }
         }
 
@@ -148,7 +146,7 @@ namespace VideoFritter
 
         private void SectionPlayButton_Click(object sender, RoutedEventArgs e)
         {
-            this.videoPlayer.PlayOrPause(this.viewModel.SliceStart, this.viewModel.SliceEnd);
+            this.videoPlayer.Play(this.viewModel.SliceStart, this.viewModel.SliceEnd);
         }
     }
 }

@@ -85,6 +85,19 @@ namespace VideoFritter.VideoPlayer
             }
         }
 
+        public bool IsPlaying
+        {
+            get
+            {
+                return this.isPlaying;
+            }
+            set
+            {
+                this.isPlaying = value;
+                RaiseIsPlayingChangedEvent();
+            }
+        }
+
         public event RoutedEventHandler VideoOpened
         {
             add { AddHandler(VideoOpenedEvent, value); }
@@ -140,11 +153,6 @@ namespace VideoFritter.VideoPlayer
 
         public void PlayOrPause()
         {
-            PlayOrPause(TimeSpan.Zero, VideoLength);
-        }
-
-        public void PlayOrPause(TimeSpan from, TimeSpan to)
-        {
             if (!this.isVideoLoaded)
             {
                 return;
@@ -157,16 +165,31 @@ namespace VideoFritter.VideoPlayer
             }
             else
             {
-                if (CurrentMediaTime < from || CurrentMediaTime >= to)
-                {
-                    MediaController.Seek(from, TimeSeekOrigin.BeginTime);
-                }
-
-                this.endOfPlayback = to;
+                this.endOfPlayback = VideoLength;
 
                 MediaController.Resume();
                 IsPlaying = true;
             }
+        }
+
+        public void Play(TimeSpan from, TimeSpan to)
+        {
+            if (!this.isVideoLoaded)
+            {
+                return;
+            }
+
+            if (IsPlaying)
+            {
+                MediaController.Pause();
+            }
+
+            MediaController.Seek(from, TimeSeekOrigin.BeginTime);
+
+            this.endOfPlayback = to;
+
+            MediaController.Resume();
+            IsPlaying = true;
         }
 
         public void Stop()
@@ -202,19 +225,6 @@ namespace VideoFritter.VideoPlayer
         private TimeSpan endOfPlayback = TimeSpan.MaxValue;
         private bool isVideoLoaded = false;
         private bool positionSetByTimer;
-
-        private bool IsPlaying
-        {
-            get
-            {
-                return this.isPlaying;
-            }
-            set
-            {
-                this.isPlaying = value;
-                RaiseIsPlayingChangedEvent();
-            }
-        }
 
         private TimeSpan CurrentMediaTime
         {

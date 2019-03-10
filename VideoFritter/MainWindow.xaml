@@ -107,7 +107,7 @@
             <Button x:Name="sectionEndButton" Grid.Row="1" Grid.Column="3" Margin="5" Content="]" Click="SectionEndButton_Click"/>
             <Button x:Name="addToQueueButton" Grid.Row="0" Grid.Column="4" Margin="5" Content="Add to queue" Click="AddToQueueButton_Click"/>
             <Button x:Name="exportButton" Grid.Row="0" Grid.Column="5" Margin="5" Content="Export" IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" Click="Menu_File_Export"/>
-            <Button x:Name="sectionPlayButton" Grid.Row="1" Grid.Column="4" Margin="5" Content="Section Play" Click="SectionPlayButton_Click"/>
+            <Button x:Name="sectionPlayButton" Grid.Row="1" Grid.Column="4" Margin="5" Content="Preview selection" Click="SectionPlayButton_Click"/>
 
             <ProgressBar 
                 x:Name="exportProgressBar" 
