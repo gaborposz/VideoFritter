@@ -94,11 +94,6 @@ namespace VideoFritter
             this.videoPlayer.PlayOrPause();
         }
 
-        private void StopButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.videoPlayer.Stop();
-        }
-
         private void VideoPlayer_VideoOpened(object sender, RoutedEventArgs e)
         {
             this.slider.Value = 0;
@@ -144,9 +139,41 @@ namespace VideoFritter
             processingQueueViewModel.AddToQueue(this.viewModel.OpenedFileName, this.viewModel.SliceStart, this.viewModel.SliceEnd);
         }
 
-        private void SectionPlayButton_Click(object sender, RoutedEventArgs e)
+        private void SelectionPreviewButtonButton_Click(object sender, RoutedEventArgs e)
         {
             this.videoPlayer.Play(this.viewModel.SliceStart, this.viewModel.SliceEnd);
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.videoPlayer.VideoPosition <= this.viewModel.SliceStart)
+            {
+                this.videoPlayer.VideoPosition = TimeSpan.Zero;
+            }
+            else if (this.videoPlayer.VideoPosition <= this.viewModel.SliceEnd)
+            {
+                this.videoPlayer.VideoPosition = this.viewModel.SliceStart;
+            }
+            else
+            {
+                this.videoPlayer.VideoPosition = this.viewModel.SliceEnd;
+            }
+        }
+
+        private void ForwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.videoPlayer.VideoPosition >= this.viewModel.SliceEnd)
+            {
+                this.videoPlayer.VideoPosition = this.videoPlayer.VideoLength;
+            }
+            else if (this.videoPlayer.VideoPosition >= this.viewModel.SliceStart)
+            {
+                this.videoPlayer.VideoPosition = this.viewModel.SliceEnd;
+            }
+            else
+            {
+                this.videoPlayer.VideoPosition = this.viewModel.SliceStart;
+            }
         }
     }
 }

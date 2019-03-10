@@ -192,13 +192,6 @@ namespace VideoFritter.VideoPlayer
             IsPlaying = true;
         }
 
-        public void Stop()
-        {
-            this.mediaElement.Stop();
-            IsPlaying = false;
-            SetValue(VideoPositionProperty, TimeSpan.Zero);
-        }
-
         protected virtual void RaiseVideoOpenedEvent()
         {
             VideoOpenedEventArgs args = new VideoOpenedEventArgs(

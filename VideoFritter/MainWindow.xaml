@@ -12,6 +12,12 @@
     <Window.Resources>
         <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
         <Converters:InverseBoolConverter x:Key="inverseBoolConverter" />
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="2,3" />
+            <Setter Property="Padding" Value="10,2" />
+        </Style>
     </Window.Resources>
     <Window.DataContext>
         <local:MainWindowViewModel />
@@ -64,13 +70,14 @@
         <Grid x:Name="controllerGrid"
               Grid.Row="3" 
               HorizontalAlignment="Center" 
-              ShowGridLines="True">
+              ShowGridLines="False">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -93,26 +100,27 @@
 
             <Label x:Name="sliceStartLabel" 
                    Grid.Row="0" 
-                   Grid.Column="2" 
+                   Grid.Column="3" 
                    Content="{Binding SliceStart}" ContentStringFormat="Start: {0:hh\:mm\:ss\.fff}" />
 
             <Label x:Name="sliceEndLabel" 
                    Grid.Row="0" 
-                   Grid.Column="3" 
+                   Grid.Column="4" 
                    Content="{Binding SliceEnd}" ContentStringFormat="End: {0:hh\:mm\:ss\.fff}" />
 
-            <Button x:Name="playButton" Grid.Row="1" Grid.Column="0" Margin="5" Content="Play" Click="PlayButton_Click"/>
-            <Button x:Name="stopButton" Grid.Row="1" Grid.Column="1" Margin="5" Content="Stop" Click="StopButton_Click"/>
-            <Button x:Name="sectionStartButton" Grid.Row="1" Grid.Column="2" Margin="5" Content="[" Click="SectionStartButton_Click"/>
-            <Button x:Name="sectionEndButton" Grid.Row="1" Grid.Column="3" Margin="5" Content="]" Click="SectionEndButton_Click"/>
-            <Button x:Name="addToQueueButton" Grid.Row="0" Grid.Column="4" Margin="5" Content="Add to queue" Click="AddToQueueButton_Click"/>
-            <Button x:Name="exportButton" Grid.Row="0" Grid.Column="5" Margin="5" Content="Export" IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" Click="Menu_File_Export"/>
-            <Button x:Name="sectionPlayButton" Grid.Row="1" Grid.Column="4" Margin="5" Content="Preview selection" Click="SectionPlayButton_Click"/>
+            <Button x:Name="selectionPreviewButton" Grid.Row="0" Grid.Column="5" Content="Preview selection" Click="SelectionPreviewButtonButton_Click"/>
+            <Button x:Name="exportButton" Grid.Row="0" Grid.Column="6" Content="Export" IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" Click="Menu_File_Export"/>
+            <Button x:Name="playButton" Grid.Row="1" Grid.Column="1" Content="Play" Click="PlayButton_Click"/>
+            <Button x:Name="sectionStartButton" Grid.Row="1" Grid.Column="3" Content="[" Click="SectionStartButton_Click"/>
+            <Button x:Name="sectionEndButton" Grid.Row="1" Grid.Column="4" Content="]" Click="SectionEndButton_Click"/>
+            <Button x:Name="backButton" Grid.Row="1" Grid.Column="0" Width="Auto" Content="&lt;&lt;" Click="BackButton_Click"/>
+            <Button x:Name="forwardButton" Grid.Row="1" Grid.Column="2" Content="&gt;&gt;" Click="ForwardButton_Click" />
+            <Button x:Name="addToQueueButton" Grid.Row="1" Grid.Column="7" Content="Add to queue" Click="AddToQueueButton_Click"/>
 
             <ProgressBar 
                 x:Name="exportProgressBar" 
                 Grid.Row="0" 
-                Grid.Column="6" 
+                Grid.Column="7" 
                 Width="150" 
                 Margin="10"
                 Minimum="0" 
@@ -121,7 +129,7 @@
                 Value="{Binding ExportProgress, Mode=OneWay}"/>
 
             <Slider x:Name="volumeControl" 
-                    Grid.Column="7" 
+                    Grid.Column="8" 
                     Grid.RowSpan="2" 
                     Margin="5" 
                     Orientation="Vertical" 
