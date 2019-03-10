@@ -67,7 +67,9 @@
     <Compile Include="ProcessingQueue\ProcessingQueueWindow.xaml.cs">
       <DependentUpon>ProcessingQueueWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SlicingSlider\SlicingSlider.cs" />
+    <Compile Include="SlicingSlider\SlicingSlider.xaml.cs">
+      <DependentUpon>SlicingSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VideoPlayer\IsPlayingChangedEventArgs.cs" />
     <Compile Include="VideoPlayer\VideoOpenedEventArgs.cs" />
     <Compile Include="VideoPlayer\VideoPlayer.xaml.cs">
@@ -88,6 +90,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ProcessingQueue\ProcessingQueueWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SlicingSlider\SlicingSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
