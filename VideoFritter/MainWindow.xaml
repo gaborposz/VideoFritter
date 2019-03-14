@@ -173,7 +173,10 @@
                 Minimum="0" 
                 Maximum="1" 
                 IsIndeterminate="{Binding IsIndeterminateProgess, Mode=OneWay}"
-                Value="{Binding ExportProgress, Mode=OneWay}"/>
+                Value="{Binding ExportProgress, Mode=OneWay}"
+                Background="#FF423535" 
+                BorderBrush="#FF685757" 
+                Foreground="#FF1AAC2E"/>
 
             <Slider x:Name="volumeControl" 
                     Grid.RowSpan="2" 
@@ -181,7 +184,8 @@
                     Margin="5" 
                     Orientation="Vertical" 
                     Maximum="1.0"
-                    Value="{Binding ElementName=videoPlayer, Path=VideoVolume}"/>
+                    Value="{Binding ElementName=videoPlayer, Path=VideoVolume}"
+                    Template="{DynamicResource AudioVolumeSlider}"/>
         </Grid>
     </Grid>
 </Window>

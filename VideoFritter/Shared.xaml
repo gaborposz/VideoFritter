@@ -2,12 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:VideoFritter"
                     xmlns:Converters="clr-namespace:VideoFritter.Converters">
-    
+
     <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
     <Converters:InverseBoolConverter x:Key="inverseBoolConverter" />
 
     <Style x:Key="DefaultWindowStyle">
-        <Setter Property="Control.Background" Value="#505050" />
+        <Setter Property="Control.Background" Value="#FF3E3E3E" />
+    </Style>
+
+    <Style TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="White" />
     </Style>
 
     <Style TargetType="{x:Type Menu}">
@@ -83,7 +87,7 @@
     <Style TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="LightGray" />
     </Style>
-    
+
     <Style TargetType="{x:Type ListBoxItem}">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
@@ -145,5 +149,50 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <ControlTemplate x:Key="AudioVolumeSlider" TargetType="{x:Type Slider}">
+        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition MinWidth="{TemplateBinding MinWidth}" Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Path x:Name="TrackBackground" Grid.Column="1" 
+                      Stretch="Fill" 
+                      Fill="#FF6C6C6C"
+                      Data="M0,0 M2,0 L2,10 10,0 Z M10,10" >
+                </Path>
+                <Canvas Margin="-1,-6">
+                    <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Visibility="Hidden" Width="4"/>
+                </Canvas>
+                <Track x:Name="PART_Track" Grid.Column="1">
+                    <Track.Thumb>
+                        <Thumb x:Name="Thumb" Focusable="False" Height="6" OverridesDefaultStyle="True" VerticalAlignment="Top" Width="10" Foreground="Black">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                    <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                                        <Path x:Name="grip" Data="M0.5,0.5L18.5,0.5 18.5,11.5 0.5,11.5z" Stretch="Fill" Fill="#FF919191" Stroke="#FF212020" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Stroke" TargetName="grip" Value="#FF2894EE"/>
+                                        </Trigger>
+                                        <Trigger Property="IsDragging" Value="True">
+                                            <Setter Property="Fill" TargetName="grip" Value="#FFA1A1A1"/>
+                                            <Setter Property="Stroke" TargetName="grip" Value="#FF2894EE"/>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Visibility" TargetName="grip" Value="Hidden"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </Border>
+    </ControlTemplate>
 
 </ResourceDictionary>
