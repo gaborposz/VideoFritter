@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:VideoFritter"
         xmlns:VideoPlayer="clr-namespace:VideoFritter.Controls.VideoPlayer"
         xmlns:SlicingSlider="clr-namespace:VideoFritter.Controls.SlicingSlider"
+        xmlns:AudioVolumeControl="clr-namespace:VideoFritter.Controls.AudioVolumeControl"
         xmlns:p="clr-namespace:VideoFritter.Properties"
         mc:Ignorable="d"
         Title="{x:Static p:Resources.WindowTitle}" 
@@ -178,14 +179,13 @@
                 BorderBrush="#FF685757" 
                 Foreground="#FF1AAC2E"/>
 
-            <Slider x:Name="volumeControl" 
-                    Grid.RowSpan="2" 
-                    Grid.Column="7" 
-                    Margin="5" 
-                    Orientation="Vertical" 
-                    Maximum="1.0"
-                    Value="{Binding ElementName=videoPlayer, Path=VideoVolume}"
-                    Template="{DynamicResource AudioVolumeSlider}"/>
+            <AudioVolumeControl:AudioVolumeControl x:Name="volumeControl" 
+                                                   Grid.RowSpan="2" 
+                                                   Grid.Column="7" 
+                                                   Margin="5" 
+                                                   Width="10"
+                                                   Maximum="1.0"
+                                                   Value="{Binding ElementName=videoPlayer, Path=VideoVolume}"/>
         </Grid>
     </Grid>
 </Window>

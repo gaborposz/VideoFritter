@@ -59,6 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\AbstractExportingViewModel.cs" />
     <Compile Include="Common\AbstractViewModelBase.cs" />
+    <Compile Include="Controls\AudioVolumeControl\AudioVolumeControl.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\TimeSpanToMillisecondsConverter.cs" />
     <Compile Include="Exporter\FFMpegExporter.cs" />
@@ -77,6 +78,10 @@
     </Compile>
     <Compile Include="Controls\VideoPlayer\VideoPositionChangedEventArgs.cs" />
     <Compile Include="MainWindowViewModel.cs" />
+    <Page Include="Controls\AudioVolumeControl\AudioVolumeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
