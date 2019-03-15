@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace VideoFritter.SlicingSlider
+namespace VideoFritter.Controls.SlicingSlider
 {
     /// <summary>
     /// Interaction logic for SlicingSlider.xaml

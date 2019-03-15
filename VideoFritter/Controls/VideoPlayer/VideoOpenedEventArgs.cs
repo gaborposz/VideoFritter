@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
-namespace VideoFritter.VideoPlayer
+namespace VideoFritter.Controls.VideoPlayer
 {
     public class VideoOpenedEventArgs : RoutedEventArgs
     {

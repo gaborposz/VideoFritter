@@ -67,15 +67,15 @@
     <Compile Include="ExportQueue\ExportQueueWindow.xaml.cs">
       <DependentUpon>ExportQueueWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SlicingSlider\SlicingSlider.xaml.cs">
+    <Compile Include="Controls\SlicingSlider\SlicingSlider.xaml.cs">
       <DependentUpon>SlicingSlider.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VideoPlayer\IsPlayingChangedEventArgs.cs" />
-    <Compile Include="VideoPlayer\VideoOpenedEventArgs.cs" />
-    <Compile Include="VideoPlayer\VideoPlayer.xaml.cs">
+    <Compile Include="Controls\VideoPlayer\IsPlayingChangedEventArgs.cs" />
+    <Compile Include="Controls\VideoPlayer\VideoOpenedEventArgs.cs" />
+    <Compile Include="Controls\VideoPlayer\VideoPlayer.xaml.cs">
       <DependentUpon>VideoPlayer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VideoPlayer\VideoPositionChangedEventArgs.cs" />
+    <Compile Include="Controls\VideoPlayer\VideoPositionChangedEventArgs.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -97,11 +97,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SlicingSlider\SlicingSlider.xaml">
+    <Page Include="Controls\SlicingSlider\SlicingSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VideoPlayer\VideoPlayer.xaml">
+    <Page Include="Controls\VideoPlayer\VideoPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

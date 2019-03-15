@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 
 using VideoFritter.ExportQueue;
-using VideoFritter.VideoPlayer;
+using VideoFritter.Controls.VideoPlayer;
 
 namespace VideoFritter
 {
