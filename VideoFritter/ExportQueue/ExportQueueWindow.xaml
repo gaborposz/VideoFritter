@@ -12,19 +12,34 @@
         Width="800"
         Style="{StaticResource DefaultWindowStyle}"
         >
-
+    <Window.Resources>
+        <Style TargetType="ListBoxItem">
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
+                    <Setter Property="Background" Value="#E0E0E0" />
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex"  Value="1">
+                    <Setter Property="Background" Value="LightGray" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ListBox 
+        <ListBox
+            
             x:Name="listBox" 
             Grid.Row="0" 
             ItemsSource="{Binding Queue}"
-            />
-        
+            AlternationCount="2"
+            >
+        </ListBox>
+
         <DockPanel Grid.Row="1">
             <Button Name="startQueueButton"
                     DockPanel.Dock="Left"
