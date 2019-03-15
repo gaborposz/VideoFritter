@@ -54,15 +54,15 @@
             />
 
         <SlicingSlider:SlicingSlider x:Name="slider" 
-                Grid.Row="2" 
-                TickPlacement="BottomRight" 
-                TickFrequency="1000" 
-                IsSelectionRangeEnabled="True"
-                SelectionStart="{Binding Path=SliceStart, Converter={StaticResource timeSpanToMillisecondsConverter}, Mode=TwoWay}"
-                SelectionEnd="{Binding Path=SliceEnd, Converter={StaticResource timeSpanToMillisecondsConverter}, Mode=TwoWay}"
-                Maximum="{Binding ElementName=videoPlayer, Path=VideoLength, Converter={StaticResource timeSpanToMillisecondsConverter}}"
-                Value="{Binding ElementName=videoPlayer, Path=VideoPosition, Mode=TwoWay, Converter={StaticResource timeSpanToMillisecondsConverter}}" 
-                />
+                                     Grid.Row="2" 
+                                     TickPlacement="BottomRight" 
+                                     TickFrequency="1000" 
+                                     IsSelectionRangeEnabled="True"
+                                     SelectionStart="{Binding Path=SliceStart, Converter={StaticResource timeSpanToMillisecondsConverter}, Mode=TwoWay}"
+                                     SelectionEnd="{Binding Path=SliceEnd, Converter={StaticResource timeSpanToMillisecondsConverter}, Mode=TwoWay}"
+                                     Maximum="{Binding ElementName=videoPlayer, Path=VideoLength, Converter={StaticResource timeSpanToMillisecondsConverter}}"
+                                     Value="{Binding ElementName=videoPlayer, Path=VideoPosition, Mode=TwoWay, Converter={StaticResource timeSpanToMillisecondsConverter}}" 
+                                     IsEnabled="{Binding IsVideoLoaded, ElementName=videoPlayer}"/>
 
         <Grid x:Name="controllerLayoutGrid"
               Grid.Row="3" 

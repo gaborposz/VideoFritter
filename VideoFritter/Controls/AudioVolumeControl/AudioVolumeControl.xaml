@@ -36,6 +36,11 @@
                             <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}"/>
                         </Grid>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="TemplateRoot" Value="0.25"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
