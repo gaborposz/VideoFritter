@@ -2,8 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 
-using VideoFritter.ExportQueue;
 using VideoFritter.Controls.VideoPlayer;
+using VideoFritter.ExportQueue;
+using VideoFritter.Settings;
 
 namespace VideoFritter
 {
@@ -21,8 +22,9 @@ namespace VideoFritter
         }
 
         private MainWindowViewModel viewModel;
-        private ExportQueueWindow processingQueueWindow;
+        private ExportQueueWindow exportQueueWindow;
         private ExportQueueViewModel processingQueueViewModel = new ExportQueueViewModel();
+        private SettingsDialog settingsDialog;
 
 
         private void Menu_File_Open(object sender, RoutedEventArgs e)
@@ -69,15 +71,6 @@ namespace VideoFritter
             // Move the window inside the screen if it went out
             this.Left = (currentScreen.Bounds.Width - this.Width) / 2;
             this.Top = (currentScreen.Bounds.Height - this.Height) / 2;
-        }
-
-        private void Menu_Queue_View(object sender, RoutedEventArgs e)
-        {
-            this.processingQueueWindow = new ExportQueueWindow
-            {
-                DataContext = this.processingQueueViewModel,
-            };
-            this.processingQueueWindow.Show();
         }
 
         private void VideoPlayer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -174,6 +167,45 @@ namespace VideoFritter
             {
                 this.videoPlayer.VideoPosition = this.viewModel.SliceStart;
             }
+        }
+
+        private void Menu_ExportQueue(object sender, RoutedEventArgs e)
+        {
+            if (this.exportQueueWindow == null)
+            {
+                this.exportQueueWindow = new ExportQueueWindow
+                {
+                    DataContext = this.processingQueueViewModel,
+                };
+                this.exportQueueWindow.Closed += ExportQueueWindow_Closed;
+            }
+
+            this.exportQueueWindow.Show();
+            this.exportQueueWindow.Activate();
+        }
+
+        private void ExportQueueWindow_Closed(object sender, EventArgs e)
+        {
+            this.exportQueueWindow.Closed -= ExportQueueWindow_Closed;
+            this.exportQueueWindow = null;
+        }
+
+        private void Menu_Settings(object sender, RoutedEventArgs e)
+        {
+            if (this.settingsDialog == null)
+            {
+                this.settingsDialog = new SettingsDialog();
+                this.settingsDialog.Closed += SettingsDialog_Closed;
+            }
+
+            this.settingsDialog.Show();
+            this.settingsDialog.Activate();
+        }
+
+        private void SettingsDialog_Closed(object sender, EventArgs e)
+        {
+            this.settingsDialog.Closed -= SettingsDialog_Closed;
+            this.settingsDialog = null;
         }
     }
 }

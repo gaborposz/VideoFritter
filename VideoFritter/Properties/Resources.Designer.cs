@@ -79,11 +79,47 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string CancelButton {
+            get {
+                return ResourceManager.GetString("CancelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear the queue.
         /// </summary>
         public static string ClearExportQueue {
             get {
                 return ResourceManager.GetString("ClearExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Correct video timestamps.
+        /// </summary>
+        public static string CorrectTimeStampsCheckBox {
+            get {
+                return ResourceManager.GetString("CorrectTimeStampsCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hint: Use &apos;$(VideoPath)&apos; to set an export path relative to the original video&apos;s path..
+        /// </summary>
+        public static string ExportQueuePathHintLabel {
+            get {
+                return ResourceManager.GetString("ExportQueuePathHintLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export queue path:.
+        /// </summary>
+        public static string ExportQueuePathLabel {
+            get {
+                return ResourceManager.GetString("ExportQueuePathLabel", resourceCulture);
             }
         }
         
@@ -178,29 +214,29 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Queue.
-        /// </summary>
-        public static string QueueMenu {
-            get {
-                return ResourceManager.GetString("QueueMenu", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View export queue.
-        /// </summary>
-        public static string QueueMenu_View {
-            get {
-                return ResourceManager.GetString("QueueMenu_View", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove the selected item.
         /// </summary>
         public static string RemoveFromExportQueue {
             get {
                 return ResourceManager.GetString("RemoveFromExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset to defaults.
+        /// </summary>
+        public static string ResetButton {
+            get {
+                return ResourceManager.GetString("ResetButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string SaveButton {
+            get {
+                return ResourceManager.GetString("SaveButton", resourceCulture);
             }
         }
         
@@ -241,11 +277,47 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SettingsWindowTitle {
+            get {
+                return ResourceManager.GetString("SettingsWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start processing of the queue.
         /// </summary>
         public static string StartExportQueue {
             get {
                 return ResourceManager.GetString("StartExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Tools.
+        /// </summary>
+        public static string ToolsMenu {
+            get {
+                return ResourceManager.GetString("ToolsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View export _queue.
+        /// </summary>
+        public static string ToolsMenu_ExportQueue {
+            get {
+                return ResourceManager.GetString("ToolsMenu_ExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Settings.
+        /// </summary>
+        public static string ToolsMenu_Settings {
+            get {
+                return ResourceManager.GetString("ToolsMenu_Settings", resourceCulture);
             }
         }
         

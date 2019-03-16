@@ -123,8 +123,20 @@
   <data name="Backward" xml:space="preserve">
     <value>Step backward</value>
   </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="ClearExportQueue" xml:space="preserve">
     <value>Clear the queue</value>
+  </data>
+  <data name="CorrectTimeStampsCheckBox" xml:space="preserve">
+    <value>Correct video timestamps</value>
+  </data>
+  <data name="ExportQueuePathHintLabel" xml:space="preserve">
+    <value>Hint: Use '$(VideoPath)' to set an export path relative to the original video's path.</value>
+  </data>
+  <data name="ExportQueuePathLabel" xml:space="preserve">
+    <value>Export queue path:</value>
   </data>
   <data name="ExportQueueWindowTitle" xml:space="preserve">
     <value>Export queue</value>
@@ -156,14 +168,14 @@
   <data name="PlaySelection" xml:space="preserve">
     <value>Play selection</value>
   </data>
-  <data name="QueueMenu" xml:space="preserve">
-    <value>_Queue</value>
-  </data>
-  <data name="QueueMenu_View" xml:space="preserve">
-    <value>View export queue</value>
-  </data>
   <data name="RemoveFromExportQueue" xml:space="preserve">
     <value>Remove the selected item</value>
+  </data>
+  <data name="ResetButton" xml:space="preserve">
+    <value>Reset to defaults</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="SelectionEnd" xml:space="preserve">
     <value>End of selection</value>
@@ -177,8 +189,20 @@
   <data name="SetSelectionStart" xml:space="preserve">
     <value>Set start of selection</value>
   </data>
+  <data name="SettingsWindowTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="StartExportQueue" xml:space="preserve">
     <value>Start processing of the queue</value>
+  </data>
+  <data name="ToolsMenu" xml:space="preserve">
+    <value>_Tools</value>
+  </data>
+  <data name="ToolsMenu_ExportQueue" xml:space="preserve">
+    <value>View export _queue</value>
+  </data>
+  <data name="ToolsMenu_Settings" xml:space="preserve">
+    <value>_Settings</value>
   </data>
   <data name="VideoLength" xml:space="preserve">
     <value>Video length</value>

@@ -6,12 +6,17 @@
 
     <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
     <Converters:InverseBoolConverter x:Key="inverseBoolConverter" />
+    <Converters:AndMultiValueConverter x:Key="andMultiValueConverter" />
 
     <Style x:Key="DefaultWindowStyle">
         <Setter Property="Control.Background" Value="#FF3E3E3E" />
     </Style>
 
     <Style TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    
+    <Style TargetType="{x:Type CheckBox}">
         <Setter Property="Foreground" Value="White" />
     </Style>
 

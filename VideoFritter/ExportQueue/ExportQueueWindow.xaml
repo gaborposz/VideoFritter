@@ -10,8 +10,7 @@
         Title="{x:Static p:Resources.ExportQueueWindowTitle}" 
         Height="450" 
         Width="800"
-        Style="{StaticResource DefaultWindowStyle}"
-        >
+        Style="{StaticResource DefaultWindowStyle}">
     <Window.Resources>
         <Style TargetType="ListBoxItem">
             <Style.Triggers>
@@ -32,13 +31,11 @@
         </Grid.RowDefinitions>
 
         <ListBox
-            
             x:Name="listBox" 
             Grid.Row="0" 
             ItemsSource="{Binding Queue}"
-            AlternationCount="2"
-            >
-        </ListBox>
+            SelectedIndex="{Binding SelectedIndex, Mode=OneWayToSource}"
+            AlternationCount="2" />
 
         <DockPanel Grid.Row="1">
             <Button Name="startQueueButton"
@@ -46,9 +43,16 @@
                     Margin="10, 5" 
                     Padding="10, 2" 
                     Content="Start" 
-                    ToolTip="{x:Static p:Resources.StartExportQueue}"
-                    IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}"
-                    Click="StartQueueButton_Click" />
+                    ToolTip="{x:Static p:Resources.StartExportQueue}"                                   
+                    Click="StartQueueButton_Click">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource andMultiValueConverter}">
+                        <Binding Path="IsExporting" Mode="OneWay" Converter="{StaticResource inverseBoolConverter}" />
+                        <Binding Path="HasItems" Mode="OneWay" />
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
+
 
             <Button Name="clearQueueButton"
                     DockPanel.Dock="Left"
@@ -56,6 +60,7 @@
                     Padding="10, 2" 
                     ToolTip="{x:Static p:Resources.ClearExportQueue}"
                     Content="Clear" 
+                    IsEnabled="{Binding HasItems}"
                     Click="ClearQueueButton_Click" />
 
             <Button Name="deleteSelectedButton"
@@ -63,6 +68,7 @@
                     Margin="10, 5" 
                     Padding="10, 2" 
                     ToolTip="{x:Static p:Resources.RemoveFromExportQueue}"
+                    IsEnabled="{Binding HasSelection}"
                     Content="Delete selected" 
                     Click="DeleteSelectedButton_Click"/>
 

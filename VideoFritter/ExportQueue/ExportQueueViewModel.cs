@@ -21,9 +21,52 @@ namespace VideoFritter.ExportQueue
             get;
         }
 
+        public bool HasItems
+        {
+            get
+            {
+                return Queue.Count > 0;
+            }
+        }
+
+        public bool HasSelection
+        {
+            get
+            {
+                return SelectedIndex != -1;
+            }
+        }
+
+        public int SelectedIndex
+        {
+            get
+            {
+                return this.selectedIndex;
+            }
+            set
+            {
+                this.selectedIndex = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasSelection));
+            }
+        }
+
+        public void ClearQueue()
+        {
+            Queue.Clear();
+            OnPropertyChanged(nameof(HasItems));
+        }
+
+        public void RemoveSelectedItem()
+        {
+            Queue.RemoveAt(SelectedIndex);
+            OnPropertyChanged(nameof(HasItems));
+        }
+
         public void AddToQueue(string fileName, TimeSpan sliceStart, TimeSpan sliceEnd)
         {
             Queue.Add(new ExportItem(fileName, sliceStart, sliceEnd));
+            OnPropertyChanged(nameof(HasItems));
         }
 
         public void ExportQueue()
@@ -38,6 +81,7 @@ namespace VideoFritter.ExportQueue
                 exportTask.ContinueWith((task) =>
                 {
                     Queue.Remove(processingItem);
+                    OnPropertyChanged(nameof(HasItems));
                     ExportProgress = 0;
                     ExportQueue(); // Take the next item
                 }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -49,5 +93,7 @@ namespace VideoFritter.ExportQueue
         }
 
         private readonly FFMpegExporter exporter = new FFMpegExporter();
+
+        private int selectedIndex;
     }
 }

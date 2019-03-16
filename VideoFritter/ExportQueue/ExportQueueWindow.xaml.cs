@@ -22,12 +22,12 @@ namespace VideoFritter.ExportQueue
 
         private void ClearQueueButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Queue.Clear();
+            ViewModel.ClearQueue();
         }
 
         private void DeleteSelectedButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Queue.RemoveAt(this.listBox.SelectedIndex);
+            ViewModel.RemoveSelectedItem();
         }
 
         private void StartQueueButton_Click(object sender, RoutedEventArgs e)

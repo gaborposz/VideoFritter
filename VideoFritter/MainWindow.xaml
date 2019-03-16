@@ -40,8 +40,9 @@
             <MenuItem Header="{x:Static p:Resources.ViewMenu}">
                 <MenuItem Header="{x:Static p:Resources.ViewMenu_Resize}" Click="Menu_View_Resize" />
             </MenuItem>
-            <MenuItem Header="{x:Static p:Resources.QueueMenu}">
-                <MenuItem Header="{x:Static p:Resources.QueueMenu_View}" Click="Menu_Queue_View"/>
+            <MenuItem Header="{x:Static p:Resources.ToolsMenu}">
+                <MenuItem Header="{x:Static p:Resources.ToolsMenu_ExportQueue}" Click="Menu_ExportQueue"/>
+                <MenuItem Header="{x:Static p:Resources.ToolsMenu_Settings}" Click="Menu_Settings" />
             </MenuItem>
         </Menu>
         

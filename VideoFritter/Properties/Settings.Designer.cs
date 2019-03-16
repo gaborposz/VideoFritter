@@ -22,5 +22,29 @@ namespace VideoFritter.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("$(VideoPath)\\Export")]
+        public string ExportQueuePath {
+            get {
+                return ((string)(this["ExportQueuePath"]));
+            }
+            set {
+                this["ExportQueuePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TimeStampCorrection {
+            get {
+                return ((bool)(this["TimeStampCorrection"]));
+            }
+            set {
+                this["TimeStampCorrection"] = value;
+            }
+        }
     }
 }
