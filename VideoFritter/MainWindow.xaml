@@ -186,6 +186,7 @@
                                                    Margin="5" 
                                                    Width="10"
                                                    Maximum="1.0"
+                                                   ToolTip="{x:Static p:Resources.AudioVolumeToolTip}"
                                                    Value="{Binding ElementName=videoPlayer, Path=VideoVolume}"/>
         </Grid>
     </Grid>

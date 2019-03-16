@@ -14,6 +14,7 @@ namespace VideoFritter.Settings
 
             ExportQueuePath = Properties.Settings.Default.ExportQueuePath;
             TimeStampCorrection = Properties.Settings.Default.TimeStampCorrection;
+            SaveFFMpegLogs = Properties.Settings.Default.SaveFFMpegLogs;
         }
 
         public ICommand SaveCommand { get; }
@@ -31,7 +32,6 @@ namespace VideoFritter.Settings
             {
                 this.exportQueuePath = value;
                 OnPropertyChanged();
-                UpdateSaveCommandCanExecute();
             }
         }
 
@@ -46,48 +46,57 @@ namespace VideoFritter.Settings
             {
                 this.timeStampCorrection = value;
                 OnPropertyChanged();
-                UpdateSaveCommandCanExecute();
             }
         }
 
-        public bool HasChanges()
+        public bool SaveFFMpegLogs
         {
-            return this.exportQueuePath != Properties.Settings.Default.ExportQueuePath ||
-                this.timeStampCorrection != Properties.Settings.Default.TimeStampCorrection;
-        }
+            get
+            {
+                return this.saveFFMpegLogs;
+            }
 
-        public void Save()
-        {
-            Properties.Settings.Default.ExportQueuePath = ExportQueuePath;
-            Properties.Settings.Default.TimeStampCorrection = TimeStampCorrection;
-            Properties.Settings.Default.Save();
-            UpdateSaveCommandCanExecute();
+            set
+            {
+                this.saveFFMpegLogs = value;
+                OnPropertyChanged();
+            }
         }
 
         private string exportQueuePath;
         private bool timeStampCorrection;
+        private bool saveFFMpegLogs;
 
         private class SaveCommandImp : ICommand
         {
             public SaveCommandImp(SettingsViewModel settingsViewModelIn)
             {
                 this.settingsViewModel = settingsViewModelIn;
+                this.settingsViewModel.PropertyChanged += SettingsViewModel_PropertyChanged;
+
+            }
+
+            private void SettingsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+            {
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             }
 
             public event EventHandler CanExecuteChanged;
 
             public bool CanExecute(object parameter)
             {
-                return this.settingsViewModel.HasChanges();
+                return this.settingsViewModel.ExportQueuePath != Properties.Settings.Default.ExportQueuePath ||
+                    this.settingsViewModel.TimeStampCorrection != Properties.Settings.Default.TimeStampCorrection ||
+                    this.settingsViewModel.SaveFFMpegLogs != Properties.Settings.Default.SaveFFMpegLogs;
             }
 
             public void Execute(object parameter)
             {
-                this.settingsViewModel.Save();
-            }
+                Properties.Settings.Default.ExportQueuePath = this.settingsViewModel.ExportQueuePath;
+                Properties.Settings.Default.TimeStampCorrection = this.settingsViewModel.TimeStampCorrection;
+                Properties.Settings.Default.SaveFFMpegLogs = this.settingsViewModel.SaveFFMpegLogs;
+                Properties.Settings.Default.Save();
 
-            public void UpdateCanExecute()
-            {
                 CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             }
 
@@ -112,14 +121,10 @@ namespace VideoFritter.Settings
             {
                 this.settingsViewModel.ExportQueuePath = @"$(VideoPath)\Export";
                 this.settingsViewModel.TimeStampCorrection = true;
+                this.settingsViewModel.SaveFFMpegLogs = false;
             }
 
             private readonly SettingsViewModel settingsViewModel;
-        }
-
-        private void UpdateSaveCommandCanExecute()
-        {
-            ((SaveCommandImp)SaveCommand).UpdateCanExecute();
         }
     }
 }

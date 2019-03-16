@@ -46,5 +46,17 @@ namespace VideoFritter.Properties {
                 this["TimeStampCorrection"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SaveFFMpegLogs {
+            get {
+                return ((bool)(this["SaveFFMpegLogs"]));
+            }
+            set {
+                this["SaveFFMpegLogs"] = value;
+            }
+        }
     }
 }

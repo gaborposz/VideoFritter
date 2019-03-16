@@ -120,6 +120,9 @@
   <data name="AddToQueue" xml:space="preserve">
     <value>Add to export queue</value>
   </data>
+  <data name="AudioVolumeToolTip" xml:space="preserve">
+    <value>Audio volume</value>
+  </data>
   <data name="Backward" xml:space="preserve">
     <value>Step backward</value>
   </data>
@@ -132,11 +135,14 @@
   <data name="CorrectTimeStampsCheckBox" xml:space="preserve">
     <value>Correct video timestamps</value>
   </data>
-  <data name="ExportQueuePathHintLabel" xml:space="preserve">
-    <value>Hint: Use '$(VideoPath)' to set an export path relative to the original video's path.</value>
+  <data name="CorrectTimeStampsToolTip" xml:space="preserve">
+    <value>If enabled then video fragments are saved with a timestamp that is corrected by the fragment's start time.</value>
   </data>
   <data name="ExportQueuePathLabel" xml:space="preserve">
     <value>Export queue path:</value>
+  </data>
+  <data name="ExportQueuePathToolTip" xml:space="preserve">
+    <value>Use '$(VideoPath)' to set an export path relative to the original video's path. E.g.: "$(VideoPath)\Export"</value>
   </data>
   <data name="ExportQueueWindowTitle" xml:space="preserve">
     <value>Export queue</value>
@@ -176,6 +182,12 @@
   </data>
   <data name="SaveButton" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SaveFFMpegLogs" xml:space="preserve">
+    <value>Save ffmpeg logs</value>
+  </data>
+  <data name="SaveFFMpegLogsToolTip" xml:space="preserve">
+    <value>If enabled then ffmpeg logs will be saved to the application's folder.</value>
   </data>
   <data name="SelectionEnd" xml:space="preserve">
     <value>End of selection</value>

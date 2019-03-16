@@ -46,12 +46,17 @@ namespace VideoFritter.Exporter
                 }
 
                 string timeStampFixCmdLine = string.Empty;
-
                 if (Properties.Settings.Default.TimeStampCorrection)
                 {
                     DateTime creationTime = GetCreationTimeFromFile(sourceFileName);
                     creationTime = creationTime.Add(sliceStart);
                     timeStampFixCmdLine = $"-metadata creation_time=\"{creationTime.ToString("yyyy-MM-dd HH:mm:ss")}\"";
+                }
+
+                string saveFFMpegLogs = string.Empty;
+                if (Properties.Settings.Default.SaveFFMpegLogs)
+                {
+                    saveFFMpegLogs = "-report";
                 }
 
                 string progressFile = Path.GetTempFileName();
@@ -93,7 +98,7 @@ namespace VideoFritter.Exporter
                 try
                 {
                     ExecuteFFmpegProcess(
-                        $"-noaccurate_seek -i {sourceFileName} -ss {sliceStart} -to {sliceEnd} {timeStampFixCmdLine} -map_metadata 0 -movflags use_metadata_tags -y -vcodec copy -acodec copy -report -progress {progressFile} {targetFileName}");
+                        $"-noaccurate_seek -i {sourceFileName} -ss {sliceStart} -to {sliceEnd} {timeStampFixCmdLine} -map_metadata 0 -movflags use_metadata_tags -y -vcodec copy -acodec copy {saveFFMpegLogs} -progress {progressFile} {targetFileName}");
                 }
                 finally
                 {

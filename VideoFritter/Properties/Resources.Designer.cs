@@ -70,6 +70,15 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio volume.
+        /// </summary>
+        public static string AudioVolumeToolTip {
+            get {
+                return ResourceManager.GetString("AudioVolumeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Step backward.
         /// </summary>
         public static string Backward {
@@ -106,11 +115,11 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hint: Use &apos;$(VideoPath)&apos; to set an export path relative to the original video&apos;s path..
+        ///   Looks up a localized string similar to If enabled then video fragments are saved with a timestamp that is corrected by the fragment&apos;s start time..
         /// </summary>
-        public static string ExportQueuePathHintLabel {
+        public static string CorrectTimeStampsToolTip {
             get {
-                return ResourceManager.GetString("ExportQueuePathHintLabel", resourceCulture);
+                return ResourceManager.GetString("CorrectTimeStampsToolTip", resourceCulture);
             }
         }
         
@@ -120,6 +129,15 @@ namespace VideoFritter.Properties {
         public static string ExportQueuePathLabel {
             get {
                 return ResourceManager.GetString("ExportQueuePathLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use &apos;$(VideoPath)&apos; to set an export path relative to the original video&apos;s path. E.g.: &quot;$(VideoPath)\Export&quot;.
+        /// </summary>
+        public static string ExportQueuePathToolTip {
+            get {
+                return ResourceManager.GetString("ExportQueuePathToolTip", resourceCulture);
             }
         }
         
@@ -237,6 +255,24 @@ namespace VideoFritter.Properties {
         public static string SaveButton {
             get {
                 return ResourceManager.GetString("SaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save ffmpeg logs.
+        /// </summary>
+        public static string SaveFFMpegLogs {
+            get {
+                return ResourceManager.GetString("SaveFFMpegLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If enabled then ffmpeg logs will be saved to the application&apos;s folder..
+        /// </summary>
+        public static string SaveFFMpegLogsToolTip {
+            get {
+                return ResourceManager.GetString("SaveFFMpegLogsToolTip", resourceCulture);
             }
         }
         

@@ -12,10 +12,19 @@
         <Setter Property="Control.Background" Value="#FF3E3E3E" />
     </Style>
 
+    <Style TargetType="{x:Type ToolTip}">
+        <Setter Property="Background" Value="Black" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
     <Style TargetType="{x:Type Label}">
         <Setter Property="Foreground" Value="White" />
     </Style>
-    
+
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
     <Style TargetType="{x:Type CheckBox}">
         <Setter Property="Foreground" Value="White" />
     </Style>

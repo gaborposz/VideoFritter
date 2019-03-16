@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Style="{StaticResource DefaultWindowStyle}"
         ResizeMode="NoResize"
-        Title="{x:Static p:Resources.SettingsWindowTitle}" Height="200" Width="460">
+        Title="{x:Static p:Resources.SettingsWindowTitle}" Height="250" Width="460">
     <Window.DataContext>
         <local:SettingsViewModel />
     </Window.DataContext>
@@ -17,11 +17,28 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" HorizontalAlignment="Left">
-            <Label Content="{x:Static p:Resources.ExportQueuePathLabel}" Margin="5,5,0,0"/>
-            <TextBox x:Name="textBox" Margin="10,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ExportQueuePath, UpdateSourceTrigger=PropertyChanged}" Width="300"/>
-            <Label Content="{x:Static p:Resources.ExportQueuePathHintLabel}" Margin="5,0,0,0"/>
-            <CheckBox Content="{x:Static p:Resources.CorrectTimeStampsCheckBox}" Margin="8,20,0,0" IsChecked="{Binding TimeStampCorrection}" />
+        <StackPanel Grid.Row="0" HorizontalAlignment="Left" >
+            <Label 
+                Content="{x:Static p:Resources.ExportQueuePathLabel}" 
+                ToolTip="{x:Static p:Resources.ExportQueuePathToolTip}" 
+                Margin="5,5,0,0" />
+            <TextBox 
+                Text="{Binding ExportQueuePath, UpdateSourceTrigger=PropertyChanged}" 
+                ToolTip="{x:Static p:Resources.ExportQueuePathToolTip}" 
+                Margin="10,0,0,0" 
+                HorizontalAlignment="Left" 
+                TextWrapping="Wrap" 
+                Width="400" />
+            <CheckBox 
+                Content="{x:Static p:Resources.CorrectTimeStampsCheckBox}" 
+                IsChecked="{Binding TimeStampCorrection}" 
+                ToolTip="{x:Static p:Resources.CorrectTimeStampsToolTip}" 
+                Margin="10,15,0,0" />
+            <CheckBox 
+                Content="{x:Static p:Resources.SaveFFMpegLogs}" 
+                ToolTip="{x:Static p:Resources.SaveFFMpegLogsToolTip}" 
+                IsChecked="{Binding SaveFFMpegLogs}" 
+                Margin="10,15,0,0" />
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button x:Name="CancelButton" 
