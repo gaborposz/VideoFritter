@@ -37,7 +37,6 @@ namespace VideoFritter.Exporter
                 throw new ArgumentNullException(nameof(sourceFileName), "The target file name cannot be null or empty!");
             }
 
-
             return Task.Run(() =>
             {
                 string targetDirectory = Path.GetDirectoryName(targetFileName);
@@ -46,8 +45,14 @@ namespace VideoFritter.Exporter
                     Directory.CreateDirectory(targetDirectory);
                 }
 
-                DateTime creationTime = GetCreationTimeFromFile(sourceFileName);
-                creationTime = creationTime.Add(sliceStart);
+                string timeStampFixCmdLine = string.Empty;
+
+                if (Properties.Settings.Default.TimeStampCorrection)
+                {
+                    DateTime creationTime = GetCreationTimeFromFile(sourceFileName);
+                    creationTime = creationTime.Add(sliceStart);
+                    timeStampFixCmdLine = $"-metadata creation_time=\"{creationTime.ToString("yyyy-MM-dd HH:mm:ss")}\"";
+                }
 
                 string progressFile = Path.GetTempFileName();
                 double exportLengthInMs = sliceEnd.Subtract(sliceStart).TotalMilliseconds;
@@ -88,7 +93,7 @@ namespace VideoFritter.Exporter
                 try
                 {
                     ExecuteFFmpegProcess(
-                        $"-noaccurate_seek -i {sourceFileName} -ss {sliceStart} -to {sliceEnd} -y -metadata creation_time=\"{creationTime.ToString("yyyy-MM-dd HH:mm:ss")}\" -vcodec copy -acodec copy -report -progress {progressFile} {targetFileName}");
+                        $"-noaccurate_seek -i {sourceFileName} -ss {sliceStart} -to {sliceEnd} {timeStampFixCmdLine} -map_metadata 0 -movflags use_metadata_tags -y -vcodec copy -acodec copy -report -progress {progressFile} {targetFileName}");
                 }
                 finally
                 {
@@ -97,10 +102,13 @@ namespace VideoFritter.Exporter
                     File.Delete(progressFile);
                 }
 
-                // Also restore the file modification date...
-                DateTime fileModificationTime = File.GetLastWriteTime(sourceFileName);
-                fileModificationTime = fileModificationTime.Add(sliceStart);
-                File.SetLastWriteTime(targetFileName, fileModificationTime);
+                if (Properties.Settings.Default.TimeStampCorrection)
+                {
+                    // Also restore the file modification date...
+                    DateTime fileModificationTime = File.GetLastWriteTime(sourceFileName);
+                    fileModificationTime = fileModificationTime.Add(sliceStart);
+                    File.SetLastWriteTime(targetFileName, fileModificationTime);
+                }
             }, cancellationToken);
         }
 
