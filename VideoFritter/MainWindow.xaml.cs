@@ -22,6 +22,8 @@ namespace VideoFritter
             this.viewModel.SliceEnd = this.videoPlayer.VideoLength;
         }
 
+        private static readonly TimeSpan FrameSteppingInterval = TimeSpan.FromMilliseconds(100);
+
         private MainWindowViewModel viewModel;
         private ExportQueueWindow exportQueueWindow;
         private ExportQueueViewModel processingQueueViewModel = new ExportQueueViewModel();
@@ -231,6 +233,34 @@ namespace VideoFritter
                     this.viewModel.OpenFile(fileName);
                     this.videoPlayer.OpenFile(fileName);
                 }
+            }
+        }
+
+        private void StepBackwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!this.videoPlayer.IsPlaying && this.videoPlayer.VideoPosition > TimeSpan.Zero)
+            {
+                TimeSpan desiredPosition = this.videoPlayer.VideoPosition.Subtract(FrameSteppingInterval);
+                if (desiredPosition < TimeSpan.Zero)
+                {
+                    desiredPosition = TimeSpan.Zero;
+                }
+
+                this.videoPlayer.VideoPosition = desiredPosition;
+            }
+        }
+
+        private void StepForwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!this.videoPlayer.IsPlaying || this.videoPlayer.VideoPosition < this.videoPlayer.VideoLength)
+            {
+                TimeSpan desiredPosition = this.videoPlayer.VideoPosition.Add(FrameSteppingInterval);
+                if (desiredPosition > this.videoPlayer.VideoLength)
+                {
+                    desiredPosition = this.videoPlayer.VideoLength;
+                }
+
+                this.videoPlayer.VideoPosition = desiredPosition;
             }
         }
     }

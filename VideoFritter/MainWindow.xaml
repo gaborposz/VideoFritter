@@ -83,41 +83,12 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label x:Name="videoLengthLabel" 
-                   Grid.Row="0" 
-                   Grid.Column="1"
-                   ToolTip="{x:Static p:Resources.VideoLength}"
-                   Content="{Binding ElementName=videoPlayer, Path=VideoLength}" ContentStringFormat="hh\:mm\:ss\.fff"/>
-
-            <Label x:Name="videoPositionLabel" 
-                   Grid.Row="0" 
-                   Grid.Column="5" 
-                   ToolTip="{x:Static p:Resources.VideoPosition}"
-                   Content="{Binding ElementName=videoPlayer, Path=VideoPosition}" ContentStringFormat="hh\:mm\:ss\.fff"/>
-
-            <Label x:Name="sliceStartLabel" 
-                   Grid.Row="1" 
-                   Grid.Column="1" 
-                   ToolTip="{x:Static p:Resources.SelectionStart}"
-                   Content="{Binding SliceStart}" ContentStringFormat="hh\:mm\:ss\.fff" />
-
-            <Label x:Name="sliceEndLabel" 
-                   Grid.Row="1" 
-                   Grid.Column="5" 
-                   ToolTip="{x:Static p:Resources.SelectionEnd}"
-                   Content="{Binding SliceEnd}" ContentStringFormat="hh\:mm\:ss\.fff" />
-
-            <Button x:Name="selectionPreviewButton"
-                    Grid.Row="1" 
-                    Grid.Column="3" 
-                    ToolTip="{x:Static p:Resources.PlaySelection}"
-                    Content="Preview selection" 
-                    Click="SelectionPreviewButtonButton_Click"/>
-            
             <Button x:Name="exportButton" 
                     Grid.Row="0" 
                     Grid.Column="0" 
@@ -125,45 +96,60 @@
                     Content="Export" 
                     IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" 
                     Click="Menu_File_Export"/>
-            
-            <Button x:Name="playButton" 
-                    Grid.Row="0" 
-                    Grid.Column="3" 
-                    ToolTip="{x:Static p:Resources.Play}"
-                    Content="Play" 
-                    Click="PlayButton_Click"/>
-            
-            <Button x:Name="sectionStartButton" 
-                    Grid.Row="1" 
-                    Grid.Column="2" 
-                    ToolTip="{x:Static p:Resources.SetSelectionStart}"
-                    Content="[" 
-                    Click="SectionStartButton_Click"/>
-            
-            <Button x:Name="sectionEndButton" 
-                    Grid.Row="1" 
-                    Grid.Column="4" 
-                    ToolTip="{x:Static p:Resources.SetSelectionEnd}"
-                    Content="]" 
-                    Click="SectionEndButton_Click"/>
-            
+
+            <Label x:Name="videoLengthLabel" 
+                   Grid.Row="0" 
+                   Grid.Column="1"
+                   ToolTip="{x:Static p:Resources.VideoLength}"
+                   Content="{Binding ElementName=videoPlayer, Path=VideoLength}" ContentStringFormat="hh\:mm\:ss\.fff"/>
+
             <Button x:Name="backButton" 
                     Grid.Row="0" 
                     Grid.Column="2" 
                     ToolTip="{x:Static p:Resources.Backward}"
                     Content="&lt;&lt;" 
-                    Click="BackButton_Click"/>
-            
-            <Button x:Name="forwardButton" 
+                    Click="BackButton_Click" 
+                    Margin="3,2"/>
+
+            <Button x:Name="stepBackwardButton" 
+                    Grid.Row="0" 
+                    Grid.Column="3"
+                    ToolTip="{x:Static p:Resources.StepBackward}"
+                    Content="&lt;" 
+                    Click="StepBackwardButton_Click"
+                    Margin="3,2"/>
+
+            <Button x:Name="playButton" 
                     Grid.Row="0" 
                     Grid.Column="4" 
+                    ToolTip="{x:Static p:Resources.Play}"
+                    Content="Play" 
+                    Click="PlayButton_Click"/>
+
+            <Button x:Name="stepForwardButton" 
+                    Grid.Row="0" 
+                    Grid.Column="5"
+                    ToolTip="{x:Static p:Resources.StepForward}"
+                    Content="&gt;" 
+                    Click="StepForwardButton_Click"
+                    Margin="3,2"/>
+
+            <Button x:Name="forwardButton" 
+                    Grid.Row="0" 
+                    Grid.Column="6" 
                     ToolTip="{x:Static p:Resources.Forward}"
                     Content="&gt;&gt;" 
                     Click="ForwardButton_Click" />
-            
+
+            <Label x:Name="videoPositionLabel" 
+                   Grid.Row="0" 
+                   Grid.Column="7" 
+                   ToolTip="{x:Static p:Resources.VideoPosition}"
+                   Content="{Binding ElementName=videoPlayer, Path=VideoPosition}" ContentStringFormat="hh\:mm\:ss\.fff"/>
+
             <Button x:Name="addToQueueButton" 
                     Grid.Row="0" 
-                    Grid.Column="6" 
+                    Grid.Column="8" 
                     ToolTip="{x:Static p:Resources.AddToQueue}"
                     Content="Add to queue"
                     Click="AddToQueueButton_Click"/>
@@ -181,9 +167,44 @@
                 BorderBrush="#FF685757" 
                 Foreground="#FF1AAC2E"/>
 
+            <Label x:Name="sliceStartLabel" 
+                   Grid.Row="1" 
+                   Grid.Column="1" 
+                   ToolTip="{x:Static p:Resources.SelectionStart}"
+                   Content="{Binding SliceStart}" ContentStringFormat="hh\:mm\:ss\.fff" />
+
+            <Label x:Name="sliceEndLabel" 
+                   Grid.Row="1" 
+                   Grid.Column="7" 
+                   ToolTip="{x:Static p:Resources.SelectionEnd}"
+                   Content="{Binding SliceEnd}" ContentStringFormat="hh\:mm\:ss\.fff" />
+
+            <Button x:Name="sectionStartButton" 
+                    Grid.Row="1" 
+                    Grid.Column="2" 
+                    ToolTip="{x:Static p:Resources.SetSelectionStart}"
+                    Content="[" 
+                    Click="SectionStartButton_Click"/>            
+            
+            <Button x:Name="selectionPreviewButton"
+                    Grid.Row="1" 
+                    Grid.Column="3" 
+                    Grid.ColumnSpan="3"
+                    ToolTip="{x:Static p:Resources.PlaySelection}"
+                    Content="Preview selection" 
+                    Click="SelectionPreviewButtonButton_Click"/>
+            
+            <Button x:Name="sectionEndButton" 
+                    Grid.Row="1" 
+                    Grid.Column="6" 
+                    ToolTip="{x:Static p:Resources.SetSelectionEnd}"
+                    Content="]" 
+                    Click="SectionEndButton_Click"/>
+         
+
             <AudioVolumeControl:AudioVolumeControl x:Name="volumeControl" 
                                                    Grid.RowSpan="2" 
-                                                   Grid.Column="7" 
+                                                   Grid.Column="9" 
                                                    Margin="5" 
                                                    Width="10"
                                                    Maximum="1.0"

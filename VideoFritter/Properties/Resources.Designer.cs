@@ -79,7 +79,7 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step backward.
+        ///   Looks up a localized string similar to Go to start.
         /// </summary>
         public static string Backward {
             get {
@@ -205,7 +205,7 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step forward.
+        ///   Looks up a localized string similar to Go to end.
         /// </summary>
         public static string Forward {
             get {
@@ -336,6 +336,24 @@ namespace VideoFritter.Properties {
         public static string StartExportQueue {
             get {
                 return ResourceManager.GetString("StartExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step backward.
+        /// </summary>
+        public static string StepBackward {
+            get {
+                return ResourceManager.GetString("StepBackward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step forward.
+        /// </summary>
+        public static string StepForward {
+            get {
+                return ResourceManager.GetString("StepForward", resourceCulture);
             }
         }
         

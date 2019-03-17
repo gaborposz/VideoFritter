@@ -124,7 +124,7 @@
     <value>Audio volume</value>
   </data>
   <data name="Backward" xml:space="preserve">
-    <value>Step backward</value>
+    <value>Go to start</value>
   </data>
   <data name="CancelButton" xml:space="preserve">
     <value>Cancel</value>
@@ -166,7 +166,7 @@
     <value>_Open file</value>
   </data>
   <data name="Forward" xml:space="preserve">
-    <value>Step forward</value>
+    <value>Go to end</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>Pause</value>
@@ -209,6 +209,12 @@
   </data>
   <data name="StartExportQueue" xml:space="preserve">
     <value>Start processing of the queue</value>
+  </data>
+  <data name="StepBackward" xml:space="preserve">
+    <value>Step backward</value>
+  </data>
+  <data name="StepForward" xml:space="preserve">
+    <value>Step forward</value>
   </data>
   <data name="ToolsMenu" xml:space="preserve">
     <value>_Tools</value>
