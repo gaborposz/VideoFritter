@@ -287,7 +287,7 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             IsVideoLoaded = true;
             IsPlaying = false;
-            SetValue(VideoLengthProperty, this.mediaElement.NaturalDuration.TimeSpan);
+            SetValue(VideoLengthProperty, this.mediaElement.NaturalDuration.HasTimeSpan ? this.mediaElement.NaturalDuration.TimeSpan : TimeSpan.Zero);
             SetValue(VolumeProperty, this.mediaElement.Volume);
             this.endOfPlayback = TimeSpan.MaxValue;
 

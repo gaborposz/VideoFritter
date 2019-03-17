@@ -85,7 +85,15 @@ namespace VideoFritter.ExportQueue
                     Queue.Remove(processingItem);
                     OnPropertyChanged(nameof(HasItems));
                     ExportProgress = 0;
-                    ExportQueue(); // Take the next item
+
+                    if (exportTask.IsFaulted)
+                    {
+                        App.DisplayUnexpectedError(exportTask.Exception); // In case of error display message, and stop processing
+                    }
+                    else
+                    {
+                        ExportQueue(); // Take the next item
+                    }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
             else

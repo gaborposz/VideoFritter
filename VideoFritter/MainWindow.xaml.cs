@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -34,7 +35,7 @@ namespace VideoFritter
 
         private void Menu_File_Export(object sender, RoutedEventArgs e)
         {
-            this.viewModel.ExportCurrentSlice();
+            this.viewModel.ExportCurrentSelection();
         }
 
         private void Menu_File_Exit(object sender, RoutedEventArgs e)
@@ -119,11 +120,21 @@ namespace VideoFritter
 
         private void SectionStartButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.viewModel.SliceEnd < this.videoPlayer.VideoPosition)
+            {
+                this.viewModel.SliceEnd = this.videoPlayer.VideoLength;
+            }
+
             this.viewModel.SliceStart = this.videoPlayer.VideoPosition;
         }
 
         private void SectionEndButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.videoPlayer.VideoPosition < this.viewModel.SliceStart)
+            {
+                this.viewModel.SliceStart = TimeSpan.Zero;
+            }
+
             this.viewModel.SliceEnd = this.videoPlayer.VideoPosition;
         }
 
@@ -206,6 +217,21 @@ namespace VideoFritter
         {
             this.settingsDialog.Closed -= SettingsDialog_Closed;
             this.settingsDialog = null;
+        }
+
+        private void Window_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // Note that you can have more than one file.
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                string fileName = files.FirstOrDefault();
+                if (fileName != null)
+                {
+                    this.viewModel.OpenFile(fileName);
+                    this.videoPlayer.OpenFile(fileName);
+                }
+            }
         }
     }
 }

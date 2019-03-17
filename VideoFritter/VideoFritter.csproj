@@ -63,6 +63,7 @@
     <Compile Include="Converters\AndMultiValueConverter.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\TimeSpanToMillisecondsConverter.cs" />
+    <Compile Include="Exporter\ExporterException.cs" />
     <Compile Include="Exporter\FFMpegExporter.cs" />
     <Compile Include="ExportQueue\ExportItem.cs" />
     <Compile Include="ExportQueue\ExportQueueViewModel.cs" />

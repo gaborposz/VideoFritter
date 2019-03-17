@@ -138,6 +138,9 @@
   <data name="CorrectTimeStampsToolTip" xml:space="preserve">
     <value>If enabled then video fragments are saved with a timestamp that is corrected by the fragment's start time.</value>
   </data>
+  <data name="ErrorDialogTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="ExportQueuePathLabel" xml:space="preserve">
     <value>Export queue path:</value>
   </data>

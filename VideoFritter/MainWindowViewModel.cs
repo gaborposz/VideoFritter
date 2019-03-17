@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -77,6 +78,11 @@ namespace VideoFritter
             }
         }
 
+        public void OpenFile(string fileName)
+        {
+            OpenedFileName = fileName;
+        }
+
         public void OpenFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -86,11 +92,11 @@ namespace VideoFritter
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                OpenedFileName = openFileDialog.FileName;
+                OpenFile(openFileDialog.FileName);
             }
         }
 
-        public void ExportCurrentSlice()
+        public void ExportCurrentSelection()
         {
             if (string.IsNullOrEmpty(OpenedFileName))
             {
@@ -102,7 +108,7 @@ namespace VideoFritter
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Video files |*.mp4;*.mpg;*.mpeg;*.mov|All files |*.*",
+                Filter = $"Video files |{string.Join("; ", SupportedFileExtensions.Select(ext => $"*.{ ext}"))}|All files |*.*",
                 FileName = targetFileName,
                 DefaultExt = Path.GetExtension(targetFileName),
             };
@@ -115,11 +121,19 @@ namespace VideoFritter
                 {
                     IsExporting = false;
                     ExportProgress = 0; // Reset the progress bar
+
+                    if (task.IsFaulted)
+                    {
+                        App.DisplayUnexpectedError(task.Exception);
+                        MessageBox.Show(task.Exception.ToString(), (string)System.Windows.Application.Current.Resources["ErrorDialogTitle"]);
+                    }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
 
                 ExportFilePath = Path.GetDirectoryName(saveFileDialog.FileName);
             }
         }
+
+        private static readonly string[] SupportedFileExtensions = { "mp4", "avi", "mov", "mpg", "mpeg", "mkv" };
 
         private string openedFileName;
         private TimeSpan sliceStart;

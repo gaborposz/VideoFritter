@@ -144,7 +144,7 @@ namespace VideoFritter.Exporter
 
             if (ffmpegProc.ExitCode != 0)
             {
-                throw new InvalidOperationException($"Export failed!\nCommand line: ffmpeg {arguments}\nError: {errorOutput.Result}");
+                throw new ExporterException($"{startInfo.FileName} {arguments}", errorOutput.Result);
             }
         }
 

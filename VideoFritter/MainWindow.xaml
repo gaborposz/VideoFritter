@@ -13,7 +13,8 @@
         Height="660" 
         Width="900"   
         Style="{StaticResource DefaultWindowStyle}"
-        >
+        AllowDrop="True"
+        Drop="Window_Drop">
     
     <Window.DataContext>
         <local:MainWindowViewModel />
