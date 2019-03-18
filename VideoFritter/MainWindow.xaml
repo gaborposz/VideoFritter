@@ -95,7 +95,8 @@
                     ToolTip="{x:Static p:Resources.ExportSelection}"
                     Content="Export" 
                     IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" 
-                    Click="Menu_File_Export"/>
+                    Click="Menu_File_Export"
+                    Style="{StaticResource BaseButtonStyle}" />
 
             <Label x:Name="videoLengthLabel" 
                    Grid.Row="0" 
@@ -109,7 +110,7 @@
                     ToolTip="{x:Static p:Resources.Backward}"
                     Content="&lt;&lt;" 
                     Click="BackButton_Click" 
-                    Margin="3,2"/>
+                    Style="{StaticResource BaseButtonStyle}" />
 
             <Button x:Name="stepBackwardButton" 
                     Grid.Row="0" 
@@ -117,14 +118,15 @@
                     ToolTip="{x:Static p:Resources.StepBackward}"
                     Content="&lt;" 
                     Click="StepBackwardButton_Click"
-                    Margin="3,2"/>
+                    Style="{StaticResource BaseButtonStyle}" />
 
             <Button x:Name="playButton" 
                     Grid.Row="0" 
                     Grid.Column="4" 
                     ToolTip="{x:Static p:Resources.Play}"
-                    Content="Play" 
-                    Click="PlayButton_Click"/>
+                    Click="PlayButton_Click"
+                    Style="{StaticResource PlayButtonStyle}"
+                    Content="Play" />
 
             <Button x:Name="stepForwardButton" 
                     Grid.Row="0" 
@@ -132,27 +134,30 @@
                     ToolTip="{x:Static p:Resources.StepForward}"
                     Content="&gt;" 
                     Click="StepForwardButton_Click"
-                    Margin="3,2"/>
+                    Style="{StaticResource BaseButtonStyle}" />
 
             <Button x:Name="forwardButton" 
                     Grid.Row="0" 
                     Grid.Column="6" 
                     ToolTip="{x:Static p:Resources.Forward}"
                     Content="&gt;&gt;" 
-                    Click="ForwardButton_Click" />
+                    Click="ForwardButton_Click" 
+                    Style="{StaticResource BaseButtonStyle}" />
 
             <Label x:Name="videoPositionLabel" 
                    Grid.Row="0" 
                    Grid.Column="7" 
                    ToolTip="{x:Static p:Resources.VideoPosition}"
-                   Content="{Binding ElementName=videoPlayer, Path=VideoPosition}" ContentStringFormat="hh\:mm\:ss\.fff"/>
+                   Content="{Binding ElementName=videoPlayer, Path=VideoPosition}" 
+                   ContentStringFormat="hh\:mm\:ss\.fff"/>
 
             <Button x:Name="addToQueueButton" 
                     Grid.Row="0" 
                     Grid.Column="8" 
                     ToolTip="{x:Static p:Resources.AddToQueue}"
                     Content="Add to queue"
-                    Click="AddToQueueButton_Click"/>
+                    Click="AddToQueueButton_Click"
+                    Style="{StaticResource BaseButtonStyle}" />
 
             <ProgressBar 
                 x:Name="exportProgressBar" 
@@ -184,7 +189,8 @@
                     Grid.Column="2" 
                     ToolTip="{x:Static p:Resources.SetSelectionStart}"
                     Content="[" 
-                    Click="SectionStartButton_Click"/>            
+                    Click="SectionStartButton_Click"
+                    Style="{StaticResource BaseButtonStyle}" />            
             
             <Button x:Name="selectionPreviewButton"
                     Grid.Row="1" 
@@ -192,14 +198,16 @@
                     Grid.ColumnSpan="3"
                     ToolTip="{x:Static p:Resources.PlaySelection}"
                     Content="Preview selection" 
-                    Click="SelectionPreviewButtonButton_Click"/>
+                    Click="SelectionPreviewButtonButton_Click"
+                    Style="{StaticResource BaseButtonStyle}" />
             
             <Button x:Name="sectionEndButton" 
                     Grid.Row="1" 
                     Grid.Column="6" 
                     ToolTip="{x:Static p:Resources.SetSelectionEnd}"
                     Content="]" 
-                    Click="SectionEndButton_Click"/>
+                    Click="SectionEndButton_Click"
+                    Style="{StaticResource BaseButtonStyle}" />
          
 
             <AudioVolumeControl:AudioVolumeControl x:Name="volumeControl" 

@@ -44,7 +44,8 @@
                     Padding="10, 2" 
                     Content="Start" 
                     ToolTip="{x:Static p:Resources.StartExportQueue}"                                   
-                    Click="StartQueueButton_Click">
+                    Click="StartQueueButton_Click"
+                    Style="{StaticResource BaseButtonStyle}" >
                 <Button.IsEnabled>
                     <MultiBinding Converter="{StaticResource andMultiValueConverter}">
                         <Binding Path="IsExporting" Mode="OneWay" Converter="{StaticResource inverseBoolConverter}" />
@@ -61,7 +62,8 @@
                     ToolTip="{x:Static p:Resources.ClearExportQueue}"
                     Content="Clear" 
                     IsEnabled="{Binding HasItems}"
-                    Click="ClearQueueButton_Click" />
+                    Click="ClearQueueButton_Click"
+                    Style="{StaticResource BaseButtonStyle}" />
 
             <Button Name="deleteSelectedButton"
                     DockPanel.Dock="Left"
@@ -70,7 +72,8 @@
                     ToolTip="{x:Static p:Resources.RemoveFromExportQueue}"
                     IsEnabled="{Binding HasSelection}"
                     Content="Delete selected" 
-                    Click="DeleteSelectedButton_Click"/>
+                    Click="DeleteSelectedButton_Click"
+                    Style="{StaticResource BaseButtonStyle}" />
 
             <ProgressBar Name="progressBar"
                          DockPanel.Dock="Right" 

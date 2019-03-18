@@ -44,15 +44,18 @@
             <Button x:Name="CancelButton" 
                     Click="CancelButton_Click"
                     ToolTip="{x:Static p:Resources.CancelButton}"
-                    Content="{x:Static p:Resources.CancelButton}" />
+                    Content="{x:Static p:Resources.CancelButton}" 
+                    Style="{StaticResource BaseButtonStyle}" />
             <Button x:Name="SaveButton" 
                     Command="{Binding SaveCommand}"
                     ToolTip="{x:Static p:Resources.SaveButton}"
-                    Content="{x:Static p:Resources.SaveButton}" />
+                    Content="{x:Static p:Resources.SaveButton}" 
+                    Style="{StaticResource BaseButtonStyle}" />
             <Button x:Name="ResetButton" 
                     Command="{Binding ResetToDefaultsCommand}"
                     ToolTip="{x:Static p:Resources.ResetButton}"
-                    Content="{x:Static p:Resources.ResetButton}" />
+                    Content="{x:Static p:Resources.ResetButton}" 
+                    Style="{StaticResource BaseButtonStyle}" />
         </StackPanel>
     </Grid>
 </Window>
