@@ -108,17 +108,29 @@
                     Grid.Row="0" 
                     Grid.Column="2" 
                     ToolTip="{x:Static p:Resources.Backward}"
-                    Content="&lt;&lt;" 
                     Click="BackButton_Click" 
-                    Style="{StaticResource BaseButtonStyle}" />
+                    Style="{StaticResource BaseButtonStyle}" >
+                <Border Width="20" Height="20">
+                    <Path HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      Fill="White" 
+                                      Data="M4,0 L4,12 -2,6 Z M12,0 L12,12 6,6 Z" />
+                </Border>                
+            </Button>
 
             <Button x:Name="stepBackwardButton" 
                     Grid.Row="0" 
                     Grid.Column="3"
                     ToolTip="{x:Static p:Resources.StepBackward}"
-                    Content="&lt;" 
                     Click="StepBackwardButton_Click"
-                    Style="{StaticResource BaseButtonStyle}" />
+                    Style="{StaticResource BaseButtonStyle}" >
+                <Border Width="20" Height="20">
+                    <Path HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      Fill="White" 
+                                      Data="M4,0 L4,12 -2,6 Z" />
+                </Border>
+            </Button>
 
             <Button x:Name="playButton" 
                     Grid.Row="0" 
@@ -132,17 +144,29 @@
                     Grid.Row="0" 
                     Grid.Column="5"
                     ToolTip="{x:Static p:Resources.StepForward}"
-                    Content="&gt;" 
                     Click="StepForwardButton_Click"
-                    Style="{StaticResource BaseButtonStyle}" />
+                    Style="{StaticResource BaseButtonStyle}" >
+                <Border Width="20" Height="20">
+                    <Path HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      Fill="White" 
+                                      Data="M2,0 L8,6 2,12 Z" />
+                </Border>
+            </Button>
 
             <Button x:Name="forwardButton" 
                     Grid.Row="0" 
                     Grid.Column="6" 
                     ToolTip="{x:Static p:Resources.Forward}"
-                    Content="&gt;&gt;" 
                     Click="ForwardButton_Click" 
-                    Style="{StaticResource BaseButtonStyle}" />
+                    Style="{StaticResource BaseButtonStyle}" >
+                <Border Width="20" Height="20">
+                    <Path HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      Fill="White" 
+                                      Data="M2,0 L8,6 2,12 Z M10,0 L16,6 10,12 Z" />
+                </Border>
+            </Button>
 
             <Label x:Name="videoPositionLabel" 
                    Grid.Row="0" 
@@ -188,10 +212,16 @@
                     Grid.Row="1" 
                     Grid.Column="2" 
                     ToolTip="{x:Static p:Resources.SetSelectionStart}"
-                    Content="[" 
                     Click="SectionStartButton_Click"
-                    Style="{StaticResource BaseButtonStyle}" />            
-            
+                    Style="{StaticResource BaseButtonStyle}" >
+                <Border Width="20" Height="20">
+                    <Path HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      Fill="White" 
+                                      Data="M0,0 L14,0 14,2 1,2 6,9 0,9 Z" />
+                </Border>
+            </Button>
+
             <Button x:Name="selectionPreviewButton"
                     Grid.Row="1" 
                     Grid.Column="3" 
@@ -200,15 +230,21 @@
                     Content="Preview selection" 
                     Click="SelectionPreviewButtonButton_Click"
                     Style="{StaticResource BaseButtonStyle}" />
-            
+
             <Button x:Name="sectionEndButton" 
                     Grid.Row="1" 
                     Grid.Column="6" 
                     ToolTip="{x:Static p:Resources.SetSelectionEnd}"
-                    Content="]" 
                     Click="SectionEndButton_Click"
-                    Style="{StaticResource BaseButtonStyle}" />
-         
+                    Style="{StaticResource BaseButtonStyle}" >
+                <Border Width="20" Height="20">
+                    <Path HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      Fill="White" 
+                                      Data="M0,0 L14,0 14,2 14,9 8,9 13,2 0,2 Z" />
+                </Border>                
+            </Button>
+
 
             <AudioVolumeControl:AudioVolumeControl x:Name="volumeControl" 
                                                    Grid.RowSpan="2" 

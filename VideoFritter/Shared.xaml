@@ -184,7 +184,7 @@
                                 <Path HorizontalAlignment="Center" 
                                       VerticalAlignment="Center" 
                                       Fill="White" 
-                                      Data="M3,0 L13,8 3,16 Z" />
+                                      Data="M4,0 L15,9 4,18 Z" />
                             </Border>
                         </DataTemplate>
                     </Setter.Value>
