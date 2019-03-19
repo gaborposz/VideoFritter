@@ -97,11 +97,20 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear the queue.
+        ///   Looks up a localized string similar to Clear.
         /// </summary>
         public static string ClearExportQueue {
             get {
                 return ResourceManager.GetString("ClearExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the queue.
+        /// </summary>
+        public static string ClearExportQueueToolTip {
+            get {
+                return ResourceManager.GetString("ClearExportQueueToolTip", resourceCulture);
             }
         }
         
@@ -241,11 +250,20 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove the selected item.
+        ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string RemoveFromExportQueue {
             get {
                 return ResourceManager.GetString("RemoveFromExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove the selected item.
+        /// </summary>
+        public static string RemoveFromExportQueueToolTip {
+            get {
+                return ResourceManager.GetString("RemoveFromExportQueueToolTip", resourceCulture);
             }
         }
         
@@ -331,11 +349,20 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start processing of the queue.
+        ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string StartExportQueue {
             get {
                 return ResourceManager.GetString("StartExportQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start processing of the queue.
+        /// </summary>
+        public static string StartExportQueueToolTip {
+            get {
+                return ResourceManager.GetString("StartExportQueueToolTip", resourceCulture);
             }
         }
         
@@ -412,7 +439,7 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scale to fit screen.
+        ///   Looks up a localized string similar to Scale to _fit screen.
         /// </summary>
         public static string ViewMenu_Resize {
             get {

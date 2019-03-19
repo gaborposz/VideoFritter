@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:VideoFritter.Controls.SlicingSlider"
              mc:Ignorable="d" 
              Name="slicingSlider"
-             d:DesignHeight="30" d:DesignWidth="800">
+             d:DesignHeight="26" d:DesignWidth="800">
     <UserControl.Resources>
         <SolidColorBrush x:Key="SliderThumb.Static.Foreground" Color="#FFE5E5E5"/>
         <SolidColorBrush x:Key="SliderThumb.MouseOver.Background" Color="#FFDCECFC"/>
@@ -68,8 +68,8 @@
                     </Grid.RowDefinitions>
                     <TickBar x:Name="TopTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,0,0,2" Placement="Top" Grid.Row="0" Visibility="Collapsed"/>
                     <TickBar x:Name="BottomTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,2,0,0" Placement="Bottom" Grid.Row="2" Visibility="Collapsed"/>
-                    <Border x:Name="TrackBackground" BorderBrush="{StaticResource SliderThumb.Track.Border}" BorderThickness="1" Background="{DynamicResource SliderThumb.Track.Border}" Height="4.0" Margin="5,0" Grid.Row="1" VerticalAlignment="center">
-                        <Canvas Margin="-6,-1">
+                    <Border x:Name="TrackBackground" BorderBrush="{StaticResource SliderThumb.Track.Border}" BorderThickness="0" Background="{DynamicResource SliderThumb.Track.Border}" Height="4.0" Margin="6,0" Grid.Row="1" VerticalAlignment="center">
+                        <Canvas Margin="-6,0">
                             <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Height="4.0" Visibility="Hidden"/>
                         </Canvas>
                     </Border>
@@ -113,23 +113,9 @@
     </UserControl.Resources>
     
     <Grid>
-        <Slider
-            Minimum="{Binding Minimum, ElementName=slicingSlider}"
-            Maximum="{Binding Maximum, ElementName=slicingSlider}"
-            IsMoveToPointEnabled="True"
-            IsSelectionRangeEnabled="{Binding IsSelectionRangeEnabled, ElementName=slicingSlider}"
-            SelectionStart="{Binding SelectionStart, ElementName=slicingSlider}"
-            SelectionEnd="{Binding SelectionEnd, ElementName=slicingSlider}"
-            Value="{Binding Value, ElementName=slicingSlider, Mode=TwoWay}" 
-            TickPlacement="{Binding TickPlacement, ElementName=slicingSlider}"
-            TickFrequency="{Binding TickFrequency, ElementName=slicingSlider}"
-            Background="{Binding Background, ElementName=slicingSlider}"
-            Foreground="{Binding Foreground, ElementName=slicingSlider}" 
-            Style="{DynamicResource MainSliderStyle}"
-            />
 
         <Slider 
-            Margin="5,0,-7,0"
+            Margin="5,0,-8,0"
             Name="selectionStartSlider"
             Minimum="{Binding Minimum, ElementName=slicingSlider}"
             Maximum="{Binding Maximum, ElementName=slicingSlider}"
@@ -142,10 +128,17 @@
                                 <Thumb.Template>
                                     <ControlTemplate>
                                         <Polygon 
-                                            Points="0,30,0,18,10,30" 
+                                            x:Name="leftHandle"
+                                            SnapsToDevicePixels="True"
+                                            Points="1,25,1,13,11,25" 
                                             Fill="#E00000" 
                                             Stroke="Transparent" 
                                             StrokeThickness="3"/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter Property="Opacity" TargetName="leftHandle" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Thumb.Template>
                             </Thumb>
@@ -169,10 +162,17 @@
                                 <Thumb.Template>
                                     <ControlTemplate>
                                         <Polygon 
-                                            Points="0,30,0,18,-10,30" 
+                                            x:Name="rightHandle"
+                                            SnapsToDevicePixels="True"
+                                            Points="-1,25,-1,13,-11,25" 
                                             Fill="#E00000" 
                                             Stroke="Transparent" 
                                             StrokeThickness="3"/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter Property="Opacity" TargetName="rightHandle" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Thumb.Template>
                             </Thumb>
@@ -181,5 +181,20 @@
                 </ControlTemplate>
             </Slider.Template>
         </Slider>
+        
+        <Slider
+            Minimum="{Binding Minimum, ElementName=slicingSlider}"
+            Maximum="{Binding Maximum, ElementName=slicingSlider}"
+            IsMoveToPointEnabled="True"
+            IsSelectionRangeEnabled="{Binding IsSelectionRangeEnabled, ElementName=slicingSlider}"
+            SelectionStart="{Binding SelectionStart, ElementName=slicingSlider}"
+            SelectionEnd="{Binding SelectionEnd, ElementName=slicingSlider}"
+            Value="{Binding Value, ElementName=slicingSlider, Mode=TwoWay}" 
+            TickPlacement="{Binding TickPlacement, ElementName=slicingSlider}"
+            TickFrequency="{Binding TickFrequency, ElementName=slicingSlider}"
+            Background="{Binding Background, ElementName=slicingSlider}"
+            Foreground="{Binding Foreground, ElementName=slicingSlider}" 
+            Style="{DynamicResource MainSliderStyle}"
+            />
     </Grid>
 </UserControl>

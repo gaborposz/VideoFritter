@@ -37,13 +37,11 @@
             SelectedIndex="{Binding SelectedIndex, Mode=OneWayToSource}"
             AlternationCount="2" />
 
-        <DockPanel Grid.Row="1">
+        <DockPanel Grid.Row="1" Margin="3,0">
             <Button Name="startQueueButton"
                     DockPanel.Dock="Left"
-                    Margin="10, 5" 
-                    Padding="10, 2" 
-                    Content="Start" 
-                    ToolTip="{x:Static p:Resources.StartExportQueue}"                                   
+                    Content="{x:Static p:Resources.StartExportQueue}" 
+                    ToolTip="{x:Static p:Resources.StartExportQueueToolTip}"                                   
                     Click="StartQueueButton_Click"
                     Style="{StaticResource BaseButtonStyle}" >
                 <Button.IsEnabled>
@@ -57,21 +55,17 @@
 
             <Button Name="clearQueueButton"
                     DockPanel.Dock="Left"
-                    Margin="10, 5" 
-                    Padding="10, 2" 
-                    ToolTip="{x:Static p:Resources.ClearExportQueue}"
-                    Content="Clear" 
+                    ToolTip="{x:Static p:Resources.ClearExportQueueToolTip}"
+                    Content="{x:Static p:Resources.ClearExportQueue}" 
                     IsEnabled="{Binding HasItems}"
                     Click="ClearQueueButton_Click"
                     Style="{StaticResource BaseButtonStyle}" />
 
             <Button Name="deleteSelectedButton"
                     DockPanel.Dock="Left"
-                    Margin="10, 5" 
-                    Padding="10, 2" 
-                    ToolTip="{x:Static p:Resources.RemoveFromExportQueue}"
+                    ToolTip="{x:Static p:Resources.RemoveFromExportQueueToolTip}"
                     IsEnabled="{Binding HasSelection}"
-                    Content="Delete selected" 
+                    Content="{x:Static p:Resources.RemoveFromExportQueue}" 
                     Click="DeleteSelectedButton_Click"
                     Style="{StaticResource BaseButtonStyle}" />
 
@@ -79,7 +73,7 @@
                          DockPanel.Dock="Right" 
                          Minimum="0" 
                          Maximum="1"
-                         Margin="10"
+                         Margin="6,10"
                          IsIndeterminate="{Binding IsIndeterminateProgess, Mode=OneWay}"
                          Value="{Binding ExportProgress, Mode=OneWay}"/>
             

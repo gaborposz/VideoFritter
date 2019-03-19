@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:VideoFritter"
                     xmlns:SlicingSlider="clr-namespace:VideoFritter.Controls.SlicingSlider"
-                    xmlns:Converters="clr-namespace:VideoFritter.Converters">
+                    xmlns:Converters="clr-namespace:VideoFritter.Converters"
+                    xmlns:Common="clr-namespace:VideoFritter.Common">
 
     <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
     <Converters:InverseBoolConverter x:Key="inverseBoolConverter" />
@@ -64,10 +65,21 @@
                                     <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas x:Name="Canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top">
-                                                <Rectangle x:Name="OpaqueRect" Fill="{Binding Background, ElementName=SubMenuBorder}" Height="{Binding ActualHeight, ElementName=SubMenuBorder}" Width="{Binding ActualWidth, ElementName=SubMenuBorder}"/>
+                                                <Rectangle x:Name="OpaqueRect" 
+                                                           Fill="{Binding Background, ElementName=SubMenuBorder}" 
+                                                           Height="{Binding ActualHeight, ElementName=SubMenuBorder}" 
+                                                           Width="{Binding ActualWidth, ElementName=SubMenuBorder}"/>
                                             </Canvas>
-                                            <Rectangle x:Name="Rectangle" Fill="{TemplateBinding Background}" HorizontalAlignment="Left" Width="1"/>
-                                            <ItemsPresenter x:Name="ItemsPresenter" Margin="2,0,0,0" KeyboardNavigation.DirectionalNavigation="Cycle" Grid.IsSharedSizeScope="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.TabNavigation="Cycle"/>
+                                            <Rectangle x:Name="Rectangle" 
+                                                       Fill="{TemplateBinding Background}" 
+                                                       HorizontalAlignment="Left" 
+                                                       Width="1"/>
+                                            <ItemsPresenter x:Name="ItemsPresenter" 
+                                                            Margin="3,1,3,1" 
+                                                            KeyboardNavigation.DirectionalNavigation="Cycle" 
+                                                            Grid.IsSharedSizeScope="True" 
+                                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                                            KeyboardNavigation.TabNavigation="Cycle"/>
                                         </StackPanel>
                                     </ScrollViewer>
                                 </Border>
@@ -116,50 +128,52 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
 
+    <RadialGradientBrush x:Key="defaultButtonBackgroundBrush" GradientOrigin="0.496,1.052">
+        <RadialGradientBrush.RelativeTransform>
+            <TransformGroup>
+                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                <TranslateTransform X="0.02" Y="0.3"/>
+            </TransformGroup>
+        </RadialGradientBrush.RelativeTransform>
+        <GradientStop Offset="1" Color="#C0C0C0"/>
+        <GradientStop Offset="0.3" Color="#808080"/>
+    </RadialGradientBrush>
+
+    <RadialGradientBrush x:Key="pressedButtonBackgroundBrush" GradientOrigin="0.496,1.052">
+        <RadialGradientBrush.RelativeTransform>
+            <TransformGroup>
+                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                <TranslateTransform X="0.02" Y="0.3"/>
+            </TransformGroup>
+        </RadialGradientBrush.RelativeTransform>
+        <GradientStop Color="#F0F0F0" Offset="1"/>
+        <GradientStop Color="#B0B0B0" Offset="0.3"/>
+    </RadialGradientBrush>
+
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="3,2" />
+        <Setter Property="Margin" Value="5,5" />
+        <Setter Property="Padding" Value="6,2" />
+        <Setter Property="Common:CustomButtonAttachedProperties.RadiusValue" Value="5" />
         <Setter Property="Template" >
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid x:Name="grid">
-                        <Border x:Name="border" Padding="5,5" CornerRadius="15" BorderBrush="Black" BorderThickness="1">
-                            <Border.Background>
-                                <RadialGradientBrush GradientOrigin="0.496,1.052">
-                                    <RadialGradientBrush.RelativeTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform CenterX="0.5" CenterY="0.5" 
-                                                    ScaleX="1.5" ScaleY="1.5"/>
-                                            <TranslateTransform X="0.02" Y="0.3"/>
-                                        </TransformGroup>
-                                    </RadialGradientBrush.RelativeTransform>
-                                    <GradientStop Offset="1" Color="#C0C0C0"/>
-                                    <GradientStop Offset="0.3" Color="#808080"/>
-                                </RadialGradientBrush>
-                            </Border.Background>
+                        <Border x:Name="border" 
+                                Padding="{TemplateBinding Padding}" 
+                                CornerRadius="{Binding Path=(Common:CustomButtonAttachedProperties.RadiusValue), RelativeSource={RelativeSource TemplatedParent}}" 
+                                BorderBrush="Black" 
+                                BorderThickness="1" 
+                                Background="{StaticResource defaultButtonBackgroundBrush}">
                             <ContentPresenter HorizontalAlignment="Center"
                                                   VerticalAlignment="Center">
                             </ContentPresenter>
                         </Border>
-
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" TargetName="border">
-                                <Setter.Value>
-                                    <RadialGradientBrush GradientOrigin="0.496,1.052">
-                                        <RadialGradientBrush.RelativeTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
-                                                <TranslateTransform X="0.02" Y="0.3"/>
-                                            </TransformGroup>
-                                        </RadialGradientBrush.RelativeTransform>
-                                        <GradientStop Color="#F0F0F0" Offset="1"/>
-                                        <GradientStop Color="#B0B0B0" Offset="0.3"/>
-                                    </RadialGradientBrush>
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource pressedButtonBackgroundBrush}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="BorderBrush" TargetName="border" Value="#ffa800"/>
@@ -167,14 +181,19 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" TargetName="grid" Value="0.25"/>
                         </Trigger>
-
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="PlayButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButtonStyle}">
+    <Style x:Key="GraphicButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Margin" Value="2,2" />
+        <Setter Property="Padding" Value="5,5" />
+        <Setter Property="Common:CustomButtonAttachedProperties.RadiusValue" Value="15" />
+    </Style>
+
+    <Style x:Key="PlayButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource GraphicButtonStyle}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=Content, RelativeSource={RelativeSource Self}}" Value="Play">
                 <Setter Property="ContentTemplate">

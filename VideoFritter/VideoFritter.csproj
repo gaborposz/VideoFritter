@@ -59,6 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\AbstractExportingViewModel.cs" />
     <Compile Include="Common\AbstractViewModelBase.cs" />
+    <Compile Include="Common\CustomButtonAttachedProperties.cs" />
     <Compile Include="Controls\AudioVolumeControl\AudioVolumeControl.cs" />
     <Compile Include="Converters\AndMultiValueConverter.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />

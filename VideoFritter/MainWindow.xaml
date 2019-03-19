@@ -15,11 +15,11 @@
         Style="{StaticResource DefaultWindowStyle}"
         AllowDrop="True"
         Drop="Window_Drop">
-    
+
     <Window.DataContext>
         <local:MainWindowViewModel />
     </Window.DataContext>
-    
+
 
     <Grid x:Name="mainLayoutGrid">
         <Grid.RowDefinitions>
@@ -46,7 +46,7 @@
                 <MenuItem Header="{x:Static p:Resources.ToolsMenu_Settings}" Click="Menu_Settings" />
             </MenuItem>
         </Menu>
-        
+
         <VideoPlayer:VideoPlayer 
             x:Name="videoPlayer" 
             Grid.Row="1"
@@ -68,7 +68,7 @@
 
         <Grid x:Name="controllerLayoutGrid"
               Grid.Row="3" 
-              Margin="0,0,0,4"
+              Margin="0,-2,0,4"
               IsEnabled="{Binding IsVideoLoaded, ElementName=videoPlayer}"
               ShowGridLines="False">
             <Grid.RowDefinitions>
@@ -93,7 +93,7 @@
                     Grid.Row="0" 
                     Grid.Column="0" 
                     ToolTip="{x:Static p:Resources.ExportSelection}"
-                    Content="Export" 
+                    Content="{x:Static p:Resources.ExportSelection}" 
                     IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" 
                     Click="Menu_File_Export"
                     Style="{StaticResource BaseButtonStyle}" />
@@ -109,13 +109,13 @@
                     Grid.Column="2" 
                     ToolTip="{x:Static p:Resources.Backward}"
                     Click="BackButton_Click" 
-                    Style="{StaticResource BaseButtonStyle}" >
+                    Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      Fill="White" 
-                                      Data="M4,0 L4,12 -2,6 Z M12,0 L12,12 6,6 Z" />
-                </Border>                
+                        VerticalAlignment="Center" 
+                        Fill="White" 
+                        Data="M4,0 L4,12 -2,6 Z M12,0 L12,12 6,6 Z" />
+                </Border>
             </Button>
 
             <Button x:Name="stepBackwardButton" 
@@ -123,12 +123,12 @@
                     Grid.Column="3"
                     ToolTip="{x:Static p:Resources.StepBackward}"
                     Click="StepBackwardButton_Click"
-                    Style="{StaticResource BaseButtonStyle}" >
+                    Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      Fill="White" 
-                                      Data="M4,0 L4,12 -2,6 Z" />
+                        VerticalAlignment="Center" 
+                        Fill="White" 
+                        Data="M4,0 L4,12 -2,6 Z" />
                 </Border>
             </Button>
 
@@ -145,12 +145,12 @@
                     Grid.Column="5"
                     ToolTip="{x:Static p:Resources.StepForward}"
                     Click="StepForwardButton_Click"
-                    Style="{StaticResource BaseButtonStyle}" >
+                    Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      Fill="White" 
-                                      Data="M2,0 L8,6 2,12 Z" />
+                        VerticalAlignment="Center" 
+                        Fill="White" 
+                        Data="M2,0 L8,6 2,12 Z" />
                 </Border>
             </Button>
 
@@ -159,12 +159,12 @@
                     Grid.Column="6" 
                     ToolTip="{x:Static p:Resources.Forward}"
                     Click="ForwardButton_Click" 
-                    Style="{StaticResource BaseButtonStyle}" >
+                    Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      Fill="White" 
-                                      Data="M2,0 L8,6 2,12 Z M10,0 L16,6 10,12 Z" />
+                        VerticalAlignment="Center" 
+                        Fill="White" 
+                        Data="M2,0 L8,6 2,12 Z M10,0 L16,6 10,12 Z" />
                 </Border>
             </Button>
 
@@ -179,7 +179,7 @@
                     Grid.Row="0" 
                     Grid.Column="8" 
                     ToolTip="{x:Static p:Resources.AddToQueue}"
-                    Content="Add to queue"
+                    Content="{x:Static p:Resources.AddToQueue}"
                     Click="AddToQueueButton_Click"
                     Style="{StaticResource BaseButtonStyle}" />
 
@@ -187,7 +187,7 @@
                 x:Name="exportProgressBar" 
                 Grid.Row="1" 
                 Grid.Column="0" 
-                Margin="10"
+                Margin="10,13"
                 Minimum="0" 
                 Maximum="1" 
                 IsIndeterminate="{Binding IsIndeterminateProgess, Mode=OneWay}"
@@ -213,12 +213,12 @@
                     Grid.Column="2" 
                     ToolTip="{x:Static p:Resources.SetSelectionStart}"
                     Click="SectionStartButton_Click"
-                    Style="{StaticResource BaseButtonStyle}" >
+                    Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      Fill="White" 
-                                      Data="M0,0 L14,0 14,2 1,2 6,9 0,9 Z" />
+                        VerticalAlignment="Center" 
+                        Fill="White" 
+                        Data="M0,0 L14,0 14,2 1,2 6,9 0,9 Z" />
                 </Border>
             </Button>
 
@@ -228,13 +228,13 @@
                     Grid.ColumnSpan="3"
                     ToolTip="{x:Static p:Resources.PlaySelection}"
                     Click="SelectionPreviewButtonButton_Click"
-                    Style="{StaticResource BaseButtonStyle}" >
+                    Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      Fill="White" 
-                                      Data="M0,7 L14,7 14,9 14,16 8,16 13,9 1,9 6,16 0,16 Z M5,-3 L10,2 5,7 Z" />
-                </Border>                
+                        VerticalAlignment="Center" 
+                        Fill="White" 
+                        Data="M0,7 L14,7 14,9 14,16 8,16 13,9 1,9 6,16 0,16 Z M5,-3 L10,2 5,7 Z" />
+                </Border>
             </Button>
 
             <Button x:Name="sectionEndButton" 
@@ -242,13 +242,13 @@
                     Grid.Column="6" 
                     ToolTip="{x:Static p:Resources.SetSelectionEnd}"
                     Click="SectionEndButton_Click"
-                    Style="{StaticResource BaseButtonStyle}" >
+                    Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      Fill="White" 
-                                      Data="M0,0 L14,0 14,2 14,9 8,9 13,2 0,2 Z" />
-                </Border>                
+                        VerticalAlignment="Center" 
+                        Fill="White" 
+                        Data="M0,0 L14,0 14,2 14,9 8,9 13,2 0,2 Z" />
+                </Border>
             </Button>
 
 
@@ -256,7 +256,7 @@
                                                    Grid.RowSpan="2" 
                                                    Grid.Column="9" 
                                                    Margin="5" 
-                                                   Width="10"
+                                                   Width="15"
                                                    Maximum="1.0"
                                                    ToolTip="{x:Static p:Resources.AudioVolumeToolTip}"
                                                    Value="{Binding ElementName=videoPlayer, Path=VideoVolume}"/>

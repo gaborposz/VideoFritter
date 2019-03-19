@@ -130,6 +130,9 @@
     <value>Cancel</value>
   </data>
   <data name="ClearExportQueue" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ClearExportQueueToolTip" xml:space="preserve">
     <value>Clear the queue</value>
   </data>
   <data name="CorrectTimeStampsCheckBox" xml:space="preserve">
@@ -178,6 +181,9 @@
     <value>Play selection</value>
   </data>
   <data name="RemoveFromExportQueue" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="RemoveFromExportQueueToolTip" xml:space="preserve">
     <value>Remove the selected item</value>
   </data>
   <data name="ResetButton" xml:space="preserve">
@@ -208,6 +214,9 @@
     <value>Settings</value>
   </data>
   <data name="StartExportQueue" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="StartExportQueueToolTip" xml:space="preserve">
     <value>Start processing of the queue</value>
   </data>
   <data name="StepBackward" xml:space="preserve">
@@ -235,7 +244,7 @@
     <value>_View</value>
   </data>
   <data name="ViewMenu_Resize" xml:space="preserve">
-    <value>Scale to fit screen</value>
+    <value>Scale to _fit screen</value>
   </data>
   <data name="Volume" xml:space="preserve">
     <value>Set audio volume</value>

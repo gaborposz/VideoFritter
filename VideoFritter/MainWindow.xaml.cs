@@ -47,8 +47,8 @@ namespace VideoFritter
 
         private void Menu_View_Resize(object sender, RoutedEventArgs e)
         {
-            const double horizontalScreenPadding = 50 * 2;
-            const double verticalScreenPadding = 50 * 2;
+            const double horizontalScreenPadding = 20 * 2;
+            const double verticalScreenPadding = 20 * 2;
 
             // Get the size of the current screen
             System.Windows.Forms.Screen currentScreen = System.Windows.Forms.Screen.FromRectangle(
