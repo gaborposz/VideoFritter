@@ -61,6 +61,28 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Video Fritter v0.1
+        ///by Gabor Posz
+        ///https://github.com/gaborposz/VideoFritter
+        ///
+        ///This software uses FFmpeg CLI that is licensed under the LGPLv2.1.
+        /// </summary>
+        public static string AboutText {
+            get {
+                return ResourceManager.GetString("AboutText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string AboutWindowTitle {
+            get {
+                return ResourceManager.GetString("AboutWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add to export queue.
         /// </summary>
         public static string AddToQueue {
@@ -219,6 +241,24 @@ namespace VideoFritter.Properties {
         public static string Forward {
             get {
                 return ResourceManager.GetString("Forward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Help.
+        /// </summary>
+        public static string HelpMenu {
+            get {
+                return ResourceManager.GetString("HelpMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _About.
+        /// </summary>
+        public static string HelpMenu_About {
+            get {
+                return ResourceManager.GetString("HelpMenu_About", resourceCulture);
             }
         }
         

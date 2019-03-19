@@ -3,8 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Converters="clr-namespace:VideoFritter.Converters"
-        xmlns:local="clr-namespace:VideoFritter.ExportQueue"
         xmlns:p="clr-namespace:VideoFritter.Properties"
         mc:Ignorable="d"
         Title="{x:Static p:Resources.ExportQueueWindowTitle}" 
@@ -15,10 +13,10 @@
         <Style TargetType="ListBoxItem">
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
-                    <Setter Property="Background" Value="#E0E0E0" />
+                    <Setter Property="Background" Value="#3E3E3E" />
                 </Trigger>
                 <Trigger Property="ItemsControl.AlternationIndex"  Value="1">
-                    <Setter Property="Background" Value="LightGray" />
+                    <Setter Property="Background" Value="#5E5E5E" />
                 </Trigger>
             </Style.Triggers>
         </Style>

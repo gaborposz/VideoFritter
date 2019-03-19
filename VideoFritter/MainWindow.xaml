@@ -45,6 +45,9 @@
                 <MenuItem Header="{x:Static p:Resources.ToolsMenu_ExportQueue}" Click="Menu_ExportQueue"/>
                 <MenuItem Header="{x:Static p:Resources.ToolsMenu_Settings}" Click="Menu_Settings" />
             </MenuItem>
+            <MenuItem Header="{x:Static p:Resources.HelpMenu}">
+                <MenuItem Header="{x:Static p:Resources.HelpMenu_About}" Click="MenuAbout_Click" />
+            </MenuItem>
         </Menu>
 
         <VideoPlayer:VideoPlayer 

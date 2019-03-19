@@ -10,7 +10,7 @@
     <Converters:AndMultiValueConverter x:Key="andMultiValueConverter" />
 
     <Style x:Key="DefaultWindowStyle">
-        <Setter Property="Control.Background" Value="#FF3E3E3E" />
+        <Setter Property="Control.Background" Value="#3E3E3E" />
     </Style>
 
     <Style TargetType="{x:Type ToolTip}">
@@ -121,11 +121,13 @@
     </Style>
 
     <Style TargetType="{x:Type ListBox}">
-        <Setter Property="Background" Value="LightGray" />
+        <Setter Property="Background" Value="Black" />
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <Style TargetType="{x:Type ListBoxItem}">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <RadialGradientBrush x:Key="defaultButtonBackgroundBrush" GradientOrigin="0.496,1.052">

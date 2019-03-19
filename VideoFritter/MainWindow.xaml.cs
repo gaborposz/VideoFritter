@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
+using VideoFritter.About;
 using VideoFritter.Controls.VideoPlayer;
 using VideoFritter.ExportQueue;
 using VideoFritter.Settings;
@@ -28,6 +29,7 @@ namespace VideoFritter
         private ExportQueueWindow exportQueueWindow;
         private ExportQueueViewModel processingQueueViewModel = new ExportQueueViewModel();
         private SettingsDialog settingsDialog;
+        private AboutDialog aboutDialog;
 
 
         private void Menu_File_Open(object sender, RoutedEventArgs e)
@@ -219,6 +221,24 @@ namespace VideoFritter
         {
             this.settingsDialog.Closed -= SettingsDialog_Closed;
             this.settingsDialog = null;
+        }
+
+        private void MenuAbout_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.aboutDialog == null)
+            {
+                this.aboutDialog = new AboutDialog();
+                this.aboutDialog.Closed += AboutDialog_Closed;
+            }
+
+            this.aboutDialog.Show();
+            this.aboutDialog.Activate();
+        }
+
+        private void AboutDialog_Closed(object sender, EventArgs e)
+        {
+            this.aboutDialog.Closed -= AboutDialog_Closed;
+            this.aboutDialog = null;
         }
 
         private void Window_Drop(object sender, DragEventArgs e)
