@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoFritter", "VideoFritte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C550684-6F15-4D7E-B0D0-70BC95E4C9A1}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "VideoFritterSetup", "VideoFritterSetup\VideoFritterSetup.vdproj", "{782DF8F4-30C6-4302-97F8-F3F8784BF6FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{78ED8571-004F-4A34-A4C1-CFA85038AF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78ED8571-004F-4A34-A4C1-CFA85038AF44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78ED8571-004F-4A34-A4C1-CFA85038AF44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{782DF8F4-30C6-4302-97F8-F3F8784BF6FE}.Debug|Any CPU.ActiveCfg = Debug
+		{782DF8F4-30C6-4302-97F8-F3F8784BF6FE}.Debug|Any CPU.Build.0 = Debug
+		{782DF8F4-30C6-4302-97F8-F3F8784BF6FE}.Release|Any CPU.ActiveCfg = Release
+		{782DF8F4-30C6-4302-97F8-F3F8784BF6FE}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
