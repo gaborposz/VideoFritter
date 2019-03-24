@@ -61,10 +61,7 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video Fritter v0.1
-        ///by Gabor Posz
-        ///https://github.com/gaborposz/VideoFritter
-        ///
+        ///   Looks up a localized string similar to TODO: License!
         ///This software uses FFmpeg CLI that is licensed under the LGPLv2.1.
         /// </summary>
         public static string AboutText {
@@ -448,6 +445,16 @@ namespace VideoFritter.Properties {
         public static string ToolsMenu_Settings {
             get {
                 return ResourceManager.GetString("ToolsMenu_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        public static System.Drawing.Icon VideoFritterIcon {
+            get {
+                object obj = ResourceManager.GetObject("VideoFritterIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

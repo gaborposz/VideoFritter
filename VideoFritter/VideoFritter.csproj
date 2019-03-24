@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\VideoFritter.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -60,6 +63,7 @@
     <Compile Include="About\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="About\AboutViewModel.cs" />
     <Compile Include="Common\AbstractExportingViewModel.cs" />
     <Compile Include="Common\AbstractViewModelBase.cs" />
     <Compile Include="Common\CustomButtonAttachedProperties.cs" />
@@ -159,6 +163,8 @@
     <Content Include="ffmpeg\ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\VideoFritter.ico" />
+    <None Include="Resources\VideoFritter.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

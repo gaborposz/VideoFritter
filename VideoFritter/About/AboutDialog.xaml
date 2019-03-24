@@ -10,14 +10,36 @@
         Style="{StaticResource DefaultWindowStyle}"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize" >
+    <Window.DataContext>
+        <local:AboutViewModel></local:AboutViewModel>
+    </Window.DataContext>
     <Grid>
-        <TextBlock x:Name="textBox" 
-                 Margin="6"
-                 Background="Transparent"
-                 Foreground="White"
-                 HorizontalAlignment="Center"  
-                 VerticalAlignment="Center" 
-                 TextWrapping="Wrap" 
-                 Text="{x:Static p:Resources.AboutText}" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="ProductTitle" Content="{Binding AssemblyTitle}" Padding="15,10,0,0" />
+                <Label x:Name="ProductVersion" Content="{Binding AssemblyVersion}" Padding="5,10,0,0" />
+            </StackPanel>
+
+            <Label x:Name="Author" Content="{Binding AssemblyCompany}" Padding="15,0,0,2" />
+            <TextBlock Padding="15,2,10,15">
+                    <Hyperlink NavigateUri="https://github.com/gaborposz/VideoFritter" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/gaborposz/VideoFritter</Hyperlink>
+            </TextBlock>
+            <TextBlock 
+                    Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
+                    x:Name="aboutText" 
+                    Padding="15,0,15,15"
+                    Background="Transparent"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center" 
+                    TextWrapping="Wrap"
+                    Text="{x:Static p:Resources.AboutText}" />
+        </StackPanel>
+        <Image Grid.Column="1" x:Name="ProductIcon" Loaded="Image_Loaded" Width="128" Height="128" Margin="10"/>
     </Grid>
+
 </Window>
