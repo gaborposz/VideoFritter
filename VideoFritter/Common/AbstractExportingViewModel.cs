@@ -4,6 +4,8 @@ namespace VideoFritter.Common
 {
     internal class AbstractExportingViewModel : AbstractViewModelBase, IProgress<double>
     {
+        public event EventHandler<bool> IsExportingChangedEvent;
+
         public bool IsExporting
         {
             get
@@ -17,6 +19,7 @@ namespace VideoFritter.Common
                 {
                     this.isExporting = value;
                     OnPropertyChanged();
+                    IsExportingChangedEvent?.Invoke(this, value);
                 }
 
                 if (this.isExporting)

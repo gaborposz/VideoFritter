@@ -1,9 +1,9 @@
-﻿<Window x:Class="VideoFritter.MainWindow"
+﻿<Window x:Class="VideoFritter.MainWindow.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VideoFritter"
+        xmlns:local="clr-namespace:VideoFritter.MainWindow"
         xmlns:VideoPlayer="clr-namespace:VideoFritter.Controls.VideoPlayer"
         xmlns:SlicingSlider="clr-namespace:VideoFritter.Controls.SlicingSlider"
         xmlns:AudioVolumeControl="clr-namespace:VideoFritter.Controls.AudioVolumeControl"
@@ -15,11 +15,6 @@
         Style="{StaticResource DefaultWindowStyle}"
         AllowDrop="True"
         Drop="Window_Drop">
-
-    <Window.DataContext>
-        <local:MainWindowViewModel />
-    </Window.DataContext>
-
 
     <Grid x:Name="mainLayoutGrid">
         <Grid.RowDefinitions>
@@ -34,8 +29,8 @@
 
         <Menu IsMainMenu="True" Grid.Row="0">
             <MenuItem Header="{x:Static p:Resources.FileMenu}">
-                <MenuItem Header="{x:Static p:Resources.FileMenu_Open}" Click="Menu_File_Open"/>
-                <MenuItem Header="{x:Static p:Resources.FileMenu_Export}" IsEnabled="{Binding IsFileOpened}" Click="Menu_File_Export"/>
+                <MenuItem Header="{x:Static p:Resources.FileMenu_Open}" Command="{Binding OpenFileCommand}" />
+                <MenuItem Header="{x:Static p:Resources.FileMenu_Export}" Command="{Binding ExportSelectionCommand}"/>
                 <MenuItem Header="{x:Static p:Resources.FileMenu_Exit}" Click="Menu_File_Exit" />
             </MenuItem>
             <MenuItem Header="{x:Static p:Resources.ViewMenu}">
@@ -97,8 +92,7 @@
                     Grid.Column="0" 
                     ToolTip="{x:Static p:Resources.ExportSelection}"
                     Content="{x:Static p:Resources.ExportSelection}" 
-                    IsEnabled="{Binding IsExporting, Mode=OneWay, Converter={StaticResource inverseBoolConverter}}" 
-                    Click="Menu_File_Export"
+                    Command="{Binding ExportSelectionCommand}"
                     Style="{StaticResource BaseButtonStyle}" />
 
             <Label x:Name="videoLengthLabel" 
@@ -107,11 +101,11 @@
                    ToolTip="{x:Static p:Resources.VideoLength}"
                    Content="{Binding ElementName=videoPlayer, Path=VideoLength}" ContentStringFormat="hh\:mm\:ss\.fff"/>
 
-            <Button x:Name="backButton" 
+            <Button x:Name="backwardButton" 
                     Grid.Row="0" 
                     Grid.Column="2" 
                     ToolTip="{x:Static p:Resources.Backward}"
-                    Click="BackButton_Click" 
+                    Command="{Binding BackwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
@@ -125,7 +119,7 @@
                     Grid.Row="0" 
                     Grid.Column="3"
                     ToolTip="{x:Static p:Resources.StepBackward}"
-                    Click="StepBackwardButton_Click"
+                    Command="{Binding StepBackwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
@@ -139,7 +133,7 @@
                     Grid.Row="0" 
                     Grid.Column="4" 
                     ToolTip="{x:Static p:Resources.Play}"
-                    Click="PlayButton_Click"
+                    Command="{Binding PlayOrPauseCommand}"
                     Style="{StaticResource PlayButtonStyle}"
                     Content="Play" />
 
@@ -147,7 +141,7 @@
                     Grid.Row="0" 
                     Grid.Column="5"
                     ToolTip="{x:Static p:Resources.StepForward}"
-                    Click="StepForwardButton_Click"
+                    Command="{Binding StepForwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
@@ -161,7 +155,7 @@
                     Grid.Row="0" 
                     Grid.Column="6" 
                     ToolTip="{x:Static p:Resources.Forward}"
-                    Click="ForwardButton_Click" 
+                    Command="{Binding ForwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
@@ -215,7 +209,7 @@
                     Grid.Row="1" 
                     Grid.Column="2" 
                     ToolTip="{x:Static p:Resources.SetSelectionStart}"
-                    Click="SectionStartButton_Click"
+                    Command="{Binding SetSectionStartCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
@@ -230,7 +224,7 @@
                     Grid.Column="3" 
                     Grid.ColumnSpan="3"
                     ToolTip="{x:Static p:Resources.PlaySelection}"
-                    Click="SelectionPreviewButtonButton_Click"
+                    Command="{Binding PlaySelectionCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 
@@ -244,7 +238,7 @@
                     Grid.Row="1" 
                     Grid.Column="6" 
                     ToolTip="{x:Static p:Resources.SetSelectionEnd}"
-                    Click="SectionEndButton_Click"
+                    Command="{Binding SetSectionEndCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
                 <Border Width="20" Height="20">
                     <Path HorizontalAlignment="Center" 

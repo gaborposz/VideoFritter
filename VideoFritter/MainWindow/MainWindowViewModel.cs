@@ -4,14 +4,44 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 using VideoFritter.Common;
+using VideoFritter.Controls.VideoPlayer;
 using VideoFritter.Exporter;
+using VideoFritter.MainWindow.Commands;
 
-namespace VideoFritter
+namespace VideoFritter.MainWindow
 {
     internal class MainWindowViewModel : AbstractExportingViewModel
     {
+        public MainWindowViewModel(VideoPlayer videoPlayerIn)
+        {
+            OpenFileCommand = new OpenFileCommand(this, videoPlayerIn);
+            PlayOrPauseCommand = new PlayOrPauseCommand(this, videoPlayerIn);
+            SetSectionStartCommand = new SetSectionStartCommand(this, videoPlayerIn);
+            SetSectionEndCommand = new SetSectionEndCommand(this, videoPlayerIn);
+            BackwardCommand = new BackwardCommand(this, videoPlayerIn);
+            ForwardCommand = new ForwardCommand(this, videoPlayerIn);
+            StepBackwardCommand = new StepBackwardCommand(this, videoPlayerIn);
+            StepForwardCommand = new StepForwardCommand(this, videoPlayerIn);
+            PlaySelectionCommand = new PlaySelectionCommand(this, videoPlayerIn);
+            ExportSelectionCommand = new ExportSelectionCommand(this, videoPlayerIn);
+        }
+
+        public event EventHandler<bool> IsFileOpenedChanged;
+
+        public ICommand OpenFileCommand { get; }
+        public ICommand PlayOrPauseCommand { get; }
+        public ICommand SetSectionStartCommand { get; }
+        public ICommand SetSectionEndCommand { get; }
+        public ICommand BackwardCommand { get; }
+        public ICommand ForwardCommand { get; }
+        public ICommand StepBackwardCommand { get; }
+        public ICommand StepForwardCommand { get; }
+        public ICommand PlaySelectionCommand { get; }
+        public ICommand ExportSelectionCommand { get; }
+
         public TimeSpan SliceStart
         {
             get
@@ -62,6 +92,11 @@ namespace VideoFritter
             {
                 return OpenedFileName != null;
             }
+            set
+            {
+                OnPropertyChanged(nameof(IsFileOpened));
+                IsFileOpenedChanged?.Invoke(this, value);
+            }
         }
 
         public string OpenedFileName
@@ -74,7 +109,7 @@ namespace VideoFritter
             {
                 this.openedFileName = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsFileOpened));
+                IsFileOpened = true;
             }
         }
 
@@ -87,7 +122,7 @@ namespace VideoFritter
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "Video files |*.mp4;*.mpg;*.mpeg;*.mov|All files |*.*"
+                Filter = GetFileDialogFilter(),
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -108,7 +143,7 @@ namespace VideoFritter
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = $"Video files |{string.Join("; ", SupportedFileExtensions.Select(ext => $"*.{ ext}"))}|All files |*.*",
+                Filter = GetFileDialogFilter(),
                 FileName = targetFileName,
                 DefaultExt = Path.GetExtension(targetFileName),
             };
@@ -139,6 +174,11 @@ namespace VideoFritter
         private TimeSpan sliceStart;
         private TimeSpan sliceEnd;
         private string exportFilePath;
+
+        private string GetFileDialogFilter()
+        {
+            return $"Video files |{string.Join("; ", SupportedFileExtensions.Select(ext => $"*.{ ext}"))}|All files |*.*";
+        }
 
         private string ExportFilePath
         {

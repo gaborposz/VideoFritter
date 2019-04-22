@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 using VideoFritter.Common;
 
@@ -9,8 +8,8 @@ namespace VideoFritter.Settings
     {
         public SettingsViewModel()
         {
-            SaveCommand = new SaveCommandImp(this);
-            ResetToDefaultsCommand = new ResetToDefaultsCommandImp(this);
+            SaveCommand = new SaveCommand(this);
+            ResetToDefaultsCommand = new ResetToDefaultsCommand(this);
 
             ExportQueuePath = Properties.Settings.Default.ExportQueuePath;
             TimeStampCorrection = Properties.Settings.Default.TimeStampCorrection;
@@ -66,65 +65,5 @@ namespace VideoFritter.Settings
         private string exportQueuePath;
         private bool timeStampCorrection;
         private bool saveFFMpegLogs;
-
-        private class SaveCommandImp : ICommand
-        {
-            public SaveCommandImp(SettingsViewModel settingsViewModelIn)
-            {
-                this.settingsViewModel = settingsViewModelIn;
-                this.settingsViewModel.PropertyChanged += SettingsViewModel_PropertyChanged;
-
-            }
-
-            private void SettingsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-            {
-                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-            }
-
-            public event EventHandler CanExecuteChanged;
-
-            public bool CanExecute(object parameter)
-            {
-                return this.settingsViewModel.ExportQueuePath != Properties.Settings.Default.ExportQueuePath ||
-                    this.settingsViewModel.TimeStampCorrection != Properties.Settings.Default.TimeStampCorrection ||
-                    this.settingsViewModel.SaveFFMpegLogs != Properties.Settings.Default.SaveFFMpegLogs;
-            }
-
-            public void Execute(object parameter)
-            {
-                Properties.Settings.Default.ExportQueuePath = this.settingsViewModel.ExportQueuePath;
-                Properties.Settings.Default.TimeStampCorrection = this.settingsViewModel.TimeStampCorrection;
-                Properties.Settings.Default.SaveFFMpegLogs = this.settingsViewModel.SaveFFMpegLogs;
-                Properties.Settings.Default.Save();
-
-                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-            }
-
-            private readonly SettingsViewModel settingsViewModel;
-        }
-
-        private class ResetToDefaultsCommandImp : ICommand
-        {
-            public ResetToDefaultsCommandImp(SettingsViewModel settingsViewModelIn)
-            {
-                this.settingsViewModel = settingsViewModelIn;
-            }
-
-            public event EventHandler CanExecuteChanged;
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public void Execute(object parameter)
-            {
-                this.settingsViewModel.ExportQueuePath = @"$(VideoPath)\Export";
-                this.settingsViewModel.TimeStampCorrection = true;
-                this.settingsViewModel.SaveFFMpegLogs = false;
-            }
-
-            private readonly SettingsViewModel settingsViewModel;
-        }
     }
 }

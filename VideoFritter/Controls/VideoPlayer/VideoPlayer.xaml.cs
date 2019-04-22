@@ -32,6 +32,10 @@ namespace VideoFritter.Controls.VideoPlayer
         public static readonly RoutedEvent IsPlayingChangedEvent =
             EventManager.RegisterRoutedEvent("IsPlayingChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(VideoPlayer));
 
+        public static readonly RoutedEvent VideoPositionChangedEvent =
+            EventManager.RegisterRoutedEvent("VideoPositionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(VideoPlayer));
+
+
         public static readonly DependencyProperty VideoLengthProperty =
             DependencyProperty.Register(
                 "VideoLength",
@@ -127,6 +131,12 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             add { AddHandler(IsPlayingChangedEvent, value); }
             remove { RemoveHandler(IsPlayingChangedEvent, value); }
+        }
+
+        public event RoutedEventHandler VideoPositionChanged
+        {
+            add { AddHandler(VideoPositionChangedEvent, value); }
+            remove { RemoveHandler(VideoPositionChangedEvent, value); }
         }
 
         public int VideoWidth
@@ -232,6 +242,15 @@ namespace VideoFritter.Controls.VideoPlayer
             RaiseEvent(args);
         }
 
+        protected virtual void RaiseVideoPositionChangedEvent()
+        {
+            RoutedEventArgs args = new RoutedEventArgs(
+                VideoPositionChangedEvent,
+                this);
+
+            RaiseEvent(args);
+        }
+
         private MediaTimeline mediaTimeline;
         private bool isPlaying;
         private TimeSpan endOfPlayback = TimeSpan.MaxValue;
@@ -305,6 +324,8 @@ namespace VideoFritter.Controls.VideoPlayer
             this.positionSetByTimer = true;
             SetValue(VideoPositionProperty, CurrentMediaTime);
             this.positionSetByTimer = false;
+
+            RaiseVideoPositionChangedEvent();
         }
     }
 }

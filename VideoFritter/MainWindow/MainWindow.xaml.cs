@@ -8,7 +8,7 @@ using VideoFritter.Controls.VideoPlayer;
 using VideoFritter.ExportQueue;
 using VideoFritter.Settings;
 
-namespace VideoFritter
+namespace VideoFritter.MainWindow
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -19,28 +19,17 @@ namespace VideoFritter
         {
             InitializeComponent();
 
-            this.viewModel = (MainWindowViewModel)this.DataContext;
+            this.viewModel = new MainWindowViewModel(this.videoPlayer);
+            this.DataContext = this.viewModel;
+
             this.viewModel.SliceEnd = this.videoPlayer.VideoLength;
         }
-
-        private static readonly TimeSpan FrameSteppingInterval = TimeSpan.FromMilliseconds(100);
 
         private MainWindowViewModel viewModel;
         private ExportQueueWindow exportQueueWindow;
         private ExportQueueViewModel processingQueueViewModel = new ExportQueueViewModel();
         private SettingsDialog settingsDialog;
         private AboutDialog aboutDialog;
-
-
-        private void Menu_File_Open(object sender, RoutedEventArgs e)
-        {
-            OpenFile();
-        }
-
-        private void Menu_File_Export(object sender, RoutedEventArgs e)
-        {
-            this.viewModel.ExportCurrentSelection();
-        }
 
         private void Menu_File_Exit(object sender, RoutedEventArgs e)
         {
@@ -80,16 +69,12 @@ namespace VideoFritter
 
         private void VideoPlayer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.videoPlayer.PlayOrPause();
+            this.viewModel.PlayOrPauseCommand.Execute(null);
+
             if (e.ClickCount == 2)
             {
-                OpenFile();
+                this.viewModel.OpenFileCommand.Execute(null);
             }
-        }
-
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.videoPlayer.PlayOrPause();
         }
 
         private void VideoPlayer_VideoOpened(object sender, RoutedEventArgs e)
@@ -97,15 +82,6 @@ namespace VideoFritter
             this.slider.Value = 0;
             this.viewModel.SliceStart = TimeSpan.Zero;
             this.viewModel.SliceEnd = this.videoPlayer.VideoLength;
-        }
-
-        private void OpenFile()
-        {
-            this.viewModel.OpenFile();
-            if (this.viewModel.IsFileOpened)
-            {
-                this.videoPlayer.OpenFile(this.viewModel.OpenedFileName);
-            }
         }
 
         private void VideoPlayer_IsPlayingChanged(object sender, RoutedEventArgs e)
@@ -122,66 +98,24 @@ namespace VideoFritter
             }
         }
 
-        private void SectionStartButton_Click(object sender, RoutedEventArgs e)
+        private void Window_Drop(object sender, DragEventArgs e)
         {
-            if (this.viewModel.SliceEnd < this.videoPlayer.VideoPosition)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                this.viewModel.SliceEnd = this.videoPlayer.VideoLength;
+                // Note that you can have more than one file.
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                string fileName = files.FirstOrDefault();
+                if (fileName != null)
+                {
+                    this.viewModel.OpenFile(fileName);
+                    this.videoPlayer.OpenFile(fileName);
+                }
             }
-
-            this.viewModel.SliceStart = this.videoPlayer.VideoPosition;
-        }
-
-        private void SectionEndButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.videoPlayer.VideoPosition < this.viewModel.SliceStart)
-            {
-                this.viewModel.SliceStart = TimeSpan.Zero;
-            }
-
-            this.viewModel.SliceEnd = this.videoPlayer.VideoPosition;
         }
 
         private void AddToQueueButton_Click(object sender, RoutedEventArgs e)
         {
             processingQueueViewModel.AddToQueue(this.viewModel.OpenedFileName, this.viewModel.SliceStart, this.viewModel.SliceEnd);
-        }
-
-        private void SelectionPreviewButtonButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.videoPlayer.Play(this.viewModel.SliceStart, this.viewModel.SliceEnd);
-        }
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.videoPlayer.VideoPosition <= this.viewModel.SliceStart)
-            {
-                this.videoPlayer.VideoPosition = TimeSpan.Zero;
-            }
-            else if (this.videoPlayer.VideoPosition <= this.viewModel.SliceEnd)
-            {
-                this.videoPlayer.VideoPosition = this.viewModel.SliceStart;
-            }
-            else
-            {
-                this.videoPlayer.VideoPosition = this.viewModel.SliceEnd;
-            }
-        }
-
-        private void ForwardButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.videoPlayer.VideoPosition >= this.viewModel.SliceEnd)
-            {
-                this.videoPlayer.VideoPosition = this.videoPlayer.VideoLength;
-            }
-            else if (this.videoPlayer.VideoPosition >= this.viewModel.SliceStart)
-            {
-                this.videoPlayer.VideoPosition = this.viewModel.SliceEnd;
-            }
-            else
-            {
-                this.videoPlayer.VideoPosition = this.viewModel.SliceStart;
-            }
         }
 
         private void Menu_ExportQueue(object sender, RoutedEventArgs e)
@@ -239,49 +173,6 @@ namespace VideoFritter
         {
             this.aboutDialog.Closed -= AboutDialog_Closed;
             this.aboutDialog = null;
-        }
-
-        private void Window_Drop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                // Note that you can have more than one file.
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                string fileName = files.FirstOrDefault();
-                if (fileName != null)
-                {
-                    this.viewModel.OpenFile(fileName);
-                    this.videoPlayer.OpenFile(fileName);
-                }
-            }
-        }
-
-        private void StepBackwardButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!this.videoPlayer.IsPlaying && this.videoPlayer.VideoPosition > TimeSpan.Zero)
-            {
-                TimeSpan desiredPosition = this.videoPlayer.VideoPosition.Subtract(FrameSteppingInterval);
-                if (desiredPosition < TimeSpan.Zero)
-                {
-                    desiredPosition = TimeSpan.Zero;
-                }
-
-                this.videoPlayer.VideoPosition = desiredPosition;
-            }
-        }
-
-        private void StepForwardButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!this.videoPlayer.IsPlaying || this.videoPlayer.VideoPosition < this.videoPlayer.VideoLength)
-            {
-                TimeSpan desiredPosition = this.videoPlayer.VideoPosition.Add(FrameSteppingInterval);
-                if (desiredPosition > this.videoPlayer.VideoLength)
-                {
-                    desiredPosition = this.videoPlayer.VideoLength;
-                }
-
-                this.videoPlayer.VideoPosition = desiredPosition;
-            }
         }
     }
 }
