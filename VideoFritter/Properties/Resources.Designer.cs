@@ -61,12 +61,27 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TODO: License!
-        ///This software uses FFmpeg CLI that is licensed under the LGPLv2.1.
+        ///   Looks up a localized string similar to Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+        ///You may obtain a copy of the License at.
         /// </summary>
-        public static string AboutText {
+        public static string AboutText1 {
             get {
-                return ResourceManager.GetString("AboutText", resourceCulture);
+                return ResourceManager.GetString("AboutText1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unless required by applicable law or agreed to in writing, software
+        ///distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+        ///WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        ///See the License for the specific language governing permissions and
+        ///limitations under the License.
+        ///
+        ///This software uses FFmpeg CLI that is licensed under the LGPLv2.1 license..
+        /// </summary>
+        public static string AboutText2 {
+            get {
+                return ResourceManager.GetString("AboutText2", resourceCulture);
             }
         }
         

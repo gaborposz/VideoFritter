@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C550684-6F15-4D7E-B0D0-70BC95E4C9A1}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "VideoFritterSetup", "VideoFritterSetup\VideoFritterSetup.wixproj", "{E6C2C98D-0EA4-4FCB-843C-5BDAC97A91FB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{78ED8571-004F-4A34-A4C1-CFA85038AF44} = {78ED8571-004F-4A34-A4C1-CFA85038AF44}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
