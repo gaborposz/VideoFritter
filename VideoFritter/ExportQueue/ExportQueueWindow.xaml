@@ -13,10 +13,10 @@
         <Style TargetType="ListBoxItem">
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
-                    <Setter Property="Background" Value="#3E3E3E" />
+                    <Setter Property="Background" Value="#903E3E3E" />
                 </Trigger>
                 <Trigger Property="ItemsControl.AlternationIndex"  Value="1">
-                    <Setter Property="Background" Value="#5E5E5E" />
+                    <Setter Property="Background" Value="#905E5E5E" />
                 </Trigger>
             </Style.Triggers>
         </Style>

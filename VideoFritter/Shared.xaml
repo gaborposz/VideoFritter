@@ -9,8 +9,13 @@
     <Converters:InverseBoolConverter x:Key="inverseBoolConverter" />
     <Converters:AndMultiValueConverter x:Key="andMultiValueConverter" />
 
+    <RadialGradientBrush x:Key="defaultWindowBackgroundBrush">
+        <GradientStop Color="#FF050A30" Offset="1"/>
+        <GradientStop Color="#FF5B3087"/>
+    </RadialGradientBrush>    
+    
     <Style x:Key="DefaultWindowStyle">
-        <Setter Property="Control.Background" Value="#3E3E3E" />
+        <Setter Property="Control.Background" Value="{StaticResource defaultWindowBackgroundBrush}" />
     </Style>
 
     <Style TargetType="{x:Type ToolTip}">
@@ -31,13 +36,13 @@
     </Style>
 
     <Style TargetType="{x:Type Menu}">
-        <Setter Property="Background" Value="#505050" />
+        <Setter Property="Background" Value="#FF050A30" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <Style TargetType="{x:Type MenuItem}">
-        <Setter Property="Background" Value="#505050" />
+        <Setter Property="Background" Value="#FF050A30" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Template">
@@ -121,7 +126,7 @@
     </Style>
 
     <Style TargetType="{x:Type ListBox}">
-        <Setter Property="Background" Value="Black" />
+        <Setter Property="Background" Value="{StaticResource defaultWindowBackgroundBrush}" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 
@@ -137,8 +142,8 @@
                 <TranslateTransform X="0.02" Y="0.3"/>
             </TransformGroup>
         </RadialGradientBrush.RelativeTransform>
-        <GradientStop Offset="1" Color="#C0C0C0"/>
-        <GradientStop Offset="0.3" Color="#808080"/>
+        <GradientStop Offset="1" Color="#FFBDABA6"/>
+        <GradientStop Offset="0.3" Color="#FF757C9B"/>
     </RadialGradientBrush>
 
     <RadialGradientBrush x:Key="pressedButtonBackgroundBrush" GradientOrigin="0.496,1.052">
@@ -148,8 +153,8 @@
                 <TranslateTransform X="0.02" Y="0.3"/>
             </TransformGroup>
         </RadialGradientBrush.RelativeTransform>
-        <GradientStop Color="#F0F0F0" Offset="1"/>
-        <GradientStop Color="#B0B0B0" Offset="0.3"/>
+        <GradientStop Offset="1" Color="#FFE6D3C8"/>
+        <GradientStop Offset="0.3" Color="#FF959ED8"/>
     </RadialGradientBrush>
 
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">

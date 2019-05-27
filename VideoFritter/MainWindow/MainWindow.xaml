@@ -255,6 +255,8 @@
                                                    Margin="5" 
                                                    Width="15"
                                                    Maximum="1.0"
+                                                   Background="#A0909090"
+                                                   BorderBrush="#90808080"
                                                    ToolTip="{x:Static p:Resources.AudioVolumeToolTip}"
                                                    Value="{Binding ElementName=videoPlayer, Path=VideoVolume}"/>
         </Grid>
