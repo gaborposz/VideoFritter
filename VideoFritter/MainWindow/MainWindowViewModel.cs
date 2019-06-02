@@ -10,6 +10,7 @@ using VideoFritter.Common;
 using VideoFritter.Controls.VideoPlayer;
 using VideoFritter.Exporter;
 using VideoFritter.MainWindow.Commands;
+using VideoFritter.Properties;
 
 namespace VideoFritter.MainWindow
 {
@@ -113,7 +114,23 @@ namespace VideoFritter.MainWindow
             {
                 this.openedFileName = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(WindowTitle));
                 IsFileOpened = true;
+            }
+        }
+
+        public string WindowTitle
+        {
+            get
+            {
+                if (IsFileOpened)
+                {
+                    return $"{Resources.WindowTitle} - {OpenedFileName}";
+                }
+                else
+                {
+                    return Resources.WindowTitle;
+                }
             }
         }
 

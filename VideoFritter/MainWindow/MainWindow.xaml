@@ -9,7 +9,7 @@
         xmlns:AudioVolumeControl="clr-namespace:VideoFritter.Controls.AudioVolumeControl"
         xmlns:p="clr-namespace:VideoFritter.Properties"
         mc:Ignorable="d"
-        Title="{x:Static p:Resources.WindowTitle}" 
+        Title="{Binding WindowTitle}" 
         Height="660" 
         Width="900"   
         Style="{StaticResource DefaultWindowStyle}"
