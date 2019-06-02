@@ -53,6 +53,14 @@
             IsPlayingChanged="VideoPlayer_IsPlayingChanged"
             />
 
+        <TextBlock 
+            x:Name="OpenVideoHelpText"
+            Grid.Row="1"
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center" 
+            Visibility="{Binding IsVideoLoaded, ElementName=videoPlayer, Converter={StaticResource inverseBoolToVisibilityConverter}}"
+            Text="{x:Static p:Resources.DoubleClickToOpen}" />
+
         <SlicingSlider:SlicingSlider x:Name="slider" 
                                      Grid.Row="2" 
                                      TickPlacement="BottomRight" 
@@ -187,6 +195,7 @@
                 Margin="10,13"
                 Minimum="0" 
                 Maximum="1" 
+                SnapsToDevicePixels="True"
                 IsIndeterminate="{Binding IsIndeterminateProgess, Mode=OneWay}"
                 Value="{Binding ExportProgress, Mode=OneWay}"
                 Background="#FF423535" 

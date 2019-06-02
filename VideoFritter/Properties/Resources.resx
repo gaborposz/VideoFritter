@@ -157,6 +157,9 @@ This software uses FFmpeg CLI that is licensed under the LGPLv2.1 license.</valu
   <data name="CorrectTimeStampsToolTip" xml:space="preserve">
     <value>If enabled then video fragments are saved with a timestamp that is corrected by the fragment's start time.</value>
   </data>
+  <data name="DoubleClickToOpen" xml:space="preserve">
+    <value>Double click to open a video</value>
+  </data>
   <data name="ErrorDialogTitle" xml:space="preserve">
     <value>Error</value>
   </data>

@@ -6,6 +6,7 @@
                     xmlns:Common="clr-namespace:VideoFritter.Common">
 
     <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
+    <Converters:InverseBoolToVisibilityConverter x:Key="inverseBoolToVisibilityConverter" />
     <Converters:InverseBoolConverter x:Key="inverseBoolConverter" />
     <Converters:AndMultiValueConverter x:Key="andMultiValueConverter" />
 

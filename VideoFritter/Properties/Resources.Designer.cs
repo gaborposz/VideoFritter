@@ -167,6 +167,15 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double click to open a video.
+        /// </summary>
+        public static string DoubleClickToOpen {
+            get {
+                return ResourceManager.GetString("DoubleClickToOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string ErrorDialogTitle {
