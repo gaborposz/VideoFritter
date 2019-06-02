@@ -173,6 +173,11 @@ namespace VideoFritter.Controls.VideoPlayer
 
         public void OpenFile(string fileName)
         {
+            if (IsPlaying)
+            {
+                MediaController.Stop();
+            }
+
             this.mediaTimeline.Source = new Uri(fileName);
 
             MediaClock clock = this.mediaTimeline.CreateClock();

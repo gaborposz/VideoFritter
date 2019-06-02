@@ -50,7 +50,7 @@ namespace VideoFritter.MainWindow.Commands
 
                     if (file == MainWindowViewModel.OpenedFileName)
                     {
-                        currentVideoIndex = this.videosInCurrentFolder.Count;
+                        currentVideoIndex = this.videosInCurrentFolder.Count - 1;
                     }
                 }
             }
