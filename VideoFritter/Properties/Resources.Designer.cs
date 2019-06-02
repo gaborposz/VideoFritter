@@ -284,6 +284,24 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open next video.
+        /// </summary>
+        public static string NextVideo {
+            get {
+                return ResourceManager.GetString("NextVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opens the next video in the current folder.
+        /// </summary>
+        public static string NextVideoTooltip {
+            get {
+                return ResourceManager.GetString("NextVideoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string Pause {

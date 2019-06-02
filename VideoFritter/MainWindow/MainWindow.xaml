@@ -257,6 +257,14 @@
                 </Border>
             </Button>
 
+            <Button x:Name="nextVideoButton" 
+                    Grid.Row="1" 
+                    Grid.Column="8" 
+                    ToolTip="{x:Static p:Resources.NextVideoTooltip}"
+                    Content="{x:Static p:Resources.NextVideo}"
+                    Command="{Binding NextVideoCommand}"
+                    Style="{StaticResource BaseButtonStyle}" />
+
 
             <AudioVolumeControl:AudioVolumeControl x:Name="volumeControl" 
                                                    Grid.RowSpan="2" 

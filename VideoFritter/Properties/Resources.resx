@@ -196,6 +196,12 @@ This software uses FFmpeg CLI that is licensed under the LGPLv2.1 license.</valu
   <data name="HelpMenu_About" xml:space="preserve">
     <value>_About</value>
   </data>
+  <data name="NextVideo" xml:space="preserve">
+    <value>Open next video</value>
+  </data>
+  <data name="NextVideoTooltip" xml:space="preserve">
+    <value>Opens the next video in the current folder</value>
+  </data>
   <data name="Pause" xml:space="preserve">
     <value>Pause</value>
   </data>

@@ -27,7 +27,10 @@ namespace VideoFritter.MainWindow
             StepForwardCommand = new StepForwardCommand(this, videoPlayerIn);
             PlaySelectionCommand = new PlaySelectionCommand(this, videoPlayerIn);
             ExportSelectionCommand = new ExportSelectionCommand(this, videoPlayerIn);
+            NextVideoCommand = new NextVideoCommand(this, videoPlayerIn);
         }
+
+        public static readonly string[] SupportedFileExtensions = { "mp4", "avi", "mov", "mpg", "mpeg", "mkv" };
 
         public event EventHandler<bool> IsFileOpenedChanged;
 
@@ -41,6 +44,7 @@ namespace VideoFritter.MainWindow
         public ICommand StepForwardCommand { get; }
         public ICommand PlaySelectionCommand { get; }
         public ICommand ExportSelectionCommand { get; }
+        public ICommand NextVideoCommand { get; }
 
         public TimeSpan SliceStart
         {
@@ -167,8 +171,6 @@ namespace VideoFritter.MainWindow
                 ExportFilePath = Path.GetDirectoryName(saveFileDialog.FileName);
             }
         }
-
-        private static readonly string[] SupportedFileExtensions = { "mp4", "avi", "mov", "mpg", "mpeg", "mkv" };
 
         private string openedFileName;
         private TimeSpan sliceStart;
