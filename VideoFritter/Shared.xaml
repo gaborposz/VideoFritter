@@ -38,8 +38,7 @@
 
     <Style TargetType="{x:Type Menu}">
         <Setter Property="Background" Value="#FF050A30" />
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="3" />
     </Style>
 
     <Style TargetType="{x:Type MenuItem}">

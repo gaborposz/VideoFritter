@@ -58,6 +58,7 @@
             Grid.Row="1"
             HorizontalAlignment="Center" 
             VerticalAlignment="Center" 
+            MouseLeftButtonDown="VideoPlayer_MouseLeftButtonDown"
             Visibility="{Binding IsVideoLoaded, ElementName=videoPlayer, Converter={StaticResource inverseBoolToVisibilityConverter}}"
             Text="{x:Static p:Resources.DoubleClickToOpen}" />
 
