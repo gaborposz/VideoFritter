@@ -24,6 +24,8 @@ namespace VideoFritter.Common
 
                 if (this.isExporting)
                 {
+                    // Start with "indeterminate" progress:
+                    ExportProgress = -1;
                     IsIndeterminateProgess = true;
                 }
             }
@@ -58,6 +60,7 @@ namespace VideoFritter.Common
                 if (this.exportProgress != value)
                 {
                     this.exportProgress = value;
+                    IsIndeterminateProgess = false;
                     OnPropertyChanged();
                 }
             }
@@ -65,10 +68,6 @@ namespace VideoFritter.Common
 
         void IProgress<double>.Report(double value)
         {
-            if (value > 0)
-            {
-                IsIndeterminateProgess = false;
-            }
             ExportProgress = value;
         }
 

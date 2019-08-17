@@ -165,6 +165,8 @@ namespace VideoFritter.MainWindow
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = GetFileDialogFilter(),
+                InitialDirectory = Path.GetDirectoryName(targetFileName),
+                RestoreDirectory = true,
                 FileName = targetFileName,
                 DefaultExt = Path.GetExtension(targetFileName),
             };
@@ -180,7 +182,6 @@ namespace VideoFritter.MainWindow
 
                     if (task.IsFaulted)
                     {
-                        App.DisplayUnexpectedError(task.Exception);
                         MessageBox.Show(task.Exception.ToString(), (string)System.Windows.Application.Current.Resources["ErrorDialogTitle"]);
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
