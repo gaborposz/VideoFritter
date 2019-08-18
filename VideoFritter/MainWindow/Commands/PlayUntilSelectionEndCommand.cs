@@ -8,6 +8,7 @@ namespace VideoFritter.MainWindow.Commands
             : base(mainWindowViewModelIn, videoPlayerIn)
         {
             VideoPlayer.VideoPositionChanged += VideoPlayer_VideoPositionChanged;
+            MainWindowViewModel.PropertyChanged += MainWindowViewModel_PropertyChanged;
         }
 
         public override bool CanExecute(object parameter)
@@ -24,6 +25,14 @@ namespace VideoFritter.MainWindow.Commands
         private void VideoPlayer_VideoPositionChanged(object sender, System.Windows.RoutedEventArgs e)
         {
             SendCanExecuteChanged();
+        }
+
+        private void MainWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MainWindowViewModel.SliceEnd))
+            {
+                SendCanExecuteChanged();
+            }
         }
     }
 }

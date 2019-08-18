@@ -218,7 +218,10 @@ namespace VideoFritter.Controls.VideoPlayer
                 MediaController.Pause();
             }
 
-            MediaController.Seek(from, TimeSeekOrigin.BeginTime);
+            if (from != VideoPosition)
+            {
+                MediaController.Seek(from, TimeSeekOrigin.BeginTime);
+            }
 
             this.endOfPlayback = to;
 
