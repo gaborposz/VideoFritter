@@ -392,6 +392,15 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Length of the selection.
+        /// </summary>
+        public static string SelectionLength {
+            get {
+                return ResourceManager.GetString("SelectionLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start of selection.
         /// </summary>
         public static string SelectionStart {

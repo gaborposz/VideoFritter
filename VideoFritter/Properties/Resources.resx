@@ -232,6 +232,9 @@ This software uses FFmpeg CLI that is licensed under the LGPLv2.1 license.</valu
   <data name="SelectionEnd" xml:space="preserve">
     <value>End of selection</value>
   </data>
+  <data name="SelectionLength" xml:space="preserve">
+    <value>Length of the selection</value>
+  </data>
   <data name="SelectionStart" xml:space="preserve">
     <value>Start of selection</value>
   </data>

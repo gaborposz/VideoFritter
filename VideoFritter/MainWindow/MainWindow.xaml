@@ -84,6 +84,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -104,15 +105,22 @@
                     Command="{Binding ExportSelectionCommand}"
                     Style="{StaticResource BaseButtonStyle}" />
 
+            <Label x:Name="selectionLengthLabel" 
+                   Grid.Row="0" 
+                   Grid.Column="1" 
+                   ToolTip="{x:Static p:Resources.SelectionLength}"
+                   Content="{Binding SliceLength}" ContentStringFormat="hh\:mm\:ss\.fff" />
+
+
             <Label x:Name="videoLengthLabel" 
                    Grid.Row="0" 
-                   Grid.Column="1"
+                   Grid.Column="2"
                    ToolTip="{x:Static p:Resources.VideoLength}"
                    Content="{Binding ElementName=videoPlayer, Path=VideoLength}" ContentStringFormat="hh\:mm\:ss\.fff"/>
 
             <Button x:Name="backwardButton" 
                     Grid.Row="0" 
-                    Grid.Column="2" 
+                    Grid.Column="3" 
                     ToolTip="{x:Static p:Resources.Backward}"
                     Command="{Binding BackwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
@@ -126,7 +134,7 @@
 
             <Button x:Name="stepBackwardButton" 
                     Grid.Row="0" 
-                    Grid.Column="3"
+                    Grid.Column="4"
                     ToolTip="{x:Static p:Resources.StepBackward}"
                     Command="{Binding StepBackwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
@@ -140,7 +148,7 @@
 
             <Button x:Name="playButton" 
                     Grid.Row="0" 
-                    Grid.Column="4" 
+                    Grid.Column="5" 
                     ToolTip="{x:Static p:Resources.Play}"
                     Command="{Binding PlayOrPauseCommand}"
                     Style="{StaticResource PlayButtonStyle}"
@@ -148,7 +156,7 @@
 
             <Button x:Name="stepForwardButton" 
                     Grid.Row="0" 
-                    Grid.Column="5"
+                    Grid.Column="6"
                     ToolTip="{x:Static p:Resources.StepForward}"
                     Command="{Binding StepForwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
@@ -162,7 +170,7 @@
 
             <Button x:Name="forwardButton" 
                     Grid.Row="0" 
-                    Grid.Column="6" 
+                    Grid.Column="7" 
                     ToolTip="{x:Static p:Resources.Forward}"
                     Command="{Binding ForwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
@@ -176,14 +184,14 @@
 
             <Label x:Name="videoPositionLabel" 
                    Grid.Row="0" 
-                   Grid.Column="7" 
+                   Grid.Column="8" 
                    ToolTip="{x:Static p:Resources.VideoPosition}"
                    Content="{Binding ElementName=videoPlayer, Path=VideoPosition}" 
                    ContentStringFormat="hh\:mm\:ss\.fff"/>
 
             <Button x:Name="addToQueueButton" 
                     Grid.Row="0" 
-                    Grid.Column="8" 
+                    Grid.Column="9" 
                     ToolTip="{x:Static p:Resources.AddToQueue}"
                     Content="{x:Static p:Resources.AddToQueue}"
                     Click="AddToQueueButton_Click"
@@ -192,7 +200,8 @@
             <ProgressBar 
                 x:Name="exportProgressBar" 
                 Grid.Row="1" 
-                Grid.Column="0" 
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
                 Margin="10,13"
                 Minimum="0" 
                 Maximum="1" 
@@ -203,21 +212,15 @@
                 BorderBrush="#FF685757" 
                 Foreground="#FF1AAC2E"/>
 
-            <Label x:Name="sliceStartLabel" 
+            <Label x:Name="selectionStartLabel" 
                    Grid.Row="1" 
-                   Grid.Column="1" 
+                   Grid.Column="2" 
                    ToolTip="{x:Static p:Resources.SelectionStart}"
                    Content="{Binding SliceStart}" ContentStringFormat="hh\:mm\:ss\.fff" />
 
-            <Label x:Name="sliceEndLabel" 
-                   Grid.Row="1" 
-                   Grid.Column="7" 
-                   ToolTip="{x:Static p:Resources.SelectionEnd}"
-                   Content="{Binding SliceEnd}" ContentStringFormat="hh\:mm\:ss\.fff" />
-
             <Button x:Name="sectionStartButton" 
                     Grid.Row="1" 
-                    Grid.Column="2" 
+                    Grid.Column="3" 
                     ToolTip="{x:Static p:Resources.SetSelectionStart}"
                     Command="{Binding SetSectionStartCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
@@ -231,8 +234,7 @@
 
             <Button x:Name="selectionPreviewButton"
                     Grid.Row="1" 
-                    Grid.Column="3" 
-                    Grid.ColumnSpan="3"
+                    Grid.Column="5" 
                     ToolTip="{x:Static p:Resources.PlaySelection}"
                     Command="{Binding PlaySelectionCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
@@ -246,7 +248,7 @@
 
             <Button x:Name="sectionEndButton" 
                     Grid.Row="1" 
-                    Grid.Column="6" 
+                    Grid.Column="7" 
                     ToolTip="{x:Static p:Resources.SetSelectionEnd}"
                     Command="{Binding SetSectionEndCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
@@ -258,9 +260,15 @@
                 </Border>
             </Button>
 
+            <Label x:Name="selectionEndLabel" 
+                   Grid.Row="1" 
+                   Grid.Column="8" 
+                   ToolTip="{x:Static p:Resources.SelectionEnd}"
+                   Content="{Binding SliceEnd}" ContentStringFormat="hh\:mm\:ss\.fff" />
+
             <Button x:Name="nextVideoButton" 
                     Grid.Row="1" 
-                    Grid.Column="8" 
+                    Grid.Column="9" 
                     ToolTip="{x:Static p:Resources.NextVideoTooltip}"
                     Content="{x:Static p:Resources.NextVideo}"
                     Command="{Binding NextVideoCommand}"
@@ -269,7 +277,7 @@
 
             <AudioVolumeControl:AudioVolumeControl x:Name="volumeControl" 
                                                    Grid.RowSpan="2" 
-                                                   Grid.Column="9" 
+                                                   Grid.Column="10" 
                                                    Margin="5" 
                                                    Width="15"
                                                    Maximum="1.0"

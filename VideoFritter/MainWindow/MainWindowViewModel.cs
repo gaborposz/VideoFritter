@@ -66,6 +66,7 @@ namespace VideoFritter.MainWindow
                 }
 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(SliceLength));
             }
         }
 
@@ -88,8 +89,18 @@ namespace VideoFritter.MainWindow
                 }
 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(SliceLength));
             }
         }
+
+        public TimeSpan SliceLength
+        {
+            get
+            {
+                return SliceEnd - SliceStart;
+            }
+        }
+
 
         public bool IsFileOpened
         {

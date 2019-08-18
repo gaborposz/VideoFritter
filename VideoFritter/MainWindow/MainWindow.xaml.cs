@@ -64,7 +64,7 @@ namespace VideoFritter.MainWindow
 
             // Move the window inside the screen if it went out
             this.Left = (currentScreen.Bounds.Width - this.Width) / 2;
-            this.Top = (currentScreen.Bounds.Height - this.Height) / 2;
+            this.Top = (currentScreen.Bounds.Height - this.Height) / 8;
         }
 
         private void VideoPlayer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
