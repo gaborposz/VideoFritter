@@ -26,7 +26,9 @@ namespace VideoFritter.MainWindow
             ForwardCommand = new ForwardCommand(this, videoPlayerIn);
             StepBackwardCommand = new StepBackwardCommand(this, videoPlayerIn);
             StepForwardCommand = new StepForwardCommand(this, videoPlayerIn);
+            PlayFromSelectionStartCommand = new PlayFromSelectionStartCommand(this, videoPlayerIn);
             PlaySelectionCommand = new PlaySelectionCommand(this, videoPlayerIn);
+            PlayUntilSelectionEndCommand = new PlayUntilSelectionEndCommand(this, videoPlayerIn);
             ExportSelectionCommand = new ExportSelectionCommand(this, videoPlayerIn);
             NextVideoCommand = new NextVideoCommand(this, videoPlayerIn);
         }
@@ -43,7 +45,9 @@ namespace VideoFritter.MainWindow
         public ICommand ForwardCommand { get; }
         public ICommand StepBackwardCommand { get; }
         public ICommand StepForwardCommand { get; }
+        public ICommand PlayFromSelectionStartCommand { get; }
         public ICommand PlaySelectionCommand { get; }
+        public ICommand PlayUntilSelectionEndCommand { get; }
         public ICommand ExportSelectionCommand { get; }
         public ICommand NextVideoCommand { get; }
 

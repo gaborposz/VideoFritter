@@ -115,6 +115,8 @@
     <Compile Include="MainWindow\Commands\ExportSelectionCommand.cs" />
     <Compile Include="MainWindow\Commands\ForwardCommand.cs" />
     <Compile Include="MainWindow\Commands\NextVideoCommand.cs" />
+    <Compile Include="MainWindow\Commands\PlayFromSelectionStartCommand.cs" />
+    <Compile Include="MainWindow\Commands\PlayUntilSelectionEndCommand.cs" />
     <Compile Include="MainWindow\MainWindowViewModel.cs" />
     <Compile Include="MainWindow\Commands\OpenFileCommand.cs" />
     <Compile Include="MainWindow\Commands\PlayOrPauseCommand.cs" />

@@ -232,6 +232,20 @@
                 </Border>
             </Button>
 
+            <Button x:Name="playFromSelectionStartButton"
+                    Grid.Row="1" 
+                    Grid.Column="4" 
+                    ToolTip="{x:Static p:Resources.PlayFromSelectionStart}"
+                    Command="{Binding PlayFromSelectionStartCommand}"
+                    Style="{StaticResource GraphicButtonStyle}" >
+                <Border Width="20" Height="20">
+                    <Path HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        Fill="White" 
+                        Data="M0,7 L14,7 14,9 1,9 6,16 0,16 Z M5,-3 L10,2 5,7 Z" />
+                </Border>
+            </Button>
+
             <Button x:Name="selectionPreviewButton"
                     Grid.Row="1" 
                     Grid.Column="5" 
@@ -243,6 +257,20 @@
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M0,7 L14,7 14,9 14,16 8,16 13,9 1,9 6,16 0,16 Z M5,-3 L10,2 5,7 Z" />
+                </Border>
+            </Button>
+
+            <Button x:Name="playUntilSelectionEndButton"
+                    Grid.Row="1" 
+                    Grid.Column="6" 
+                    ToolTip="{x:Static p:Resources.PlayUntilSelectionEnd}"
+                    Command="{Binding PlayUntilSelectionEndCommand}"
+                    Style="{StaticResource GraphicButtonStyle}" >
+                <Border Width="20" Height="20">
+                    <Path HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        Fill="White" 
+                        Data="M0,7 L14,7 14,9 14,16 8,16 13,9 0,9 Z M5,-3 L10,2 5,7 Z" />
                 </Border>
             </Button>
 

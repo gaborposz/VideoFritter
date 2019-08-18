@@ -320,11 +320,29 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Play from selection start.
+        /// </summary>
+        public static string PlayFromSelectionStart {
+            get {
+                return ResourceManager.GetString("PlayFromSelectionStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Play selection.
         /// </summary>
         public static string PlaySelection {
             get {
                 return ResourceManager.GetString("PlaySelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play until selection end.
+        /// </summary>
+        public static string PlayUntilSelectionEnd {
+            get {
+                return ResourceManager.GetString("PlayUntilSelectionEnd", resourceCulture);
             }
         }
         

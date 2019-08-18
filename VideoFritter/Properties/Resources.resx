@@ -208,8 +208,14 @@ This software uses FFmpeg CLI that is licensed under the LGPLv2.1 license.</valu
   <data name="Play" xml:space="preserve">
     <value>Play</value>
   </data>
+  <data name="PlayFromSelectionStart" xml:space="preserve">
+    <value>Play from selection start</value>
+  </data>
   <data name="PlaySelection" xml:space="preserve">
     <value>Play selection</value>
+  </data>
+  <data name="PlayUntilSelectionEnd" xml:space="preserve">
+    <value>Play until selection end</value>
   </data>
   <data name="RemoveFromExportQueue" xml:space="preserve">
     <value>Remove</value>
