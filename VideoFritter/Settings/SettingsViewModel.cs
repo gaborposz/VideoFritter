@@ -11,9 +11,9 @@ namespace VideoFritter.Settings
             SaveCommand = new SaveCommand(this);
             ResetToDefaultsCommand = new ResetToDefaultsCommand(this);
 
-            ExportQueuePath = Properties.Settings.Default.ExportQueuePath;
-            TimeStampCorrection = Properties.Settings.Default.TimeStampCorrection;
-            SaveFFMpegLogs = Properties.Settings.Default.SaveFFMpegLogs;
+            ExportQueuePath = ApplicationSettings.ExportQueuePath;
+            TimeStampCorrection = ApplicationSettings.TimeStampCorrection;
+            SaveFFMpegLogs = ApplicationSettings.SaveFFMpegLogs;
         }
 
         public ICommand SaveCommand { get; }

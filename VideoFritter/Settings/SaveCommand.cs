@@ -20,17 +20,17 @@ namespace VideoFritter.Settings
 
         public bool CanExecute(object parameter)
         {
-            return this.settingsViewModel.ExportQueuePath != Properties.Settings.Default.ExportQueuePath ||
-                this.settingsViewModel.TimeStampCorrection != Properties.Settings.Default.TimeStampCorrection ||
-                this.settingsViewModel.SaveFFMpegLogs != Properties.Settings.Default.SaveFFMpegLogs;
+            return this.settingsViewModel.ExportQueuePath != ApplicationSettings.ExportQueuePath ||
+                this.settingsViewModel.TimeStampCorrection != ApplicationSettings.TimeStampCorrection ||
+                this.settingsViewModel.SaveFFMpegLogs != ApplicationSettings.SaveFFMpegLogs;
         }
 
         public void Execute(object parameter)
         {
-            Properties.Settings.Default.ExportQueuePath = this.settingsViewModel.ExportQueuePath;
-            Properties.Settings.Default.TimeStampCorrection = this.settingsViewModel.TimeStampCorrection;
-            Properties.Settings.Default.SaveFFMpegLogs = this.settingsViewModel.SaveFFMpegLogs;
-            Properties.Settings.Default.Save();
+           ApplicationSettings.ExportQueuePath = this.settingsViewModel.ExportQueuePath;
+           ApplicationSettings.TimeStampCorrection = this.settingsViewModel.TimeStampCorrection;
+           ApplicationSettings.SaveFFMpegLogs = this.settingsViewModel.SaveFFMpegLogs;
+           ApplicationSettings.Save();
 
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }

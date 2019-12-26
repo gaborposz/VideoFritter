@@ -14,12 +14,11 @@
         <Directory Id="INSTALLFOLDER" Name="VideoFritter" >
           <Directory Id="ffmpegDirectory" Name="ffmpeg">
             <Component Id='ffmpegExecutable' Guid='E05FBF81-1B85-4FD3-8D05-07E8D7390558'>
-              <File Id="ffmpeg" Name="ffmpeg.exe" DiskId='1' Source='..\VideoFritter\bin\Release\ffmpeg\ffmpeg.exe' />
+              <File Id="ffmpeg" Name="ffmpeg.exe" DiskId='1' Source='..\publish\ffmpeg\ffmpeg.exe' />
             </Component>
           </Directory>
           <Component Id='MainExecutable' Guid='9220C4E3-E528-4DC9-BCCB-5F64D21BC91B'>
-            <File Id='VideoFritterEXE' Name='VideoFritter.exe' DiskId='1' Source='..\VideoFritter\bin\Release\VideoFritter.exe' KeyPath='yes' />
-            <File Id="AppConfig" Name="VideoFritter.exe.config" DiskId='1' Source='..\VideoFritter\bin\Release\VideoFritter.exe.config' />
+            <File Id='VideoFritterEXE' Name='VideoFritter.exe' DiskId='1' Source='..\publish\VideoFritter.exe' KeyPath='yes' />
           </Component>
         </Directory>
       </Directory>

@@ -77,7 +77,7 @@ namespace VideoFritter.ExportQueue
                 ExportItem processingItem = Queue[0];
 
                 string sourceDirectory = Path.GetDirectoryName(processingItem.FileName);
-                string exportPath = Properties.Settings.Default.ExportQueuePath.Replace("$(VideoPath)", sourceDirectory);
+                string exportPath = ApplicationSettings.ExportQueuePath.Replace("$(VideoPath)", sourceDirectory);
                 string targetFileName = this.exporter.GenerateFileName(processingItem.FileName, exportPath);
                 Task exportTask = this.exporter.ExportAsync(processingItem.FileName, targetFileName, processingItem.SliceStart, processingItem.SliceEnd, CancellationToken.None, this);
                 exportTask.ContinueWith((task) =>
