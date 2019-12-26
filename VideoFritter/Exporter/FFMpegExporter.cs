@@ -46,7 +46,7 @@ namespace VideoFritter.Exporter
                 }
 
                 string timeStampFixCmdLine = string.Empty;
-                if (Properties.Settings.Default.TimeStampCorrection)
+                if (ApplicationSettings.TimeStampCorrection)
                 {
                     DateTime creationTime = GetCreationTimeFromFile(sourceFileName);
                     creationTime = creationTime.Add(sliceStart);
@@ -54,7 +54,7 @@ namespace VideoFritter.Exporter
                 }
 
                 string saveFFMpegLogs = string.Empty;
-                if (Properties.Settings.Default.SaveFFMpegLogs)
+                if (ApplicationSettings.SaveFFMpegLogs)
                 {
                     saveFFMpegLogs = "-report";
                 }
@@ -107,7 +107,7 @@ namespace VideoFritter.Exporter
                     File.Delete(progressFile);
                 }
 
-                if (Properties.Settings.Default.TimeStampCorrection)
+                if (ApplicationSettings.TimeStampCorrection)
                 {
                     // Also restore the file modification date...
                     DateTime fileModificationTime = File.GetLastWriteTime(sourceFileName);
