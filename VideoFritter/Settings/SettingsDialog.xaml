@@ -8,20 +8,29 @@
         mc:Ignorable="d"
         Style="{StaticResource DefaultWindowStyle}"
         ResizeMode="NoResize"
+        MouseDown="WindowDragging"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"        
         Title="{x:Static p:Resources.SettingsWindowTitle}" Height="250" Width="460">
     <Window.DataContext>
         <local:SettingsViewModel />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" HorizontalAlignment="Left" >
+
+        <Label Grid.Row="0" Content="{x:Static p:Resources.SettingsWindowTitle}"/>
+        <Button Grid.Row="0" x:Name="CloseWindowButton" Style="{StaticResource CloseWindowButtonStyle}" Click="CancelButton_Click"  />
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
             <Label 
                 Content="{x:Static p:Resources.ExportQueuePathLabel}" 
                 ToolTip="{x:Static p:Resources.ExportQueuePathToolTip}" 
-                Margin="5,5,0,0" />
+                Margin="5,5,0,0" 
+                HorizontalAlignment="Left" />
             <TextBox 
                 Text="{Binding ExportQueuePath, UpdateSourceTrigger=PropertyChanged}" 
                 ToolTip="{x:Static p:Resources.ExportQueuePathToolTip}" 
@@ -33,14 +42,16 @@
                 Content="{x:Static p:Resources.CorrectTimeStampsCheckBox}" 
                 IsChecked="{Binding TimeStampCorrection}" 
                 ToolTip="{x:Static p:Resources.CorrectTimeStampsToolTip}" 
-                Margin="10,15,0,0" />
+                Margin="10,15,0,0" 
+                HorizontalAlignment="Left" />
             <CheckBox 
                 Content="{x:Static p:Resources.SaveFFMpegLogs}" 
                 ToolTip="{x:Static p:Resources.SaveFFMpegLogsToolTip}" 
                 IsChecked="{Binding SaveFFMpegLogs}" 
-                Margin="10,15,0,0" />
+                Margin="10,15,0,0" 
+                HorizontalAlignment="Left" />
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button x:Name="CancelButton" 
                     Click="CancelButton_Click"
                     ToolTip="{x:Static p:Resources.CancelButton}"

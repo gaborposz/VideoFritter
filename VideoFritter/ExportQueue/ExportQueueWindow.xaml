@@ -9,6 +9,7 @@
         Height="450" 
         Width="800"
         MouseDown="WindowDragging"
+        WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Style="{StaticResource DefaultWindowStyle}">
     <Window.Resources>
@@ -30,7 +31,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Content="{x:Static p:Resources.ExportQueueWindowTitle}"/>
+        <Label Grid.Row="0" Content="{x:Static p:Resources.ExportQueueWindowTitle}"/>
         <Button Grid.Row="0" x:Name="CloseWindowButton" Style="{StaticResource CloseWindowButtonStyle}" Click="CloseWindowButton_Click"  />
 
         <ListBox
