@@ -297,6 +297,13 @@ namespace VideoFritter.Controls.VideoPlayer
 
             videoPlayer.SetValue(VideoPositionProperty, newValue);
 
+            if (videoPlayer.IsPlaying)
+            {
+                // WORKAROUND: If the slider was changed during playback, then the playback must be stopped, 
+                // otherwise the continous position changed events will overload the player
+                videoPlayer.PlayOrPause();
+            }
+
             videoPlayer.MediaController.Seek(newValue, TimeSeekOrigin.BeginTime);
         }
 
