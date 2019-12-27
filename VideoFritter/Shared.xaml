@@ -13,8 +13,10 @@
     <RadialGradientBrush x:Key="defaultWindowBackgroundBrush">
         <GradientStop Color="#FF050A30" Offset="1"/>
         <GradientStop Color="#FF5B3087"/>
-    </RadialGradientBrush>    
-    
+    </RadialGradientBrush>
+
+    <SolidColorBrush x:Key="defaultWindowButtonGraphicBrush" Color="#32324b" />
+
     <Style x:Key="DefaultWindowStyle">
         <Setter Property="Control.Background" Value="{StaticResource defaultWindowBackgroundBrush}" />
     </Style>
@@ -45,6 +47,8 @@
         <Setter Property="Background" Value="#FF050A30" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="White" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="6,2,6,2" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type MenuItem}">
@@ -104,7 +108,7 @@
                             <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
                         </Trigger>
                         <Trigger Property="IsHighlighted" Value="True">
-                            <Setter Property="Background" TargetName="templateRoot" Value="#3D26A0DA"/>
+                            <Setter Property="Background" TargetName="templateRoot" Value="#8026A0DA"/>
                             <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FF26A0DA"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
@@ -231,6 +235,28 @@
                 </Setter>
             </DataTrigger>            
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="WindowButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Margin" Value="3,3" />
+        <Setter Property="Padding" Value="3,3" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Common:CustomButtonAttachedProperties.RadiusValue" Value="2" />
+    </Style>
+
+    <Style x:Key="CloseWindowButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource WindowButtonStyle}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Canvas Width="10" Height="10">
+                        <Line X1="0" Y1="0" X2="10" Y2="10" Stroke="{StaticResource defaultWindowButtonGraphicBrush}" />
+                        <Line X1="0" Y1="10" X2="10" Y2="0" Stroke="{StaticResource defaultWindowButtonGraphicBrush}" />
+                    </Canvas>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

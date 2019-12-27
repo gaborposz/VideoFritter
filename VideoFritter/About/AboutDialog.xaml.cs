@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
@@ -30,6 +31,19 @@ namespace VideoFritter.About
             Properties.Resources.VideoFritterIcon.Save(memoryStream);
             image.Source = BitmapFrame.Create(memoryStream);
 
+        }
+
+        private void WindowDragging(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+        }
+
+        private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

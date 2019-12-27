@@ -8,8 +8,11 @@
         mc:Ignorable="d"
         Title="{x:Static p:Resources.AboutWindowTitle}" 
         Style="{StaticResource DefaultWindowStyle}"
+        WindowStyle="None"
+        ResizeMode="NoResize" 
         SizeToContent="WidthAndHeight"
-        ResizeMode="NoResize" >
+        MouseDown="WindowDragging"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <local:AboutViewModel></local:AboutViewModel>
     </Window.DataContext>
@@ -20,8 +23,8 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <Label x:Name="ProductTitle" Content="{Binding AssemblyTitle}" Padding="15,10,0,0" />
-                <Label x:Name="ProductVersion" Content="{Binding AssemblyVersion}" Padding="5,10,0,0" />
+                <Label x:Name="ProductTitle" Content="{Binding AssemblyTitle}" Padding="15,10,0,10" />
+                <Label x:Name="ProductVersion" Content="{Binding AssemblyVersion}" Padding="5,10,0,10" />
             </StackPanel>
             
             <TextBlock Padding="15,2,10,15">
@@ -56,7 +59,10 @@
                     TextWrapping="Wrap"
                     Text="{x:Static p:Resources.AboutText2}" />
         </StackPanel>
-        <Image Grid.Column="1" x:Name="ProductIcon" Loaded="Image_Loaded" VerticalAlignment="Top" Width="128" Height="128" Margin="10"/>
+        <StackPanel Grid.Column="1">
+            <Button x:Name="CloseWindowButton" Style="{StaticResource CloseWindowButtonStyle}" Click="CloseWindowButton_Click" Margin="7" />
+            <Image x:Name="ProductIcon" Loaded="Image_Loaded" VerticalAlignment="Top" HorizontalAlignment="Left" Width="128" Height="128" Margin="0,10,10,10"/>
+        </StackPanel>
     </Grid>
 
 </Window>

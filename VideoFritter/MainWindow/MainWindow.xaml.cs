@@ -174,5 +174,43 @@ namespace VideoFritter.MainWindow
             this.aboutDialog.Closed -= AboutDialog_Closed;
             this.aboutDialog = null;
         }
+
+        private void WindowDragging(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+        }
+
+        private void MaximizeWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            MaximizeWindow();
+        }
+
+        private void MinimizeWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                MaximizeWindow();
+            }
+        }
+
+        private void MaximizeWindow()
+        {
+            if (this.WindowState == WindowState.Normal)
+            {
+                this.WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                this.WindowState = WindowState.Normal;
+            }
+        }
     }
 }

@@ -10,11 +10,14 @@
         xmlns:p="clr-namespace:VideoFritter.Properties"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" 
-        Height="660" 
-        Width="900"   
+        Height="740" 
+        Width="1200"  
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
         Style="{StaticResource DefaultWindowStyle}"
         AllowDrop="True"
-        Drop="Window_Drop">
+        Drop="Window_Drop"
+        MouseDown="WindowDragging">
 
     <Grid x:Name="mainLayoutGrid">
         <Grid.RowDefinitions>
@@ -27,24 +30,45 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Menu IsMainMenu="True" Grid.Row="0">
-            <MenuItem Header="{x:Static p:Resources.FileMenu}">
-                <MenuItem Header="{x:Static p:Resources.FileMenu_Open}" Command="{Binding OpenFileCommand}" />
-                <MenuItem Header="{x:Static p:Resources.FileMenu_Export}" Command="{Binding ExportSelectionCommand}"/>
-                <MenuItem Header="{x:Static p:Resources.FileMenu_Exit}" Click="Menu_File_Exit" />
-            </MenuItem>
-            <MenuItem Header="{x:Static p:Resources.ViewMenu}">
-                <MenuItem Header="{x:Static p:Resources.ViewMenu_Resize}" Click="Menu_View_Resize" />
-            </MenuItem>
-            <MenuItem Header="{x:Static p:Resources.ToolsMenu}">
-                <MenuItem Header="{x:Static p:Resources.ToolsMenu_ExportQueue}" Click="Menu_ExportQueue"/>
-                <MenuItem Header="{x:Static p:Resources.ToolsMenu_Settings}" Click="Menu_Settings" />
-            </MenuItem>
-            <MenuItem Header="{x:Static p:Resources.HelpMenu}">
-                <MenuItem Header="{x:Static p:Resources.HelpMenu_About}" Click="MenuAbout_Click" />
-            </MenuItem>
-        </Menu>
-
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Menu Grid.Column="0" IsMainMenu="True"  HorizontalAlignment="Left" Width="Auto">
+                <MenuItem Header="{x:Static p:Resources.FileMenu}">
+                    <MenuItem Header="{x:Static p:Resources.FileMenu_Open}" Command="{Binding OpenFileCommand}" />
+                    <MenuItem Header="{x:Static p:Resources.FileMenu_Export}" Command="{Binding ExportSelectionCommand}"/>
+                    <MenuItem Header="{x:Static p:Resources.FileMenu_Exit}" Click="Menu_File_Exit" />
+                </MenuItem>
+                <MenuItem Header="{x:Static p:Resources.ViewMenu}">
+                    <MenuItem Header="{x:Static p:Resources.ViewMenu_Resize}" Click="Menu_View_Resize" />
+                </MenuItem>
+                <MenuItem Header="{x:Static p:Resources.ToolsMenu}">
+                    <MenuItem Header="{x:Static p:Resources.ToolsMenu_ExportQueue}" Click="Menu_ExportQueue"/>
+                    <MenuItem Header="{x:Static p:Resources.ToolsMenu_Settings}" Click="Menu_Settings" />
+                </MenuItem>
+                <MenuItem Header="{x:Static p:Resources.HelpMenu}">
+                    <MenuItem Header="{x:Static p:Resources.HelpMenu_About}" Click="MenuAbout_Click" />
+                </MenuItem>
+            </Menu>
+            <Border Grid.Column="1" Background="Transparent" MouseDown="Border_MouseDown"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,3,0">
+                <Button  x:Name="MinimizeWindowButton" Style="{StaticResource WindowButtonStyle}" Click="MinimizeWindowButton_Click">
+                    <Canvas Width="10" Height="10">
+                        <Line X1="0" Y1="8" X2="10" Y2="8" Stroke="{StaticResource defaultWindowButtonGraphicBrush}"/>
+                    </Canvas>
+                </Button>
+                <Button HorizontalAlignment="Right" x:Name="MaximizeWindowButton" Style="{StaticResource WindowButtonStyle}" Click="MaximizeWindowButton_Click">
+                    <Canvas Width="10" Height="10">
+                        <Rectangle Canvas.Top="3" Width="8" Height="6" Stroke="{StaticResource defaultWindowButtonGraphicBrush}"/>
+                        <Rectangle Canvas.Top="1" Canvas.Left="2" Width="8" Height="6" Stroke="{StaticResource defaultWindowButtonGraphicBrush}"/>
+                    </Canvas>                    
+                </Button>
+                <Button HorizontalAlignment="Right" x:Name="CloseWindowButton" Style="{StaticResource CloseWindowButtonStyle}" Click="Menu_File_Exit"  />
+            </StackPanel>
+        </Grid>
         <VideoPlayer:VideoPlayer 
             x:Name="videoPlayer" 
             Grid.Row="1"
@@ -127,7 +151,7 @@
                     Background="#FF423535" 
                     BorderBrush="#FF685757" 
                     Foreground="#FF1AAC2E"/>
-                
+
             </Grid>
 
             <Grid x:Name="middleSectionLayout"
