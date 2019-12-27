@@ -74,7 +74,7 @@
 
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 
-    <Icon Id="VideoFritter.exe" SourceFile="..\VideoFritter\bin\Release\VideoFritter.exe" />
+    <Icon Id="VideoFritter.exe" SourceFile="..\publish\VideoFritter.exe" />
 
     <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
 

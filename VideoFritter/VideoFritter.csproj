@@ -5,7 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>    
+    <UseWindowsForms>true</UseWindowsForms>
+    <Version>0.8.0</Version>
+    <ApplicationIcon>Resources\VideoFritter.ico</ApplicationIcon>    
   </PropertyGroup>
   
   <ItemGroup>
