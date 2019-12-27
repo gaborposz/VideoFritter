@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace VideoFritter.ExportQueue
 {
@@ -33,6 +34,19 @@ namespace VideoFritter.ExportQueue
         private void StartQueueButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.ExportQueue();
+        }
+
+        private void WindowDragging(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+        }
+
+        private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

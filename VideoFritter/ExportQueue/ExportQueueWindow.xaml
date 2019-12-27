@@ -8,6 +8,8 @@
         Title="{x:Static p:Resources.ExportQueueWindowTitle}" 
         Height="450" 
         Width="800"
+        MouseDown="WindowDragging"
+        WindowStyle="None"
         Style="{StaticResource DefaultWindowStyle}">
     <Window.Resources>
         <Style TargetType="ListBoxItem">
@@ -24,18 +26,21 @@
     
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Label Content="{x:Static p:Resources.ExportQueueWindowTitle}"/>
+        <Button Grid.Row="0" x:Name="CloseWindowButton" Style="{StaticResource CloseWindowButtonStyle}" Click="CloseWindowButton_Click"  />
 
         <ListBox
             x:Name="listBox" 
-            Grid.Row="0" 
+            Grid.Row="1" 
             ItemsSource="{Binding Queue}"
             SelectedIndex="{Binding SelectedIndex, Mode=OneWayToSource}"
             AlternationCount="2" />
 
-        <DockPanel Grid.Row="1" Margin="3,0">
+        <DockPanel Grid.Row="2" Margin="3,0">
             <Button Name="startQueueButton"
                     DockPanel.Dock="Left"
                     Content="{x:Static p:Resources.StartExportQueue}" 
