@@ -36,37 +36,6 @@ namespace VideoFritter.MainWindow
             this.Close();
         }
 
-        private void Menu_View_Resize(object sender, RoutedEventArgs e)
-        {
-            const double horizontalScreenPadding = 20 * 2;
-            const double verticalScreenPadding = 20 * 2;
-
-            // Get the size of the current screen
-            System.Windows.Forms.Screen currentScreen = System.Windows.Forms.Screen.FromRectangle(
-                new System.Drawing.Rectangle((int)this.Left, (int)this.Top, (int)this.Width, (int)this.Height));
-
-            // Calculate the space occupied by other controls
-            double takenWidth = this.Width - this.videoPlayer.ActualVideoWidth;
-            double takenHeight = this.Height - this.videoPlayer.ActualVideoHeight;
-
-            // Calculate the maximum desirable window size
-            double maxWindowWidth = currentScreen.Bounds.Width - horizontalScreenPadding;
-            double maxWindowHeight = currentScreen.Bounds.Height - verticalScreenPadding;
-
-            // Calculate the resize factor
-            double horizontalResizeFactor = (maxWindowWidth - takenWidth) / this.videoPlayer.VideoWidth;
-            double verticalResizeFactor = (maxWindowHeight - takenHeight) / this.videoPlayer.VideoHeight;
-            double choosenResizeFactor = Math.Min(horizontalResizeFactor, verticalResizeFactor);
-
-            // Set the size of the window
-            this.Width = this.videoPlayer.VideoWidth * choosenResizeFactor + takenWidth;
-            this.Height = this.videoPlayer.VideoHeight * choosenResizeFactor + takenHeight;
-
-            // Move the window inside the screen if it went out
-            this.Left = (currentScreen.Bounds.Width - this.Width) / 2;
-            this.Top = (currentScreen.Bounds.Height - this.Height) / 8;
-        }
-
         private void VideoPlayer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.viewModel.PlayOrPauseCommand.Execute(null);

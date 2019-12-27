@@ -284,12 +284,6 @@ This software uses FFmpeg CLI that is licensed under the LGPLv2.1 license.</valu
   <data name="VideoPosition" xml:space="preserve">
     <value>Video postition</value>
   </data>
-  <data name="ViewMenu" xml:space="preserve">
-    <value>_View</value>
-  </data>
-  <data name="ViewMenu_Resize" xml:space="preserve">
-    <value>Scale to _fit screen</value>
-  </data>
   <data name="Volume" xml:space="preserve">
     <value>Set audio volume</value>
   </data>
