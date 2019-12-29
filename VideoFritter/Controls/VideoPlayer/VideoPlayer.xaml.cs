@@ -199,6 +199,12 @@ namespace VideoFritter.Controls.VideoPlayer
             }
             else
             {
+                if (this.VideoPosition >= VideoLength)
+                {
+                    // Do nothing if the video is at its end
+                    return;
+                }
+
                 this.endOfPlayback = VideoLength;
 
                 MediaController.Resume();
