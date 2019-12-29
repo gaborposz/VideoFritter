@@ -5,6 +5,8 @@
                     xmlns:Converters="clr-namespace:VideoFritter.Converters"
                     xmlns:Common="clr-namespace:VideoFritter.Common">
 
+    <WindowStartupLocation x:Key="DefaultWindowStartupLocation">CenterScreen</WindowStartupLocation>
+
     <Converters:TimeSpanToMillisecondsConverter x:Key="timeSpanToMillisecondsConverter" />
     <Converters:InverseBoolToVisibilityConverter x:Key="inverseBoolToVisibilityConverter" />
     <Converters:InverseBoolConverter x:Key="inverseBoolConverter" />
@@ -17,8 +19,129 @@
 
     <SolidColorBrush x:Key="defaultWindowButtonGraphicBrush" Color="#32324b" />
 
-    <Style x:Key="DefaultWindowStyle">
+    <RadialGradientBrush x:Key="defaultButtonBackgroundBrush" GradientOrigin="0.496,1.052">
+        <RadialGradientBrush.RelativeTransform>
+            <TransformGroup>
+                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                <TranslateTransform X="0.02" Y="0.3"/>
+            </TransformGroup>
+        </RadialGradientBrush.RelativeTransform>
+        <GradientStop Offset="1" Color="#FFBDABA6"/>
+        <GradientStop Offset="0.3" Color="#FF757C9B"/>
+    </RadialGradientBrush>
+
+    <RadialGradientBrush x:Key="pressedButtonBackgroundBrush" GradientOrigin="0.496,1.052">
+        <RadialGradientBrush.RelativeTransform>
+            <TransformGroup>
+                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                <TranslateTransform X="0.02" Y="0.3"/>
+            </TransformGroup>
+        </RadialGradientBrush.RelativeTransform>
+        <GradientStop Offset="1" Color="#FFE6D3C8"/>
+        <GradientStop Offset="0.3" Color="#FF959ED8"/>
+    </RadialGradientBrush>
+
+    <Style x:Key="DefaultWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="Control.Background" Value="{StaticResource defaultWindowBackgroundBrush}" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+
+        <!-- WORKAROUND: Do not let the Window go behind the TaskBar when Maximized -->
+        <Setter Property="MaxHeight" Value="{x:Static SystemParameters.MaximizedPrimaryScreenHeight}" />
+        
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome ResizeBorderThickness="5" CaptionHeight="32" CornerRadius="0" GlassFrameThickness="0" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NonResizeableWindowStyle" TargetType="{x:Type Window}" BasedOn="{StaticResource DefaultWindowStyle}">
+        <Setter Property="ResizeMode" Value="NoResize" />
+    </Style>
+
+    <Style x:Key="WindowBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+
+        <Style.Triggers>
+            <!-- WORKAROUND: To avoid border disappearing when window is maximised -->
+            <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                Value="Maximized">
+                <Setter Property="Margin" Value="7"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                Value="Normal">
+                <Setter Property="Margin" Value="0"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="WindowTitleLabelStyle" TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="16" />
+        <!--Setter Property="Padding" Value="0" /-->
+    </Style>
+
+    <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="5,5" />
+        <Setter Property="Padding" Value="6,2" />
+        <Setter Property="Common:CustomButtonAttachedProperties.RadiusValue" Value="5" />
+        <Setter Property="Template" >
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid">
+                        <Border x:Name="border" 
+                                Padding="{TemplateBinding Padding}" 
+                                CornerRadius="{Binding Path=(Common:CustomButtonAttachedProperties.RadiusValue), RelativeSource={RelativeSource TemplatedParent}}" 
+                                BorderBrush="Black" 
+                                BorderThickness="1" 
+                                Background="{StaticResource defaultButtonBackgroundBrush}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource pressedButtonBackgroundBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#ffa800"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="grid" Value="0.25"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CaptionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Margin" Value="3,3" />
+        <Setter Property="Padding" Value="3,3" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Common:CustomButtonAttachedProperties.RadiusValue" Value="2" />
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+    </Style>
+
+    <Style x:Key="CloseCaptionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Canvas Width="10" Height="10">
+                        <Line X1="0" Y1="0" X2="10" Y2="10" Stroke="{StaticResource defaultWindowButtonGraphicBrush}" />
+                        <Line X1="0" Y1="10" X2="10" Y2="0" Stroke="{StaticResource defaultWindowButtonGraphicBrush}" />
+                    </Canvas>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="{x:Type ToolTip}">
@@ -139,65 +262,6 @@
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 
-    <RadialGradientBrush x:Key="defaultButtonBackgroundBrush" GradientOrigin="0.496,1.052">
-        <RadialGradientBrush.RelativeTransform>
-            <TransformGroup>
-                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
-                <TranslateTransform X="0.02" Y="0.3"/>
-            </TransformGroup>
-        </RadialGradientBrush.RelativeTransform>
-        <GradientStop Offset="1" Color="#FFBDABA6"/>
-        <GradientStop Offset="0.3" Color="#FF757C9B"/>
-    </RadialGradientBrush>
-
-    <RadialGradientBrush x:Key="pressedButtonBackgroundBrush" GradientOrigin="0.496,1.052">
-        <RadialGradientBrush.RelativeTransform>
-            <TransformGroup>
-                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
-                <TranslateTransform X="0.02" Y="0.3"/>
-            </TransformGroup>
-        </RadialGradientBrush.RelativeTransform>
-        <GradientStop Offset="1" Color="#FFE6D3C8"/>
-        <GradientStop Offset="0.3" Color="#FF959ED8"/>
-    </RadialGradientBrush>
-
-    <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="5,5" />
-        <Setter Property="Padding" Value="6,2" />
-        <Setter Property="Common:CustomButtonAttachedProperties.RadiusValue" Value="5" />
-        <Setter Property="Template" >
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid x:Name="grid">
-                        <Border x:Name="border" 
-                                Padding="{TemplateBinding Padding}" 
-                                CornerRadius="{Binding Path=(Common:CustomButtonAttachedProperties.RadiusValue), RelativeSource={RelativeSource TemplatedParent}}" 
-                                BorderBrush="Black" 
-                                BorderThickness="1" 
-                                Background="{StaticResource defaultButtonBackgroundBrush}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center">
-                            </ContentPresenter>
-                        </Border>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource pressedButtonBackgroundBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" TargetName="border" Value="#ffa800"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" TargetName="grid" Value="0.25"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style x:Key="GraphicButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Margin" Value="2,2" />
         <Setter Property="Padding" Value="5,5" />
@@ -233,30 +297,8 @@
                         </DataTemplate>
                     </Setter.Value>
                 </Setter>
-            </DataTrigger>            
+            </DataTrigger>
         </Style.Triggers>
-    </Style>
-
-    <Style x:Key="WindowButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButtonStyle}">
-        <Setter Property="Width" Value="20" />
-        <Setter Property="Height" Value="20" />
-        <Setter Property="Margin" Value="3,3" />
-        <Setter Property="Padding" Value="3,3" />
-        <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="Common:CustomButtonAttachedProperties.RadiusValue" Value="2" />
-    </Style>
-
-    <Style x:Key="CloseWindowButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource WindowButtonStyle}">
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Canvas Width="10" Height="10">
-                        <Line X1="0" Y1="0" X2="10" Y2="10" Stroke="{StaticResource defaultWindowButtonGraphicBrush}" />
-                        <Line X1="0" Y1="10" X2="10" Y2="0" Stroke="{StaticResource defaultWindowButtonGraphicBrush}" />
-                    </Canvas>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
 </ResourceDictionary>

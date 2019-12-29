@@ -5,13 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:p="clr-namespace:VideoFritter.Properties"
         mc:Ignorable="d"
-        Title="{x:Static p:Resources.ExportQueueWindowTitle}" 
+        Title="{x:Static p:Resources.ExportQueueWindowTitle}"
+        Style="{StaticResource DefaultWindowStyle}"
+        WindowStartupLocation="{StaticResource DefaultWindowStartupLocation}"
         Height="450" 
-        Width="800"
-        MouseDown="WindowDragging"
-        WindowStartupLocation="CenterScreen"
-        WindowStyle="None"
-        Style="{StaticResource DefaultWindowStyle}">
+        Width="800" >
     <Window.Resources>
         <Style TargetType="ListBoxItem">
             <Style.Triggers>
@@ -24,40 +22,40 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="{x:Static p:Resources.ExportQueueWindowTitle}"/>
-        <Button Grid.Row="0" x:Name="CloseWindowButton" Style="{StaticResource CloseWindowButtonStyle}" Click="CloseWindowButton_Click"  />
+    <Border Style="{StaticResource WindowBorderStyle}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="{x:Static p:Resources.ExportQueueWindowTitle}" Style="{StaticResource WindowTitleLabelStyle}"/>
+            <Button Grid.Row="0" x:Name="CloseWindowButton" Style="{StaticResource CloseCaptionButtonStyle}" Click="CloseWindowButton_Click"  />
 
-        <ListBox
+            <ListBox
             x:Name="listBox" 
             Grid.Row="1" 
             ItemsSource="{Binding Queue}"
             SelectedIndex="{Binding SelectedIndex, Mode=OneWayToSource}"
             AlternationCount="2" />
 
-        <DockPanel Grid.Row="2" Margin="3,0">
-            <Button Name="startQueueButton"
+            <DockPanel Grid.Row="2" Margin="3,0">
+                <Button Name="startQueueButton"
                     DockPanel.Dock="Left"
                     Content="{x:Static p:Resources.StartExportQueue}" 
                     ToolTip="{x:Static p:Resources.StartExportQueueToolTip}"                                   
                     Click="StartQueueButton_Click"
                     Style="{StaticResource BaseButtonStyle}" >
-                <Button.IsEnabled>
-                    <MultiBinding Converter="{StaticResource andMultiValueConverter}">
-                        <Binding Path="IsExporting" Mode="OneWay" Converter="{StaticResource inverseBoolConverter}" />
-                        <Binding Path="HasItems" Mode="OneWay" />
-                    </MultiBinding>
-                </Button.IsEnabled>
-            </Button>
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource andMultiValueConverter}">
+                            <Binding Path="IsExporting" Mode="OneWay" Converter="{StaticResource inverseBoolConverter}" />
+                            <Binding Path="HasItems" Mode="OneWay" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
 
 
-            <Button Name="clearQueueButton"
+                <Button Name="clearQueueButton"
                     DockPanel.Dock="Left"
                     ToolTip="{x:Static p:Resources.ClearExportQueueToolTip}"
                     Content="{x:Static p:Resources.ClearExportQueue}" 
@@ -65,7 +63,7 @@
                     Click="ClearQueueButton_Click"
                     Style="{StaticResource BaseButtonStyle}" />
 
-            <Button Name="deleteSelectedButton"
+                <Button Name="deleteSelectedButton"
                     DockPanel.Dock="Left"
                     ToolTip="{x:Static p:Resources.RemoveFromExportQueueToolTip}"
                     IsEnabled="{Binding HasSelection}"
@@ -73,14 +71,15 @@
                     Click="DeleteSelectedButton_Click"
                     Style="{StaticResource BaseButtonStyle}" />
 
-            <ProgressBar Name="progressBar"
+                <ProgressBar Name="progressBar"
                          DockPanel.Dock="Right" 
                          Minimum="0" 
                          Maximum="1"
                          Margin="6,10"
                          IsIndeterminate="{Binding IsIndeterminateProgess, Mode=OneWay}"
                          Value="{Binding ExportProgress, Mode=OneWay}"/>
-            
-        </DockPanel>
-    </Grid>
+
+            </DockPanel>
+        </Grid>
+    </Border>
 </Window>

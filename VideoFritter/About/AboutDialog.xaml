@@ -6,38 +6,40 @@
         xmlns:local="clr-namespace:VideoFritter.About"
         xmlns:p="clr-namespace:VideoFritter.Properties"
         mc:Ignorable="d"
-        Title="{x:Static p:Resources.AboutWindowTitle}" 
-        Style="{StaticResource DefaultWindowStyle}"
-        WindowStyle="None"
-        ResizeMode="NoResize" 
+        Title="{x:Static p:Resources.AboutWindowTitle}"         
+        Style="{StaticResource NonResizeableWindowStyle}"
+        WindowStartupLocation="{StaticResource DefaultWindowStartupLocation}"
         SizeToContent="WidthAndHeight"
-        MouseDown="WindowDragging"
-        WindowStartupLocation="CenterScreen">
+        MouseDown="WindowDragging">
     <Window.DataContext>
         <local:AboutViewModel></local:AboutViewModel>
     </Window.DataContext>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <Label x:Name="ProductTitle" Content="{Binding AssemblyTitle}" Padding="15,10,0,10" />
-                <Label x:Name="ProductVersion" Content="{Binding AssemblyVersion}" Padding="5,10,0,10" />
-            </StackPanel>
-            
-            <TextBlock Padding="15,2,10,15">
-                    <Hyperlink NavigateUri="https://github.com/gaborposz/VideoFritter" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/gaborposz/VideoFritter</Hyperlink>
-            </TextBlock>
-            
-            <StackPanel Orientation="Horizontal" >
-                <Label x:Name="Copyright" Content="Copyright 2019" Padding="15,0,0,10"/>
-                <Label x:Name="CopyrightProductTitle" Content="{Binding AssemblyTitle}" Padding="5,0,0,10" />
-                <Label x:Name="CopyrightAuthor" Content="{Binding AssemblyCompany}" Padding="5,0,0,10" />
-            </StackPanel>
 
-            <TextBlock 
+    <Border Style="{StaticResource WindowBorderStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.ColumnSpan="2" Content="{x:Static p:Resources.AboutWindowTitle}" Style="{StaticResource WindowTitleLabelStyle}"/>
+            <StackPanel Grid.Column="0" Orientation="Vertical">
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="ProductTitle" Content="{Binding AssemblyTitle}" Padding="15,40,0,10" />
+                    <Label x:Name="ProductVersion" Content="{Binding AssemblyVersion}" Padding="5,40,0,10" />
+                </StackPanel>
+
+                <TextBlock Padding="15,2,10,15">
+                    <Hyperlink NavigateUri="https://github.com/gaborposz/VideoFritter" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/gaborposz/VideoFritter</Hyperlink>
+                </TextBlock>
+
+                <StackPanel Orientation="Horizontal" >
+                    <Label x:Name="Copyright" Content="Copyright 2019" Padding="15,0,0,10"/>
+                    <Label x:Name="CopyrightProductTitle" Content="{Binding AssemblyTitle}" Padding="5,0,0,10" />
+                    <Label x:Name="CopyrightAuthor" Content="{Binding AssemblyCompany}" Padding="5,0,0,10" />
+                </StackPanel>
+
+                <TextBlock 
                     Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
                     x:Name="aboutText1" 
                     Padding="15,0,15,15"
@@ -46,10 +48,10 @@
                     HorizontalAlignment="Left"
                     TextWrapping="Wrap"
                     Text="{x:Static p:Resources.AboutText1}" />
-            <TextBlock Padding="15,2,10,15">
+                <TextBlock Padding="15,2,10,15">
                     <Hyperlink NavigateUri="http://www.apache.org/licenses/LICENSE-2.0" RequestNavigate="Hyperlink_RequestNavigate">http://www.apache.org/licenses/LICENSE-2.0</Hyperlink>
-            </TextBlock>
-            <TextBlock 
+                </TextBlock>
+                <TextBlock 
                     Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
                     x:Name="aboutText2" 
                     Padding="15,0,15,15"
@@ -58,11 +60,12 @@
                     HorizontalAlignment="Left"
                     TextWrapping="Wrap"
                     Text="{x:Static p:Resources.AboutText2}" />
-        </StackPanel>
-        <StackPanel Grid.Column="1">
-            <Button x:Name="CloseWindowButton" Style="{StaticResource CloseWindowButtonStyle}" Click="CloseWindowButton_Click" Margin="7" />
-            <Image x:Name="ProductIcon" Loaded="Image_Loaded" VerticalAlignment="Top" HorizontalAlignment="Left" Width="128" Height="128" Margin="0,10,10,10"/>
-        </StackPanel>
-    </Grid>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Button x:Name="CloseWindowButton" Style="{StaticResource CloseCaptionButtonStyle}" Click="CloseWindowButton_Click" Margin="7" />
+                <Image x:Name="ProductIcon" Loaded="Image_Loaded" VerticalAlignment="Top" HorizontalAlignment="Left" Width="128" Height="128" Margin="0,10,10,10"/>
+            </StackPanel>
+        </Grid>
+    </Border>
 
 </Window>

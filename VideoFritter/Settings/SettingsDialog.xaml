@@ -6,67 +6,69 @@
         xmlns:local="clr-namespace:VideoFritter.Settings"
         xmlns:p="clr-namespace:VideoFritter.Properties"        
         mc:Ignorable="d"
-        Style="{StaticResource DefaultWindowStyle}"
-        ResizeMode="NoResize"
-        MouseDown="WindowDragging"
-        WindowStartupLocation="CenterScreen"
-        WindowStyle="None"        
-        Title="{x:Static p:Resources.SettingsWindowTitle}" Height="250" Width="460">
+        Title="{x:Static p:Resources.SettingsWindowTitle}"        
+        Style="{StaticResource NonResizeableWindowStyle}"
+        WindowStartupLocation="{StaticResource DefaultWindowStartupLocation}"        
+        MouseDown="WindowDragging"     
+        Height="250" 
+        Width="460">
     <Window.DataContext>
         <local:SettingsViewModel />
     </Window.DataContext>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <Border Style="{StaticResource WindowBorderStyle}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Content="{x:Static p:Resources.SettingsWindowTitle}"/>
-        <Button Grid.Row="0" x:Name="CloseWindowButton" Style="{StaticResource CloseWindowButtonStyle}" Click="CancelButton_Click"  />
+            <Label Grid.Row="0" Content="{x:Static p:Resources.SettingsWindowTitle}" Style="{StaticResource WindowTitleLabelStyle}"/>
+            <Button Grid.Row="0" x:Name="CloseWindowButton" Style="{StaticResource CloseCaptionButtonStyle}" Click="CancelButton_Click"  />
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
-            <Label 
+            <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
+                <Label 
                 Content="{x:Static p:Resources.ExportQueuePathLabel}" 
                 ToolTip="{x:Static p:Resources.ExportQueuePathToolTip}" 
                 Margin="5,5,0,0" 
                 HorizontalAlignment="Left" />
-            <TextBox 
+                <TextBox 
                 Text="{Binding ExportQueuePath, UpdateSourceTrigger=PropertyChanged}" 
                 ToolTip="{x:Static p:Resources.ExportQueuePathToolTip}" 
                 Margin="10,0,0,0" 
                 HorizontalAlignment="Left" 
                 TextWrapping="Wrap" 
                 Width="400" />
-            <CheckBox 
+                <CheckBox 
                 Content="{x:Static p:Resources.CorrectTimeStampsCheckBox}" 
                 IsChecked="{Binding TimeStampCorrection}" 
                 ToolTip="{x:Static p:Resources.CorrectTimeStampsToolTip}" 
                 Margin="10,15,0,0" 
                 HorizontalAlignment="Left" />
-            <CheckBox 
+                <CheckBox 
                 Content="{x:Static p:Resources.SaveFFMpegLogs}" 
                 ToolTip="{x:Static p:Resources.SaveFFMpegLogsToolTip}" 
                 IsChecked="{Binding SaveFFMpegLogs}" 
                 Margin="10,15,0,0" 
                 HorizontalAlignment="Left" />
-        </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
-            <Button x:Name="CancelButton" 
+            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Button x:Name="CancelButton" 
                     Click="CancelButton_Click"
                     ToolTip="{x:Static p:Resources.CancelButton}"
                     Content="{x:Static p:Resources.CancelButton}" 
                     Style="{StaticResource BaseButtonStyle}" />
-            <Button x:Name="SaveButton" 
+                <Button x:Name="SaveButton" 
                     Command="{Binding SaveCommand}"
                     ToolTip="{x:Static p:Resources.SaveButton}"
                     Content="{x:Static p:Resources.SaveButton}" 
                     Style="{StaticResource BaseButtonStyle}" />
-            <Button x:Name="ResetButton" 
+                <Button x:Name="ResetButton" 
                     Command="{Binding ResetToDefaultsCommand}"
                     ToolTip="{x:Static p:Resources.ResetButton}"
                     Content="{x:Static p:Resources.ResetButton}" 
                     Style="{StaticResource BaseButtonStyle}" />
-        </StackPanel>
-    </Grid>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

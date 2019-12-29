@@ -3,70 +3,68 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VideoFritter.MainWindow"
         xmlns:VideoPlayer="clr-namespace:VideoFritter.Controls.VideoPlayer"
         xmlns:SlicingSlider="clr-namespace:VideoFritter.Controls.SlicingSlider"
         xmlns:AudioVolumeControl="clr-namespace:VideoFritter.Controls.AudioVolumeControl"
         xmlns:p="clr-namespace:VideoFritter.Properties"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" 
+        Title="{Binding WindowTitle}"         
         Height="740" 
-        Width="1200"  
-        WindowStyle="None"
-        WindowStartupLocation="CenterScreen"
+        Width="1200"
         Style="{StaticResource DefaultWindowStyle}"
+        WindowStartupLocation="{StaticResource DefaultWindowStartupLocation}"       
         AllowDrop="True"
-        Drop="Window_Drop"
-        MouseDown="WindowDragging">
-
-    <Grid x:Name="mainLayoutGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Row="0">
+        Drop="Window_Drop">
+    <Border Style="{StaticResource WindowBorderStyle}">
+        <Grid x:Name="mainLayoutGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Menu Grid.Column="0" IsMainMenu="True"  HorizontalAlignment="Left" Width="Auto">
-                <MenuItem Header="{x:Static p:Resources.FileMenu}">
-                    <MenuItem Header="{x:Static p:Resources.FileMenu_Open}" Command="{Binding OpenFileCommand}" />
-                    <MenuItem Header="{x:Static p:Resources.FileMenu_Export}" Command="{Binding ExportSelectionCommand}"/>
-                    <MenuItem Header="{x:Static p:Resources.FileMenu_Exit}" Click="Menu_File_Exit" />
-                </MenuItem>
-                <MenuItem Header="{x:Static p:Resources.ToolsMenu}">
-                    <MenuItem Header="{x:Static p:Resources.ToolsMenu_ExportQueue}" Click="Menu_ExportQueue"/>
-                    <MenuItem Header="{x:Static p:Resources.ToolsMenu_Settings}" Click="Menu_Settings" />
-                </MenuItem>
-                <MenuItem Header="{x:Static p:Resources.HelpMenu}">
-                    <MenuItem Header="{x:Static p:Resources.HelpMenu_About}" Click="MenuAbout_Click" />
-                </MenuItem>
-            </Menu>
-            <Border Grid.Column="1" Background="Transparent" MouseDown="Border_MouseDown"/>
-            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,3,0">
-                <Button  x:Name="MinimizeWindowButton" Style="{StaticResource WindowButtonStyle}" Click="MinimizeWindowButton_Click">
-                    <Canvas Width="10" Height="10">
-                        <Line X1="0" Y1="8" X2="10" Y2="8" Stroke="{StaticResource defaultWindowButtonGraphicBrush}"/>
-                    </Canvas>
-                </Button>
-                <Button HorizontalAlignment="Right" x:Name="MaximizeWindowButton" Style="{StaticResource WindowButtonStyle}" Click="MaximizeWindowButton_Click">
-                    <Canvas Width="10" Height="10">
-                        <Rectangle Canvas.Top="3" Width="8" Height="6" Stroke="{StaticResource defaultWindowButtonGraphicBrush}"/>
-                        <Rectangle Canvas.Top="1" Canvas.Left="2" Width="8" Height="6" Stroke="{StaticResource defaultWindowButtonGraphicBrush}"/>
-                    </Canvas>                    
-                </Button>
-                <Button HorizontalAlignment="Right" x:Name="CloseWindowButton" Style="{StaticResource CloseWindowButtonStyle}" Click="Menu_File_Exit"  />
-            </StackPanel>
-        </Grid>
-        <VideoPlayer:VideoPlayer 
+
+            <Label Content="{Binding WindowTitle}" Style="{StaticResource WindowTitleLabelStyle}"/>
+            
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Menu Grid.Column="0" IsMainMenu="True"  HorizontalAlignment="Left" Width="Auto" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <MenuItem Header="{x:Static p:Resources.FileMenu}">
+                        <MenuItem Header="{x:Static p:Resources.FileMenu_Open}" Command="{Binding OpenFileCommand}" />
+                        <MenuItem Header="{x:Static p:Resources.FileMenu_Export}" Command="{Binding ExportSelectionCommand}"/>
+                        <MenuItem Header="{x:Static p:Resources.FileMenu_Exit}" Click="Menu_File_Exit" />
+                    </MenuItem>
+                    <MenuItem Header="{x:Static p:Resources.ToolsMenu}">
+                        <MenuItem Header="{x:Static p:Resources.ToolsMenu_ExportQueue}" Click="Menu_ExportQueue"/>
+                        <MenuItem Header="{x:Static p:Resources.ToolsMenu_Settings}" Click="Menu_Settings" />
+                    </MenuItem>
+                    <MenuItem Header="{x:Static p:Resources.HelpMenu}">
+                        <MenuItem Header="{x:Static p:Resources.HelpMenu_About}" Click="MenuAbout_Click" />
+                    </MenuItem>
+                </Menu>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,3,0">
+                    <Button x:Name="MinimizeWindowButton" Style="{StaticResource CaptionButtonStyle}" Click="MinimizeWindowButton_Click">
+                        <Canvas Width="10" Height="10">
+                            <Line X1="0" Y1="8" X2="10" Y2="8" Stroke="{StaticResource defaultWindowButtonGraphicBrush}"/>
+                        </Canvas>
+                    </Button>
+                    <Button HorizontalAlignment="Right" x:Name="MaximizeWindowButton" Style="{StaticResource CaptionButtonStyle}" Click="MaximizeWindowButton_Click">
+                        <Canvas Width="10" Height="10">
+                            <Rectangle Canvas.Top="3" Width="8" Height="6" Stroke="{StaticResource defaultWindowButtonGraphicBrush}"/>
+                            <Rectangle Canvas.Top="1" Canvas.Left="2" Width="8" Height="6" Stroke="{StaticResource defaultWindowButtonGraphicBrush}"/>
+                        </Canvas>
+                    </Button>
+                    <Button HorizontalAlignment="Right" x:Name="CloseWindowButton" Style="{StaticResource CloseCaptionButtonStyle}" Click="Menu_File_Exit"  />
+                </StackPanel>
+            </Grid>
+            <VideoPlayer:VideoPlayer 
             x:Name="videoPlayer" 
             Grid.Row="1"
             MouseLeftButtonDown="VideoPlayer_MouseLeftButtonDown"
@@ -74,7 +72,7 @@
             IsPlayingChanged="VideoPlayer_IsPlayingChanged"
             />
 
-        <TextBlock 
+            <TextBlock 
             x:Name="OpenVideoHelpText"
             Grid.Row="1"
             HorizontalAlignment="Center" 
@@ -83,7 +81,7 @@
             Visibility="{Binding IsVideoLoaded, ElementName=videoPlayer, Converter={StaticResource inverseBoolToVisibilityConverter}}"
             Text="{x:Static p:Resources.DoubleClickToOpen}" />
 
-        <SlicingSlider:SlicingSlider x:Name="slider" 
+            <SlicingSlider:SlicingSlider x:Name="slider" 
                                      Grid.Row="2" 
                                      TickPlacement="BottomRight" 
                                      TickFrequency="1000" 
@@ -94,30 +92,30 @@
                                      Value="{Binding ElementName=videoPlayer, Path=VideoPosition, Mode=TwoWay, Converter={StaticResource timeSpanToMillisecondsConverter}}" 
                                      IsEnabled="{Binding IsVideoLoaded, ElementName=videoPlayer}"/>
 
-        <Grid x:Name="simetricLayout"
+            <Grid x:Name="simetricLayout"
               Grid.Row="3" 
               IsEnabled="{Binding IsVideoLoaded, ElementName=videoPlayer}"
               Margin="0,-2,0,4">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Grid x:Name="leftSectionLayout"
-                  Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Button 
+
+                <Grid x:Name="leftSectionLayout"
+                  Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button 
                     x:Name="exportButton" 
                     Grid.Row="0" 
                     Grid.Column="0" 
@@ -126,14 +124,14 @@
                     Command="{Binding ExportSelectionCommand}"
                     Style="{StaticResource BaseButtonStyle}" />
 
-                <Label 
+                    <Label 
                     x:Name="selectionLengthLabel"
                     Grid.Row="0" 
                     Grid.Column="1" 
                     ToolTip="{x:Static p:Resources.SelectionLength}"
                     Content="{Binding SliceLength}" ContentStringFormat="hh\:mm\:ss\.fff" />
 
-                <ProgressBar
+                    <ProgressBar
                     x:Name="exportProgressBar" 
                     Grid.Row="1" 
                     Grid.Column="0"
@@ -149,61 +147,61 @@
                     BorderBrush="#FF685757" 
                     Foreground="#FF1AAC2E"/>
 
-            </Grid>
+                </Grid>
 
-            <Grid x:Name="middleSectionLayout"
+                <Grid x:Name="middleSectionLayout"
                   Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
 
 
-                <Label x:Name="videoLengthLabel" 
+                    <Label x:Name="videoLengthLabel" 
                    Grid.Row="0" 
                    Grid.Column="0"
                    ToolTip="{x:Static p:Resources.VideoLength}"
                    Content="{Binding ElementName=videoPlayer, Path=VideoLength}" ContentStringFormat="hh\:mm\:ss\.fff"/>
 
-                <Button x:Name="backwardButton" 
+                    <Button x:Name="backwardButton" 
                     Grid.Row="0" 
                     Grid.Column="1" 
                     ToolTip="{x:Static p:Resources.Backward}"
                     Command="{Binding BackwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
-                    <Border Width="20" Height="20">
-                        <Path HorizontalAlignment="Center" 
+                        <Border Width="20" Height="20">
+                            <Path HorizontalAlignment="Center" 
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M4,0 L4,12 -2,6 Z M12,0 L12,12 6,6 Z" />
-                    </Border>
-                </Button>
+                        </Border>
+                    </Button>
 
-                <Button x:Name="stepBackwardButton" 
+                    <Button x:Name="stepBackwardButton" 
                     Grid.Row="0" 
                     Grid.Column="2"
                     ToolTip="{x:Static p:Resources.StepBackward}"
                     Command="{Binding StepBackwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
-                    <Border Width="20" Height="20">
-                        <Path HorizontalAlignment="Center" 
+                        <Border Width="20" Height="20">
+                            <Path HorizontalAlignment="Center" 
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M4,0 L4,12 -2,6 Z" />
-                    </Border>
-                </Button>
+                        </Border>
+                    </Button>
 
-                <Button x:Name="playButton" 
+                    <Button x:Name="playButton" 
                     Grid.Row="0" 
                     Grid.Column="3" 
                     ToolTip="{x:Static p:Resources.Play}"
@@ -211,136 +209,136 @@
                     Style="{StaticResource PlayButtonStyle}"
                     Content="Play" />
 
-                <Button x:Name="stepForwardButton" 
+                    <Button x:Name="stepForwardButton" 
                     Grid.Row="0" 
                     Grid.Column="4"
                     ToolTip="{x:Static p:Resources.StepForward}"
                     Command="{Binding StepForwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
-                    <Border Width="20" Height="20">
-                        <Path HorizontalAlignment="Center" 
+                        <Border Width="20" Height="20">
+                            <Path HorizontalAlignment="Center" 
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M2,0 L8,6 2,12 Z" />
-                    </Border>
-                </Button>
+                        </Border>
+                    </Button>
 
-                <Button x:Name="forwardButton" 
+                    <Button x:Name="forwardButton" 
                     Grid.Row="0" 
                     Grid.Column="5" 
                     ToolTip="{x:Static p:Resources.Forward}"
                     Command="{Binding ForwardCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
-                    <Border Width="20" Height="20">
-                        <Path HorizontalAlignment="Center" 
+                        <Border Width="20" Height="20">
+                            <Path HorizontalAlignment="Center" 
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M2,0 L8,6 2,12 Z M10,0 L16,6 10,12 Z" />
-                    </Border>
-                </Button>
+                        </Border>
+                    </Button>
 
-                <Label x:Name="videoPositionLabel" 
+                    <Label x:Name="videoPositionLabel" 
                    Grid.Row="0" 
                    Grid.Column="6" 
                    ToolTip="{x:Static p:Resources.VideoPosition}"
                    Content="{Binding ElementName=videoPlayer, Path=VideoPosition}" 
                    ContentStringFormat="hh\:mm\:ss\.fff"/>
 
-                <Label x:Name="selectionStartLabel" 
+                    <Label x:Name="selectionStartLabel" 
                    Grid.Row="1" 
                    Grid.Column="0" 
                    ToolTip="{x:Static p:Resources.SelectionStart}"
                    Content="{Binding SliceStart}" ContentStringFormat="hh\:mm\:ss\.fff" />
 
-                <Button x:Name="sectionStartButton" 
+                    <Button x:Name="sectionStartButton" 
                     Grid.Row="1" 
                     Grid.Column="1" 
                     ToolTip="{x:Static p:Resources.SetSelectionStart}"
                     Command="{Binding SetSectionStartCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
-                    <Border Width="20" Height="20">
-                        <Path HorizontalAlignment="Center" 
+                        <Border Width="20" Height="20">
+                            <Path HorizontalAlignment="Center" 
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M0,0 L14,0 14,2 1,2 6,9 0,9 Z" />
-                    </Border>
-                </Button>
+                        </Border>
+                    </Button>
 
-                <Button x:Name="playFromSelectionStartButton"
+                    <Button x:Name="playFromSelectionStartButton"
                     Grid.Row="1" 
                     Grid.Column="2" 
                     ToolTip="{x:Static p:Resources.PlayFromSelectionStart}"
                     Command="{Binding PlayFromSelectionStartCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
-                    <Border Width="20" Height="20">
-                        <Path HorizontalAlignment="Center" 
+                        <Border Width="20" Height="20">
+                            <Path HorizontalAlignment="Center" 
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M0,7 L14,7 14,9 1,9 6,16 0,16 Z M5,-3 L10,2 5,7 Z" />
-                    </Border>
-                </Button>
+                        </Border>
+                    </Button>
 
-                <Button x:Name="selectionPreviewButton"
+                    <Button x:Name="selectionPreviewButton"
                     Grid.Row="1" 
                     Grid.Column="3" 
                     ToolTip="{x:Static p:Resources.PlaySelection}"
                     Command="{Binding PlaySelectionCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
-                    <Border Width="20" Height="20">
-                        <Path HorizontalAlignment="Center" 
+                        <Border Width="20" Height="20">
+                            <Path HorizontalAlignment="Center" 
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M0,7 L14,7 14,9 14,16 8,16 13,9 1,9 6,16 0,16 Z M5,-3 L10,2 5,7 Z" />
-                    </Border>
-                </Button>
+                        </Border>
+                    </Button>
 
-                <Button x:Name="playUntilSelectionEndButton"
+                    <Button x:Name="playUntilSelectionEndButton"
                     Grid.Row="1" 
                     Grid.Column="4" 
                     ToolTip="{x:Static p:Resources.PlayUntilSelectionEnd}"
                     Command="{Binding PlayUntilSelectionEndCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
-                    <Border Width="20" Height="20">
-                        <Path HorizontalAlignment="Center" 
+                        <Border Width="20" Height="20">
+                            <Path HorizontalAlignment="Center" 
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M0,7 L14,7 14,9 14,16 8,16 13,9 0,9 Z M5,-3 L10,2 5,7 Z" />
-                    </Border>
-                </Button>
+                        </Border>
+                    </Button>
 
-                <Button x:Name="sectionEndButton" 
+                    <Button x:Name="sectionEndButton" 
                     Grid.Row="1" 
                     Grid.Column="5" 
                     ToolTip="{x:Static p:Resources.SetSelectionEnd}"
                     Command="{Binding SetSectionEndCommand}"
                     Style="{StaticResource GraphicButtonStyle}" >
-                    <Border Width="20" Height="20">
-                        <Path HorizontalAlignment="Center" 
+                        <Border Width="20" Height="20">
+                            <Path HorizontalAlignment="Center" 
                         VerticalAlignment="Center" 
                         Fill="White" 
                         Data="M0,0 L14,0 14,2 14,9 8,9 13,2 0,2 Z" />
-                    </Border>
-                </Button>
+                        </Border>
+                    </Button>
 
-                <Label x:Name="selectionEndLabel" 
+                    <Label x:Name="selectionEndLabel" 
                    Grid.Row="1" 
                    Grid.Column="6" 
                    ToolTip="{x:Static p:Resources.SelectionEnd}"
                    Content="{Binding SliceEnd}" ContentStringFormat="hh\:mm\:ss\.fff" />
 
-            </Grid>
+                </Grid>
 
-            <Grid x:Name="rightSectionLayout"
+                <Grid x:Name="rightSectionLayout"
                   Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Button x:Name="addToQueueButton" 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="addToQueueButton" 
                     Grid.Row="0" 
                     Grid.Column="0" 
                     ToolTip="{x:Static p:Resources.AddToQueue}"
@@ -348,7 +346,7 @@
                     Click="AddToQueueButton_Click"
                     Style="{StaticResource BaseButtonStyle}" />
 
-                <Button x:Name="nextVideoButton" 
+                    <Button x:Name="nextVideoButton" 
                     Grid.Row="1" 
                     Grid.Column="0" 
                     ToolTip="{x:Static p:Resources.NextVideoTooltip}"
@@ -356,7 +354,7 @@
                     Command="{Binding NextVideoCommand}"
                     Style="{StaticResource BaseButtonStyle}" />
 
-                <AudioVolumeControl:AudioVolumeControl x:Name="volumeControl" 
+                    <AudioVolumeControl:AudioVolumeControl x:Name="volumeControl" 
                                                    Grid.RowSpan="2" 
                                                    Grid.Column="1" 
                                                    Margin="5" 
@@ -369,8 +367,9 @@
 
 
 
-            </Grid>
+                </Grid>
 
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>
