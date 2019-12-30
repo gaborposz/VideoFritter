@@ -10,7 +10,8 @@
         <MediaElement x:Name="mediaElement" 
                       LoadedBehavior="Manual"
                       ScrubbingEnabled="True"
-                      MediaOpened="VideoPlayer_MediaOpened" >
+                      MediaOpened="MediaElement_MediaOpened" 
+                      MediaEnded="MediaElement_MediaEnded">
         </MediaElement>
     </Border>
 </UserControl>

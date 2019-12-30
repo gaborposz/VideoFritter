@@ -1,4 +1,6 @@
-﻿using VideoFritter.Controls.VideoPlayer;
+﻿using System;
+
+using VideoFritter.Controls.VideoPlayer;
 
 namespace VideoFritter.MainWindow.Commands
 {
@@ -11,7 +13,7 @@ namespace VideoFritter.MainWindow.Commands
 
         public override void Execute(object parameter)
         {
-            VideoPlayer.Play(MainWindowViewModel.SliceStart, VideoPlayer.VideoLength);
+            VideoPlayer.Play(MainWindowViewModel.SliceStart, TimeSpan.MaxValue);
         }
     }
 }

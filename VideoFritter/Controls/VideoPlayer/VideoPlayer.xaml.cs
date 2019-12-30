@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace VideoFritter.Controls.VideoPlayer
 {
@@ -15,15 +14,9 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             InitializeComponent();
 
-            this.mediaTimeline = new MediaTimeline();
-            this.mediaTimeline.CurrentTimeInvalidated += MediaTimelineTimeChangedHandler;
-            this.mediaTimeline.Completed += MediaTimeline_Completed;
-        }
-
-        private void MediaTimeline_Completed(object sender, EventArgs e)
-        {
-            MediaController.Pause();
-            IsPlaying = false;
+            this.positionUpdateTimer = new DispatcherTimer();
+            this.positionUpdateTimer.Interval = TimeSpan.FromMilliseconds(10);
+            this.positionUpdateTimer.Tick += PositionUpdateTimer_Tick;
         }
 
         public static readonly RoutedEvent VideoOpenedEvent =
@@ -105,6 +98,16 @@ namespace VideoFritter.Controls.VideoPlayer
             set
             {
                 this.isPlaying = value;
+
+                if (this.isPlaying)
+                {
+                    this.positionUpdateTimer.Start();
+                }
+                else
+                {
+                    this.positionUpdateTimer.Stop();
+                }
+
                 RaiseIsPlayingChangedEvent();
             }
         }
@@ -175,14 +178,15 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             if (IsPlaying)
             {
-                MediaController.Stop();
+                this.mediaElement.Stop();
             }
 
-            this.mediaTimeline.Source = new Uri(fileName);
+            this.mediaElement.Source = new Uri(fileName);
 
-            MediaClock clock = this.mediaTimeline.CreateClock();
-            clock.Controller.Pause();
-            this.mediaElement.Clock = clock;
+            // WORKAROUND: Start-stop playing, because otherwise the video is not displayed after opening
+            this.mediaElement.Play();
+            this.mediaElement.Pause();
+            this.mediaElement.Position = TimeSpan.Zero;
         }
 
         public void PlayOrPause()
@@ -194,21 +198,36 @@ namespace VideoFritter.Controls.VideoPlayer
 
             if (IsPlaying)
             {
-                MediaController.Pause();
+                this.mediaElement.Pause();
                 IsPlaying = false;
             }
             else
             {
+                FixPosition();
+
                 if (this.VideoPosition >= VideoLength)
                 {
                     // Do nothing if the video is at its end
                     return;
                 }
 
-                this.endOfPlayback = VideoLength;
+                this.endOfPlayback = TimeSpan.MaxValue;
 
-                MediaController.Resume();
+                this.mediaElement.Play();
                 IsPlaying = true;
+            }
+        }
+
+        private void FixPosition()
+        {
+            // WORKAROUND: If the video is at its end, 
+            // then setting the position to another value might not work, 
+            // because it goes back to 00:00:00 anyway.
+            // In this case we need to set it again before we play it.
+            if (this.VideoPosition != TimeSpan.Zero &&
+                this.mediaElement.Position == TimeSpan.Zero)
+            {
+                this.mediaElement.Position = this.VideoPosition;
             }
         }
 
@@ -221,17 +240,19 @@ namespace VideoFritter.Controls.VideoPlayer
 
             if (IsPlaying)
             {
-                MediaController.Pause();
+                this.mediaElement.Pause();
             }
+
+            FixPosition();
 
             if (from != VideoPosition)
             {
-                MediaController.Seek(from, TimeSeekOrigin.BeginTime);
+                Seek(from);
             }
 
             this.endOfPlayback = to;
 
-            MediaController.Resume();
+            this.mediaElement.Play();
             IsPlaying = true;
         }
 
@@ -265,26 +286,10 @@ namespace VideoFritter.Controls.VideoPlayer
             RaiseEvent(args);
         }
 
-        private MediaTimeline mediaTimeline;
         private bool isPlaying;
         private TimeSpan endOfPlayback = TimeSpan.MaxValue;
         private bool positionSetByTimer;
-
-        private TimeSpan CurrentMediaTime
-        {
-            get
-            {
-                return this.mediaElement.Clock.CurrentTime.Value;
-            }
-        }
-
-        private ClockController MediaController
-        {
-            get
-            {
-                return this.mediaElement.Clock.Controller;
-            }
-        }
+        private DispatcherTimer positionUpdateTimer;
 
         private static void VideoPositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -294,23 +299,19 @@ namespace VideoFritter.Controls.VideoPlayer
             }
 
             VideoPlayer videoPlayer = (VideoPlayer)d;
-            TimeSpan newValue = (TimeSpan)e.NewValue;
 
-            if (!videoPlayer.IsVideoLoaded || videoPlayer.positionSetByTimer)
+            if (videoPlayer.IsVideoLoaded && !videoPlayer.positionSetByTimer)
             {
-                return;
+                if (videoPlayer.IsPlaying)
+                {
+                    // WORKAROUND: If the slider was changed during playback, then the playback must be stopped, 
+                    // otherwise the continous position changed events will overload the player
+                    videoPlayer.PlayOrPause();
+                }
+
+                TimeSpan newValue = (TimeSpan)e.NewValue;
+                videoPlayer.Seek(newValue);
             }
-
-            videoPlayer.SetValue(VideoPositionProperty, newValue);
-
-            if (videoPlayer.IsPlaying)
-            {
-                // WORKAROUND: If the slider was changed during playback, then the playback must be stopped, 
-                // otherwise the continous position changed events will overload the player
-                videoPlayer.PlayOrPause();
-            }
-
-            videoPlayer.MediaController.Seek(newValue, TimeSeekOrigin.BeginTime);
         }
 
         private static void VolumePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -323,7 +324,7 @@ namespace VideoFritter.Controls.VideoPlayer
         }
 
 
-        private void VideoPlayer_MediaOpened(object sender, RoutedEventArgs e)
+        private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
         {
             IsVideoLoaded = true;
             IsPlaying = false;
@@ -334,16 +335,60 @@ namespace VideoFritter.Controls.VideoPlayer
             RaiseVideoOpenedEvent();
         }
 
-        private void MediaTimelineTimeChangedHandler(object sender, EventArgs e)
+        private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
-            if (CurrentMediaTime >= this.endOfPlayback)
+            IsPlaying = false;
+            this.mediaElement.Pause();
+
+            //Debug.WriteLine($"Media Ended.");
+
+            // WORKAROUND: When the video reaches its end the position becames 00:00:00 for a few millisecond. 
+            // Although it returns to the end later, then it is already too late, because the timer is already stopped.
+            // To avoid leaving the slider at 00:00:00 we make sure here that the VideoPostion is set to the end of the video.
+            UpdateVideoPositionInternally(VideoLength);
+        }
+
+        private void PositionUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            TimeSpan currentVideoPosition = this.mediaElement.Position;
+
+            if (currentVideoPosition == TimeSpan.Zero)
             {
-                MediaController.Pause();
-                IsPlaying = false;
+                // This value is received only due to a bug in MediaElement when the video reached its end, so it can be ignored.
+                return;
             }
 
+            if (currentVideoPosition >= this.endOfPlayback)
+            {
+                this.mediaElement.Pause();
+                IsPlaying = false;
+
+                Seek(this.endOfPlayback);
+            }
+            else
+            {
+                UpdateVideoPositionInternally(currentVideoPosition);
+            }
+        }
+
+        private void Seek(TimeSpan newPosition)
+        {
+            TimeSpan currentPosition = this.mediaElement.Position;
+            if (currentPosition != newPosition)
+            {
+                //Debug.WriteLine($"Seeking to {newPosition} from {currentPosition}.");
+                this.mediaElement.Position = newPosition;
+
+                UpdateVideoPositionInternally(newPosition);
+            }
+        }
+
+        private void UpdateVideoPositionInternally(TimeSpan currentVideoPosition)
+        {
+            //Debug.WriteLine($"VideoPosition was updated to: {currentVideoPosition}");
+
             this.positionSetByTimer = true;
-            SetValue(VideoPositionProperty, CurrentMediaTime);
+            SetValue(VideoPositionProperty, currentVideoPosition);
             this.positionSetByTimer = false;
 
             RaiseVideoPositionChangedEvent();
