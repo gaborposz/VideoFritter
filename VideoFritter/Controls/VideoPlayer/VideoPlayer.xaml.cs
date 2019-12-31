@@ -176,17 +176,12 @@ namespace VideoFritter.Controls.VideoPlayer
 
         public void OpenFile(string fileName)
         {
-            if (IsPlaying)
-            {
-                this.mediaElement.Stop();
-            }
+            // Close the previous video
+            this.mediaElement.LoadedBehavior = MediaState.Close;
 
+            // Open and pause the new
             this.mediaElement.Source = new Uri(fileName);
-
-            // WORKAROUND: Start-stop playing, because otherwise the video is not displayed after opening
-            this.mediaElement.Play();
-            this.mediaElement.Pause();
-            this.mediaElement.Position = TimeSpan.Zero;
+            PauseInternal();
         }
 
         public void PlayOrPause()
@@ -198,14 +193,11 @@ namespace VideoFritter.Controls.VideoPlayer
 
             if (IsPlaying)
             {
-                this.mediaElement.Pause();
-                IsPlaying = false;
+                PauseInternal();
             }
             else
             {
-                FixPosition();
-
-                if (this.VideoPosition >= VideoLength)
+                if (VideoPosition >= VideoLength)
                 {
                     // Do nothing if the video is at its end
                     return;
@@ -213,21 +205,7 @@ namespace VideoFritter.Controls.VideoPlayer
 
                 this.endOfPlayback = TimeSpan.MaxValue;
 
-                this.mediaElement.Play();
-                IsPlaying = true;
-            }
-        }
-
-        private void FixPosition()
-        {
-            // WORKAROUND: If the video is at its end, 
-            // then setting the position to another value might not work, 
-            // because it goes back to 00:00:00 anyway.
-            // In this case we need to set it again before we play it.
-            if (this.VideoPosition != TimeSpan.Zero &&
-                this.mediaElement.Position == TimeSpan.Zero)
-            {
-                this.mediaElement.Position = this.VideoPosition;
+                PlayInternal(VideoPosition);
             }
         }
 
@@ -238,22 +216,9 @@ namespace VideoFritter.Controls.VideoPlayer
                 return;
             }
 
-            if (IsPlaying)
-            {
-                this.mediaElement.Pause();
-            }
-
-            FixPosition();
-
-            if (from != VideoPosition)
-            {
-                Seek(from);
-            }
-
             this.endOfPlayback = to;
 
-            this.mediaElement.Play();
-            IsPlaying = true;
+            PlayInternal(from);
         }
 
         protected virtual void RaiseVideoOpenedEvent()
@@ -327,7 +292,6 @@ namespace VideoFritter.Controls.VideoPlayer
         private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
         {
             IsVideoLoaded = true;
-            IsPlaying = false;
             SetValue(VideoLengthProperty, this.mediaElement.NaturalDuration.HasTimeSpan ? this.mediaElement.NaturalDuration.TimeSpan : TimeSpan.Zero);
             SetValue(VolumeProperty, this.mediaElement.Volume);
             this.endOfPlayback = TimeSpan.MaxValue;
@@ -337,15 +301,9 @@ namespace VideoFritter.Controls.VideoPlayer
 
         private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
-            IsPlaying = false;
-            this.mediaElement.Pause();
-
             //Debug.WriteLine($"Media Ended.");
 
-            // WORKAROUND: When the video reaches its end the position becames 00:00:00 for a few millisecond. 
-            // Although it returns to the end later, then it is already too late, because the timer is already stopped.
-            // To avoid leaving the slider at 00:00:00 we make sure here that the VideoPostion is set to the end of the video.
-            UpdateVideoPositionInternally(VideoLength);
+            PauseInternal();
         }
 
         private void PositionUpdateTimer_Tick(object sender, EventArgs e)
@@ -360,8 +318,7 @@ namespace VideoFritter.Controls.VideoPlayer
 
             if (currentVideoPosition >= this.endOfPlayback)
             {
-                this.mediaElement.Pause();
-                IsPlaying = false;
+                PauseInternal();
 
                 Seek(this.endOfPlayback);
             }
@@ -377,8 +334,8 @@ namespace VideoFritter.Controls.VideoPlayer
             if (currentPosition != newPosition)
             {
                 //Debug.WriteLine($"Seeking to {newPosition} from {currentPosition}.");
-                this.mediaElement.Position = newPosition;
 
+                this.mediaElement.Position = newPosition;
                 UpdateVideoPositionInternally(newPosition);
             }
         }
@@ -392,6 +349,27 @@ namespace VideoFritter.Controls.VideoPlayer
             this.positionSetByTimer = false;
 
             RaiseVideoPositionChangedEvent();
+        }
+
+        private void PlayInternal(TimeSpan startFrom)
+        {
+            this.mediaElement.LoadedBehavior = MediaState.Play;
+            IsPlaying = true;
+
+            // WORKAROUND: When playing is started the Position is sporadically reset to 00:00:00,
+            // even if it was seeked previously to a different value.
+            // To fix this problem we set the position right after Play, 
+            // but to avoid unnecessary twitches we do it only if there is a significant difference (at least 100ms).
+            if (Math.Abs(this.mediaElement.Position.TotalMilliseconds - startFrom.TotalMilliseconds) > 100)
+            {
+                this.mediaElement.Position = startFrom;
+            }
+        }
+
+        private void PauseInternal()
+        {
+            this.mediaElement.LoadedBehavior = MediaState.Pause;
+            IsPlaying = false;
         }
     }
 }

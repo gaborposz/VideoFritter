@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="600">
     <Border x:Name="videoBorder" Background="#000000">
         <MediaElement x:Name="mediaElement" 
-                      LoadedBehavior="Manual"
+                      LoadedBehavior="Pause"
                       ScrubbingEnabled="True"
                       MediaOpened="MediaElement_MediaOpened" 
                       MediaEnded="MediaElement_MediaEnded">
