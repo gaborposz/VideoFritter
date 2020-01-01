@@ -297,6 +297,7 @@ namespace VideoFritter.Controls.VideoPlayer
             this.endOfPlayback = TimeSpan.MaxValue;
 
             RaiseVideoOpenedEvent();
+            RaiseVideoPositionChangedEvent();
         }
 
         private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
