@@ -14,7 +14,8 @@
         Style="{StaticResource DefaultWindowStyle}"
         WindowStartupLocation="{StaticResource DefaultWindowStartupLocation}"       
         AllowDrop="True"
-        Drop="Window_Drop">
+        Drop="Window_Drop"
+        Closed="MainWindow_Closed">
     <Border Style="{StaticResource WindowBorderStyle}">
         <Grid x:Name="mainLayoutGrid">
             <Grid.RowDefinitions>
@@ -65,11 +66,12 @@
                 </StackPanel>
             </Grid>
             <VideoPlayer:VideoPlayer 
-            x:Name="videoPlayer" 
-            Grid.Row="1"
-            MouseLeftButtonDown="VideoPlayer_MouseLeftButtonDown"
-            VideoOpened="VideoPlayer_VideoOpened"
-            IsPlayingChanged="VideoPlayer_IsPlayingChanged"
+                x:Name="videoPlayer" 
+                Grid.Row="1"
+                MouseLeftButtonDown="VideoPlayer_MouseLeftButtonDown"
+                VideoOpened="VideoPlayer_VideoOpened"
+                IsPlayingChanged="VideoPlayer_IsPlayingChanged"
+                VideoVolume="{Binding AudioVolume, Mode=TwoWay}"
             />
 
             <TextBlock 
@@ -363,7 +365,7 @@
                                                    Background="#A0909090"
                                                    BorderBrush="#90808080"
                                                    ToolTip="{x:Static p:Resources.AudioVolumeToolTip}"
-                                                   Value="{Binding ElementName=videoPlayer, Path=VideoVolume}"/>
+                                                   Value="{Binding AudioVolume}"/>
 
 
 

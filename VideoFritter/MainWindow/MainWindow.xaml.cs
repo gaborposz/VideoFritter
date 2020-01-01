@@ -160,5 +160,10 @@ namespace VideoFritter.MainWindow
         {
             this.WindowState = WindowState.Minimized;
         }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            this.viewModel.SaveSettings();
+        }
     }
 }

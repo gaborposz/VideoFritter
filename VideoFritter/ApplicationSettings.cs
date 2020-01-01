@@ -24,6 +24,7 @@ namespace VideoFritter
                 ExportQueuePath = @"$(VideoPath)\Export";
                 TimeStampCorrection = true;
                 SaveFFMpegLogs = false;
+                AudioVolume = 0.5;
             }
         }
 
@@ -66,6 +67,19 @@ namespace VideoFritter
             }
         }
 
+        public static double AudioVolume
+        {
+            get
+            {
+                return settingsData.AudioVolume;
+            }
+
+            set
+            {
+                settingsData.AudioVolume = value;
+            }
+        }
+
         public static void Save()
         {
             using (FileStream fileStream = 
@@ -87,6 +101,8 @@ namespace VideoFritter
             public bool TimeStampCorrection { get; set; }
 
             public bool SaveFFMpegLogs { get; set; }
+
+            public double AudioVolume { get; set; }
         }
 
         private static SettingsData settingsData;

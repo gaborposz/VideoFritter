@@ -31,6 +31,8 @@ namespace VideoFritter.MainWindow
             PlayUntilSelectionEndCommand = new PlayUntilSelectionEndCommand(this, videoPlayerIn);
             ExportSelectionCommand = new ExportSelectionCommand(this, videoPlayerIn);
             NextVideoCommand = new NextVideoCommand(this, videoPlayerIn);
+
+            AudioVolume = ApplicationSettings.AudioVolume;
         }
 
         public static readonly string[] SupportedFileExtensions = { "mp4", "avi", "mov", "mpg", "mpeg", "mkv" };
@@ -149,6 +151,20 @@ namespace VideoFritter.MainWindow
             }
         }
 
+        public double AudioVolume
+        {
+            get
+            {
+                return this.audioVolume;
+            }
+
+            set
+            {
+                this.audioVolume = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void OpenFile(string fileName)
         {
             OpenedFileName = fileName;
@@ -205,10 +221,20 @@ namespace VideoFritter.MainWindow
             }
         }
 
+        public void SaveSettings()
+        {
+            if (AudioVolume != ApplicationSettings.AudioVolume)
+            {
+                ApplicationSettings.AudioVolume = AudioVolume;
+                ApplicationSettings.Save();
+            }
+        }
+
         private string openedFileName;
         private TimeSpan sliceStart;
         private TimeSpan sliceEnd;
         private string exportFilePath;
+        private double audioVolume;
 
         private string GetFileDialogFilter()
         {
