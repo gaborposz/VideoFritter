@@ -5,13 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VideoFritter.Controls.VideoPlayer"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600">
-    <Border x:Name="videoBorder" Background="#000000">
-        <MediaElement x:Name="mediaElement" 
-                      LoadedBehavior="Pause"
-                      ScrubbingEnabled="True"
-                      MediaOpened="MediaElement_MediaOpened" 
-                      MediaEnded="MediaElement_MediaEnded">
-        </MediaElement>
-    </Border>
+             d:DesignHeight="300" 
+             d:DesignWidth="600"
+             Background="#A0000000"
+             SizeChanged="VideoPlayer_SizeChanged" >
+    <Canvas 
+        x:Name="videoCanvas" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch" 
+        Visibility="Hidden" />
 </UserControl>

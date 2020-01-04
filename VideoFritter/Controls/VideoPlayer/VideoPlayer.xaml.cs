@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace VideoFritter.Controls.VideoPlayer
 {
@@ -14,9 +15,22 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             InitializeComponent();
 
-            this.positionUpdateTimer = new DispatcherTimer();
-            this.positionUpdateTimer.Interval = TimeSpan.FromMilliseconds(10);
-            this.positionUpdateTimer.Tick += PositionUpdateTimer_Tick;
+            this.mediaPlayer = new MediaPlayer();
+            this.mediaPlayer.ScrubbingEnabled = true;
+            this.mediaPlayer.MediaOpened += MediaOpenedHandler;
+            this.mediaPlayer.MediaEnded += MediaEndedHandler;
+
+            VideoDrawing drawing = new VideoDrawing();
+            drawing.Rect = new Rect(0, 0, 100, 100);
+            drawing.Player = this.mediaPlayer;
+            DrawingBrush brush = new DrawingBrush(drawing);
+            this.videoCanvas.Background = brush;
+
+            this.timeline = new MediaTimeline();
+            this.timeline.RepeatBehavior = new RepeatBehavior(1);
+
+            // WORKAROUND: Hack to let the player play until the real end of the video
+            //this.timeline.Duration = TimeSpan.FromDays(1); 
         }
 
         public static readonly RoutedEvent VideoOpenedEvent =
@@ -98,16 +112,6 @@ namespace VideoFritter.Controls.VideoPlayer
             set
             {
                 this.isPlaying = value;
-
-                if (this.isPlaying)
-                {
-                    this.positionUpdateTimer.Start();
-                }
-                else
-                {
-                    this.positionUpdateTimer.Stop();
-                }
-
                 RaiseIsPlayingChangedEvent();
             }
         }
@@ -146,7 +150,7 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             get
             {
-                return this.mediaElement.NaturalVideoWidth;
+                return this.mediaPlayer.NaturalVideoWidth;
             }
         }
 
@@ -154,34 +158,20 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             get
             {
-                return this.mediaElement.NaturalVideoHeight;
-            }
-        }
-
-        public double ActualVideoWidth
-        {
-            get
-            {
-                return this.videoBorder.ActualWidth - this.videoBorder.BorderThickness.Left - this.videoBorder.BorderThickness.Right;
-            }
-        }
-
-        public double ActualVideoHeight
-        {
-            get
-            {
-                return this.videoBorder.ActualHeight - this.videoBorder.BorderThickness.Top - this.videoBorder.BorderThickness.Bottom;
+                return this.mediaPlayer.NaturalVideoHeight;
             }
         }
 
         public void OpenFile(string fileName)
         {
-            // Close the previous video
-            this.mediaElement.LoadedBehavior = MediaState.Close;
+            this.videoCanvas.Visibility = Visibility.Hidden;
 
-            // Open and pause the new
-            this.mediaElement.Source = new Uri(fileName);
-            PauseInternal();
+            this.timeline.Source = new Uri(fileName, UriKind.Absolute);
+
+            this.clock = this.timeline.CreateClock();
+            this.clock.CurrentTimeInvalidated += TimeInvalidatedHandler;
+            this.mediaPlayer.Clock = this.clock;
+            this.mediaPlayer.Clock.Completed += MediaEndedHandler;
         }
 
         public void PlayOrPause()
@@ -204,8 +194,9 @@ namespace VideoFritter.Controls.VideoPlayer
                 }
 
                 this.endOfPlayback = TimeSpan.MaxValue;
+                this.timeline.Duration = VideoLength;
 
-                PlayInternal(VideoPosition);
+                PlayInternal();
             }
         }
 
@@ -218,7 +209,8 @@ namespace VideoFritter.Controls.VideoPlayer
 
             this.endOfPlayback = to;
 
-            PlayInternal(from);
+            SeekInternal(from);
+            PlayInternal();
         }
 
         protected virtual void RaiseVideoOpenedEvent()
@@ -226,8 +218,8 @@ namespace VideoFritter.Controls.VideoPlayer
             VideoOpenedEventArgs args = new VideoOpenedEventArgs(
                 VideoOpenedEvent,
                 this,
-                this.mediaElement.NaturalVideoWidth,
-                this.mediaElement.NaturalVideoHeight);
+                VideoWidth,
+                VideoHeight);
 
             RaiseEvent(args);
         }
@@ -251,10 +243,22 @@ namespace VideoFritter.Controls.VideoPlayer
             RaiseEvent(args);
         }
 
+        private MediaPlayer mediaPlayer;
+        private MediaTimeline timeline;
+        private MediaClock clock;
         private bool isPlaying;
         private TimeSpan endOfPlayback = TimeSpan.MaxValue;
-        private bool positionSetByTimer;
-        private DispatcherTimer positionUpdateTimer;
+        private bool positionWasSetInternally;
+
+        private ClockController Controller
+        {
+            get
+            {
+
+                return this.clock.Controller;
+            }
+        }
+
 
         private static void VideoPositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -265,17 +269,17 @@ namespace VideoFritter.Controls.VideoPlayer
 
             VideoPlayer videoPlayer = (VideoPlayer)d;
 
-            if (videoPlayer.IsVideoLoaded && !videoPlayer.positionSetByTimer)
+            if (videoPlayer.IsVideoLoaded && !videoPlayer.positionWasSetInternally)
             {
                 if (videoPlayer.IsPlaying)
                 {
                     // WORKAROUND: If the slider was changed during playback, then the playback must be stopped, 
-                    // otherwise the continous position changed events will overload the player
+                    // otherwise the continous position change events will overload the player
                     videoPlayer.PlayOrPause();
                 }
 
                 TimeSpan newValue = (TimeSpan)e.NewValue;
-                videoPlayer.Seek(newValue);
+                videoPlayer.SeekInternal(newValue);
             }
         }
 
@@ -284,32 +288,43 @@ namespace VideoFritter.Controls.VideoPlayer
             VideoPlayer videoPlayer = (VideoPlayer)d;
             double newValue = (double)e.NewValue;
 
-            videoPlayer.mediaElement.Volume = newValue;
+            videoPlayer.mediaPlayer.Volume = newValue;
             videoPlayer.SetValue(VolumeProperty, newValue);
         }
 
-
-        private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
+        private void VideoPlayer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            UpdateVideoSize(e.NewSize.Width, e.NewSize.Height);
+        }
+
+        private void MediaOpenedHandler(object sender, EventArgs e)
+        {
+            PauseInternal();
+
             IsVideoLoaded = true;
-            SetValue(VideoLengthProperty, this.mediaElement.NaturalDuration.HasTimeSpan ? this.mediaElement.NaturalDuration.TimeSpan : TimeSpan.Zero);
-            SetValue(VolumeProperty, this.mediaElement.Volume);
             this.endOfPlayback = TimeSpan.MaxValue;
+
+            TimeSpan videoLength = this.clock.NaturalDuration.HasTimeSpan ? this.clock.NaturalDuration.TimeSpan : TimeSpan.Zero;
+
+            SetValue(VideoLengthProperty, videoLength);
+            SetValue(VolumeProperty, this.mediaPlayer.Volume);
 
             RaiseVideoOpenedEvent();
             RaiseVideoPositionChangedEvent();
+
+            UpdateVideoSize(this.ActualWidth, this.ActualHeight);
+
+            this.videoCanvas.Visibility = Visibility.Visible;
         }
 
-        private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
+        private void MediaEndedHandler(object sender, EventArgs e)
         {
-            //Debug.WriteLine($"Media Ended.");
-
             PauseInternal();
         }
 
-        private void PositionUpdateTimer_Tick(object sender, EventArgs e)
+        private void TimeInvalidatedHandler(object sender, EventArgs e)
         {
-            TimeSpan currentVideoPosition = this.mediaElement.Position;
+            TimeSpan currentVideoPosition = this.clock.CurrentTime.Value;
 
             if (currentVideoPosition == TimeSpan.Zero)
             {
@@ -320,8 +335,6 @@ namespace VideoFritter.Controls.VideoPlayer
             if (currentVideoPosition >= this.endOfPlayback)
             {
                 PauseInternal();
-
-                Seek(this.endOfPlayback);
             }
             else
             {
@@ -329,48 +342,54 @@ namespace VideoFritter.Controls.VideoPlayer
             }
         }
 
-        private void Seek(TimeSpan newPosition)
-        {
-            TimeSpan currentPosition = this.mediaElement.Position;
-            if (currentPosition != newPosition)
-            {
-                //Debug.WriteLine($"Seeking to {newPosition} from {currentPosition}.");
-
-                this.mediaElement.Position = newPosition;
-                UpdateVideoPositionInternally(newPosition);
-            }
-        }
 
         private void UpdateVideoPositionInternally(TimeSpan currentVideoPosition)
         {
-            //Debug.WriteLine($"VideoPosition was updated to: {currentVideoPosition}");
-
-            this.positionSetByTimer = true;
+            this.positionWasSetInternally = true;
             SetValue(VideoPositionProperty, currentVideoPosition);
-            this.positionSetByTimer = false;
+            this.positionWasSetInternally = false;
 
             RaiseVideoPositionChangedEvent();
         }
 
-        private void PlayInternal(TimeSpan startFrom)
+        private void PlayInternal()
         {
-            this.mediaElement.LoadedBehavior = MediaState.Play;
+            Controller.Resume();
             IsPlaying = true;
+        }
 
-            // WORKAROUND: When playing is started the Position is sporadically reset to 00:00:00,
-            // even if it was seeked previously to a different value.
-            // To fix this problem we set the position right after Play, 
-            // but to avoid unnecessary twitches we do it only if there is a significant difference (at least 100ms).
-            if (Math.Abs(this.mediaElement.Position.TotalMilliseconds - startFrom.TotalMilliseconds) > 100)
-            {
-                this.mediaElement.Position = startFrom;
-            }
+        private void SeekInternal(TimeSpan newPosition)
+        {
+            Controller.Seek(newPosition, TimeSeekOrigin.BeginTime);
+            //UpdateVideoPositionInternally(newPosition);
         }
 
         private void PauseInternal()
         {
-            this.mediaElement.LoadedBehavior = MediaState.Pause;
+            Controller.Pause();
             IsPlaying = false;
+        }
+
+        private void UpdateVideoSize(double availableWidth, double availableHeight)
+        {
+            if (availableWidth == 0 || availableHeight == 0 || VideoWidth == 0 || VideoHeight == 0)
+            {
+                return;
+            }
+
+            double widthRatio = VideoWidth / availableWidth;
+            double heightRatio = VideoHeight / availableHeight;
+
+            if (widthRatio > heightRatio)
+            {
+                this.videoCanvas.Width = availableWidth;
+                this.videoCanvas.Height = VideoHeight / widthRatio;
+            }
+            else
+            {
+                this.videoCanvas.Width = VideoWidth / heightRatio;
+                this.videoCanvas.Height = availableHeight;
+            }
         }
     }
 }
