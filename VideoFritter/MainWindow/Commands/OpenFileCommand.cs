@@ -17,8 +17,7 @@ namespace VideoFritter.MainWindow.Commands
 
         public override void Execute(object parameter)
         {
-            MainWindowViewModel.OpenFile();
-            if (MainWindowViewModel.IsFileOpened)
+            if (MainWindowViewModel.OpenFile())
             {
                 VideoPlayer.OpenFile(MainWindowViewModel.OpenedFileName);
             }

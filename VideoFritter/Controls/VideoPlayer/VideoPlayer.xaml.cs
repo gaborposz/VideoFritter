@@ -25,11 +25,6 @@ namespace VideoFritter.Controls.VideoPlayer
             drawing.Player = this.mediaPlayer;
             DrawingBrush brush = new DrawingBrush(drawing);
             this.videoCanvas.Background = brush;
-
-            this.timeline = new MediaTimeline();
-
-            // WORKAROUND: Hack to let the player play until the real end of the video
-            this.timeline.Duration = TimeSpan.FromDays(1);
         }
 
         public static readonly RoutedEvent VideoOpenedEvent =
@@ -165,7 +160,7 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             this.videoCanvas.Visibility = Visibility.Hidden;
 
-            this.timeline.Source = new Uri(fileName, UriKind.Absolute);
+            this.timeline = new MediaTimeline(new Uri(fileName, UriKind.Absolute));
 
             this.clock = this.timeline.CreateClock();
             this.clock.CurrentTimeInvalidated += TimeInvalidatedHandler;

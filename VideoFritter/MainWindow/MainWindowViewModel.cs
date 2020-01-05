@@ -170,7 +170,7 @@ namespace VideoFritter.MainWindow
             OpenedFileName = fileName;
         }
 
-        public void OpenFile()
+        public bool OpenFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -180,7 +180,10 @@ namespace VideoFritter.MainWindow
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 OpenFile(openFileDialog.FileName);
+                return true;
             }
+
+            return false;
         }
 
         public void ExportCurrentSelection()
