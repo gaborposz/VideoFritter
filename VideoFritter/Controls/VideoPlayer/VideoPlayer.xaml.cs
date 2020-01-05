@@ -27,10 +27,9 @@ namespace VideoFritter.Controls.VideoPlayer
             this.videoCanvas.Background = brush;
 
             this.timeline = new MediaTimeline();
-            this.timeline.RepeatBehavior = new RepeatBehavior(1);
 
             // WORKAROUND: Hack to let the player play until the real end of the video
-            //this.timeline.Duration = TimeSpan.FromDays(1); 
+            this.timeline.Duration = TimeSpan.FromDays(1);
         }
 
         public static readonly RoutedEvent VideoOpenedEvent =
@@ -361,7 +360,7 @@ namespace VideoFritter.Controls.VideoPlayer
         private void SeekInternal(TimeSpan newPosition)
         {
             Controller.Seek(newPosition, TimeSeekOrigin.BeginTime);
-            //UpdateVideoPositionInternally(newPosition);
+            UpdateVideoPositionInternally(newPosition);
         }
 
         private void PauseInternal()

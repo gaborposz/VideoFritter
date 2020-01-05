@@ -17,7 +17,11 @@ namespace VideoFritter.MainWindow.Commands
             {
                 VideoPlayer.VideoPosition = TimeSpan.Zero;
             }
-            else if (VideoPlayer.VideoPosition <= MainWindowViewModel.SliceEnd)
+            else if (VideoPlayer.VideoPosition <= MainWindowViewModel.SliceEnd
+                // WORKAROUND: This second condition is needed because 
+                // the VideoPosition can be actually beyond the length of the video,
+                // and it that case it has to go to "SliceStart" instead of "SliceEnd".
+                || MainWindowViewModel.SliceEnd == VideoPlayer.VideoLength)
             {
                 VideoPlayer.VideoPosition = MainWindowViewModel.SliceStart;
             }
