@@ -14,7 +14,16 @@
         <Directory Id="INSTALLFOLDER" Name="VideoFritter" >
           <Directory Id="ffmpegDirectory" Name="ffmpeg">
             <Component Id='ffmpegExecutable' Guid='E05FBF81-1B85-4FD3-8D05-07E8D7390558'>
+              <File Id="avcodec" Name="avcodec-58.dll" DiskId='1' Source='..\publish\ffmpeg\avcodec-58.dll' />
+              <File Id="avdevice" Name="avdevice-58.dll" DiskId='1' Source='..\publish\ffmpeg\avdevice-58.dll' />
+              <File Id="avfilter" Name="avfilter-7.dll" DiskId='1' Source='..\publish\ffmpeg\avfilter-7.dll' />
+              <File Id="avformat" Name="avformat-58.dll" DiskId='1' Source='..\publish\ffmpeg\avformat-58.dll' />
+              <File Id="avutil" Name="avutil-56.dll" DiskId='1' Source='..\publish\ffmpeg\avutil-56.dll' />
               <File Id="ffmpeg" Name="ffmpeg.exe" DiskId='1' Source='..\publish\ffmpeg\ffmpeg.exe' />
+              <File Id="ffplay" Name="ffplay.exe" DiskId='1' Source='..\publish\ffmpeg\ffplay.exe' />
+              <File Id="ffprobe" Name="ffprobe.exe" DiskId='1' Source='..\publish\ffmpeg\ffprobe.exe' />
+              <File Id="swresample" Name="swresample-3.dll" DiskId='1' Source='..\publish\ffmpeg\swresample-3.dll' />
+              <File Id="swscale" Name="swscale-5.dll" DiskId='1' Source='..\publish\ffmpeg\swscale-5.dll' />
             </Component>
           </Directory>
           <Component Id='MainExecutable' Guid='9220C4E3-E528-4DC9-BCCB-5F64D21BC91B'>

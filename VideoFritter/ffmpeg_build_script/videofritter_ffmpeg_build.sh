@@ -1,0 +1,1 @@
+./cross_compile_ffmpeg.sh --enable-gpl=n --build-ffmpeg-static=n --build-ffmpeg-shared=y --gcc-cpu-count=8 --compiler-flavors=win64 --high-bitdepth=y --ffmpeg-git-checkout-version=n4.2.2 --build-dependencies=y 2>&1 | tee ffmpegbuild.log
