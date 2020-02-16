@@ -76,7 +76,6 @@
                          Minimum="0" 
                          Maximum="1"
                          Margin="6,10"
-                         IsIndeterminate="{Binding IsIndeterminateProgess, Mode=OneWay}"
                          Value="{Binding ExportProgress, Mode=OneWay}"/>
 
             </DockPanel>

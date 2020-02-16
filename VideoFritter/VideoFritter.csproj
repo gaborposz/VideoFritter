@@ -10,6 +10,10 @@
     <ApplicationIcon>Resources\VideoFritter.ico</ApplicationIcon>    
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  
  
   <ItemGroup>
     <Content Include="ffmpeg\avcodec-58.dll">
@@ -52,6 +56,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
+  </ItemGroup>
+  
+ 
+  <ItemGroup>
+    <PackageReference Include="FFmpeg.AutoGen" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>

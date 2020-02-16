@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using VideoFritter.FFmpegWrapper;
 
 namespace VideoFritter.Exporter
 {
     internal class FFMpegExporter
     {
+        static FFMpegExporter()
+        {
+            FFmpegHelper.FFmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg");
+        }
+
         public string GenerateFileName(string originalFileName, string targetPath)
         {
             int counter = 1;
@@ -39,72 +46,60 @@ namespace VideoFritter.Exporter
 
             return Task.Run(() =>
             {
+                //TODO: Get rid of ApplicationSettings.SaveFFMpegLogs
+
                 string targetDirectory = Path.GetDirectoryName(targetFileName);
                 if (!Directory.Exists(targetDirectory))
                 {
                     Directory.CreateDirectory(targetDirectory);
                 }
 
-                string timeStampFixCmdLine = string.Empty;
-                if (ApplicationSettings.TimeStampCorrection)
+                using (InputMediaFile inputFile = new InputMediaFile(sourceFileName))
                 {
-                    DateTime creationTime = GetCreationTimeFromFile(sourceFileName);
-                    creationTime = creationTime.Add(sliceStart);
-                    timeStampFixCmdLine = $"-metadata creation_time=\"{creationTime.ToString("yyyy-MM-dd HH:mm:ss")}\"";
-                }
+                    List<MediaStream> openStreams = inputFile.Streams.ToList();
 
-                string saveFFMpegLogs = string.Empty;
-                if (ApplicationSettings.SaveFFMpegLogs)
-                {
-                    saveFFMpegLogs = "-report";
-                }
-
-                string progressFile = Path.GetTempFileName();
-                double exportLengthInMs = sliceEnd.Subtract(sliceStart).TotalMilliseconds;
-                bool exportFinished = false;
-                Task progressWatcherTask;
-
-                if (progressHandler != null)
-                {
-                    progressWatcherTask = Task.Run(() =>
+                    if (ApplicationSettings.TimeStampCorrection)
                     {
-                        using (StreamReader streamReader =
-                                    new StreamReader(new FileStream(progressFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
-                        {
-                            while (!exportFinished)
-                            {
-                                while (!streamReader.EndOfStream)
-                                {
-                                    string line = streamReader.ReadLine();
+                        DateTime creationTime = GetCreationTimeFromFile(sourceFileName);
+                        creationTime = creationTime.Add(sliceStart);
+                        //TODO: Metadata copy and correction
+                    }
 
-                                    if (line.StartsWith("out_time="))
+                    inputFile.Seek(sliceStart);
+
+                    using (OutputMediaFile outputFile = new OutputMediaFile(targetFileName))
+                    {
+                        outputFile.Streams = inputFile.Streams;
+
+                        outputFile.WriteHeader();
+                        while (inputFile.TryRead(out MediaPacket packet))
+                        {
+                            if (openStreams.Contains(packet.Stream))
+                            {
+                                outputFile.WritePacket(packet);
+
+                                if (packet.EndTime > sliceEnd && packet.KeyFrame)
+                                {
+                                    openStreams.Remove(packet.Stream);
+                                    if (openStreams.Count == 0)
                                     {
-                                        TimeSpan actualTimeStamp = TimeSpan.Parse(line.Substring(9));
-                                        double progress = actualTimeStamp.TotalMilliseconds / exportLengthInMs;
-                                        progressHandler.Report(progress);
+                                        break;
                                     }
                                 }
-                                Thread.Sleep(100);
+
+                                if (progressHandler != null)
+                                {
+                                    TimeSpan totalLength = sliceEnd.Subtract(sliceStart);
+                                    progressHandler.Report((double)packet.EndTime.Ticks / totalLength.Ticks);
+                                }
                             }
                         }
-                        progressHandler.Report(1);
-                    });
-                }
-                else
-                {
-                    progressWatcherTask = Task.CompletedTask;
-                }
-
-                try
-                {
-                    ExecuteFFmpegProcess(
-                        $"-noaccurate_seek -i {sourceFileName} -ss {sliceStart} -to {sliceEnd} {timeStampFixCmdLine} -map_metadata 0 -movflags use_metadata_tags -y -vcodec copy -acodec copy {saveFFMpegLogs} -progress {progressFile} {targetFileName}");
-                }
-                finally
-                {
-                    exportFinished = true;
-                    progressWatcherTask.Wait();
-                    File.Delete(progressFile);
+                        outputFile.WriteTailer();
+                        if (progressHandler != null)
+                        {
+                            progressHandler.Report(1);
+                        }
+                    }
                 }
 
                 if (ApplicationSettings.TimeStampCorrection)
@@ -150,6 +145,8 @@ namespace VideoFritter.Exporter
 
         private DateTime GetCreationTimeFromFile(string fileName)
         {
+            // TODO: Make it using ffmpeg library directly too
+
             string metadataFileName = Path.GetTempFileName();
             try
             {

@@ -145,7 +145,6 @@
                     Minimum="0" 
                     Maximum="1" 
                     SnapsToDevicePixels="True"
-                    IsIndeterminate="{Binding IsIndeterminateProgess, Mode=OneWay}"
                     Value="{Binding ExportProgress, Mode=OneWay}"
                     Background="#FF423535" 
                     BorderBrush="#FF685757" 
