@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using FFmpeg.AutoGen;
 
 namespace FFmpegWrapper
@@ -51,6 +51,28 @@ namespace FFmpegWrapper
                 }
 
                 this.streams = value;
+            }
+        }
+
+        public IDictionary<string, string> MetaData
+        {
+            get
+            {
+                if (this.avFormatContextPtr->metadata == null)
+                {
+                    return null;
+                }
+
+                return FFmpegHelper.DictionaryConvert(this.avFormatContextPtr->metadata);
+            }
+            set
+            {
+                ffmpeg.av_dict_free(&this.avFormatContextPtr->metadata);
+                foreach (KeyValuePair<string, string> item in value)
+                {
+                    int error = ffmpeg.av_dict_set(&this.avFormatContextPtr->metadata, item.Key, item.Value, 0);
+                    FFmpegWrapperException.ThrowInCaseOfError(error);
+                }
             }
         }
 

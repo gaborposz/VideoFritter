@@ -58,18 +58,32 @@ namespace VideoFritter.Exporter
                 {
                     List<MediaStream> openStreams = inputFile.Streams.ToList();
 
-                    if (ApplicationSettings.TimeStampCorrection)
-                    {
-                        DateTime creationTime = GetCreationTimeFromFile(sourceFileName);
-                        creationTime = creationTime.Add(sliceStart);
-                        //TODO: Metadata copy and correction
-                    }
-
                     inputFile.Seek(sliceStart);
 
                     using (OutputMediaFile outputFile = new OutputMediaFile(targetFileName))
                     {
                         outputFile.Streams = inputFile.Streams;
+
+                        IDictionary<string, string> metaData = inputFile.MetaData;
+
+                        if (ApplicationSettings.TimeStampCorrection)
+                        {
+                            DateTime creationTime;
+                            if (metaData.TryGetValue(CreationTimeMetadataKey, out string creationTimeString))
+                            {
+                                creationTime = DateTime.Parse(creationTimeString);
+                            }
+                            else
+                            {
+                                // Use modification date as fallback
+                                creationTime = File.GetLastWriteTimeUtc(sourceFileName);
+                            }
+                            DateTime compensatedCreationTime = creationTime.Add(sliceStart);
+                            string compensatedCreationTimeString = compensatedCreationTime.ToUniversalTime().ToString("O");
+                            metaData[CreationTimeMetadataKey] = compensatedCreationTimeString;
+                        }
+
+                        outputFile.MetaData = metaData;
 
                         outputFile.WriteHeader();
                         while (inputFile.TryRead(out MediaPacket packet))
@@ -112,66 +126,6 @@ namespace VideoFritter.Exporter
             }, cancellationToken);
         }
 
-        private void ExecuteFFmpegProcess(string arguments)
-        {
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg", "ffmpeg.exe"),
-                Arguments = arguments,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-            };
-
-            Process ffmpegProc = new Process
-            {
-                StartInfo = startInfo
-            };
-
-            ffmpegProc.Start();
-            ffmpegProc.BeginOutputReadLine();
-
-            Task<string> errorOutput = ffmpegProc.StandardError.ReadToEndAsync();
-
-            ffmpegProc.WaitForExit();
-
-            if (ffmpegProc.ExitCode != 0)
-            {
-                throw new ExporterException($"{startInfo.FileName} {arguments}", errorOutput.Result);
-            }
-        }
-
-        private DateTime GetCreationTimeFromFile(string fileName)
-        {
-            // TODO: Make it using ffmpeg library directly too
-
-            string metadataFileName = Path.GetTempFileName();
-            try
-            {
-                ExecuteFFmpegProcess($"-i {fileName} -map_metadata 0 -y -f ffmetadata {metadataFileName}");
-                IEnumerable<string> metadataFile = File.ReadLines(metadataFileName);
-                foreach (string line in metadataFile)
-                {
-                    if (line.StartsWith("creation_time="))
-                    {
-                        string creationTimeText = line.Split('=')[1];
-                        if (DateTime.TryParse(creationTimeText, out DateTime creationTime))
-                        {
-                            return creationTime;
-                        }
-                        break;
-                    }
-                }
-            }
-            finally
-            {
-                File.Delete(metadataFileName);
-            }
-
-            // Use modification date as fallback
-            return File.GetLastWriteTimeUtc(fileName);
-        }
+        private static readonly string CreationTimeMetadataKey = "creation_time";
     }
 }

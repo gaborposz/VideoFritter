@@ -25,8 +25,10 @@ namespace FFmpegWrapper
 
         public long NumberOfFrames { get; private set; }
 
+        //TODO: Use specific enum instead of string
         public string Codec { get; private set; }
 
+        //TODO: Use specific enum instead of string
         public string CodecType { get; private set; }
 
         public int Width { get; private set; }

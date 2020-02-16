@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using FFmpeg.AutoGen;
 
@@ -26,6 +27,19 @@ namespace FFmpegWrapper
         }
 
         public MediaStream[] Streams { get; private set; }
+
+        public IDictionary<string, string> MetaData
+        {
+            get
+            {
+                if (this.avFormatContextPtr->metadata == null)
+                {
+                    return null;
+                }
+
+                return FFmpegHelper.DictionaryConvert(this.avFormatContextPtr->metadata);
+            }
+        }
 
         public void Seek(TimeSpan seekToIn)
         {
