@@ -9,11 +9,6 @@
     <Version>0.8.0</Version>
     <ApplicationIcon>Resources\VideoFritter.ico</ApplicationIcon>    
   </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  
  
   <ItemGroup>
     <Content Include="ffmpeg\avcodec-58.dll">
@@ -57,10 +52,9 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
-  
  
   <ItemGroup>
-    <PackageReference Include="FFmpeg.AutoGen" Version="4.2.0" />
+    <ProjectReference Include="..\FFmpegWrapper\FFmpegWrapper.csproj" />
   </ItemGroup>
 
   <ItemGroup>

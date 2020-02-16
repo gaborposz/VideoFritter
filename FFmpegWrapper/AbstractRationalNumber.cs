@@ -1,6 +1,6 @@
 ﻿using FFmpeg.AutoGen;
 
-namespace VideoFritter.FFmpegWrapper
+namespace FFmpegWrapper
 {
     public abstract class AbstractRationalNumber
     {

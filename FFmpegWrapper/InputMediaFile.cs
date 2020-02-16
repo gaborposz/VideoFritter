@@ -2,7 +2,7 @@
 
 using FFmpeg.AutoGen;
 
-namespace VideoFritter.FFmpegWrapper
+namespace FFmpegWrapper
 {
     public unsafe class InputMediaFile : IDisposable
     {

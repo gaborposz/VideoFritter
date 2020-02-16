@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 using FFmpeg.AutoGen;
 
-namespace VideoFritter.FFmpegWrapper
+namespace FFmpegWrapper
 {
     public class FFmpegWrapperException : Exception
     {
