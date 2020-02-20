@@ -45,12 +45,6 @@
                 ToolTip="{x:Static p:Resources.CorrectTimeStampsToolTip}" 
                 Margin="10,15,0,0" 
                 HorizontalAlignment="Left" />
-                <CheckBox 
-                Content="{x:Static p:Resources.SaveFFMpegLogs}" 
-                ToolTip="{x:Static p:Resources.SaveFFMpegLogsToolTip}" 
-                IsChecked="{Binding SaveFFMpegLogs}" 
-                Margin="10,15,0,0" 
-                HorizontalAlignment="Left" />
             </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button x:Name="CancelButton" 

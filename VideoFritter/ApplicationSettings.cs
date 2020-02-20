@@ -23,13 +23,12 @@ namespace VideoFritter
                 // Use default settings if the settings file is not available
                 ExportQueuePath = @"$(VideoPath)\Export";
                 TimeStampCorrection = true;
-                SaveFFMpegLogs = false;
                 AudioVolume = 0.5;
             }
         }
 
-        public static string ExportQueuePath 
-        { 
+        public static string ExportQueuePath
+        {
             get
             {
                 return settingsData.ExportQueuePath;
@@ -54,19 +53,6 @@ namespace VideoFritter
             }
         }
 
-        public static bool SaveFFMpegLogs
-        {
-            get
-            {
-                return settingsData.SaveFFMpegLogs;
-            }
-
-            set
-            {
-                settingsData.SaveFFMpegLogs = value;
-            }
-        }
-
         public static double AudioVolume
         {
             get
@@ -82,7 +68,7 @@ namespace VideoFritter
 
         public static void Save()
         {
-            using (FileStream fileStream = 
+            using (FileStream fileStream =
                 new FileStream(SettingsFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
             {
                 using (Utf8JsonWriter jsonWriter = new Utf8JsonWriter(fileStream, new JsonWriterOptions { Indented = true }))
@@ -99,8 +85,6 @@ namespace VideoFritter
             public string ExportQueuePath { get; set; }
 
             public bool TimeStampCorrection { get; set; }
-
-            public bool SaveFFMpegLogs { get; set; }
 
             public double AudioVolume { get; set; }
         }

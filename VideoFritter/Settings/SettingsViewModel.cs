@@ -13,7 +13,6 @@ namespace VideoFritter.Settings
 
             ExportQueuePath = ApplicationSettings.ExportQueuePath;
             TimeStampCorrection = ApplicationSettings.TimeStampCorrection;
-            SaveFFMpegLogs = ApplicationSettings.SaveFFMpegLogs;
         }
 
         public ICommand SaveCommand { get; }
@@ -48,22 +47,7 @@ namespace VideoFritter.Settings
             }
         }
 
-        public bool SaveFFMpegLogs
-        {
-            get
-            {
-                return this.saveFFMpegLogs;
-            }
-
-            set
-            {
-                this.saveFFMpegLogs = value;
-                OnPropertyChanged();
-            }
-        }
-
         private string exportQueuePath;
         private bool timeStampCorrection;
-        private bool saveFFMpegLogs;
     }
 }

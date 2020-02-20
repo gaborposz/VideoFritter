@@ -46,8 +46,6 @@ namespace VideoFritter.Exporter
 
             return Task.Run(() =>
             {
-                //TODO: Get rid of ApplicationSettings.SaveFFMpegLogs
-
                 string targetDirectory = Path.GetDirectoryName(targetFileName);
                 if (!Directory.Exists(targetDirectory))
                 {

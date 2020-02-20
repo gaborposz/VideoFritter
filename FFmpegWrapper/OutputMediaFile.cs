@@ -8,8 +8,6 @@ namespace FFmpegWrapper
     {
         public OutputMediaFile(string fileNameIn)
         {
-            //TODO: File existence check
-
             try
             {
                 fixed (AVIOContext** avioContextPtrPtr = &this.avioContextPtr)

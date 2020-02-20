@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.IO;
 using FFmpeg.AutoGen;
 
 namespace FFmpegWrapper
@@ -9,11 +9,14 @@ namespace FFmpegWrapper
     {
         public InputMediaFile(string filePath)
         {
-            // TODO: File exist check
-            int errorCode;
+            if (!File.Exists(filePath))
+            {
+                throw new ArgumentException($"The file ({filePath}) does not exists!", nameof(filePath));
+            }
 
             this.avFormatContextPtr = ffmpeg.avformat_alloc_context();
 
+            int errorCode;
             fixed (AVFormatContext** formatContextPointerPointer = &this.avFormatContextPtr)
             {
                 errorCode = ffmpeg.avformat_open_input(formatContextPointerPointer, filePath, null, null);

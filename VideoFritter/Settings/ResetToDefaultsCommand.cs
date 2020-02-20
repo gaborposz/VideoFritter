@@ -21,7 +21,6 @@ namespace VideoFritter.Settings
         {
             this.settingsViewModel.ExportQueuePath = @"$(VideoPath)\Export";
             this.settingsViewModel.TimeStampCorrection = true;
-            this.settingsViewModel.SaveFFMpegLogs = false;
         }
 
         private readonly SettingsViewModel settingsViewModel;
