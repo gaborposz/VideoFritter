@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+
 using FFmpeg.AutoGen;
 
 namespace FFmpegWrapper
@@ -30,6 +31,14 @@ namespace FFmpegWrapper
         }
 
         public MediaStream[] Streams { get; private set; }
+
+        public TimeSpan Length
+        {
+            get
+            {
+                return TimeSpan.FromSeconds((double)this.avFormatContextPtr->duration / ffmpeg.AV_TIME_BASE);
+            }
+        }
 
         public IDictionary<string, string> MetaData
         {

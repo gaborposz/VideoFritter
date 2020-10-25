@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
+using FFmpegWrapper;
+
 namespace VideoFritter.Controls.VideoPlayer
 {
     /// <summary>
@@ -160,12 +162,26 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             this.videoCanvas.Visibility = Visibility.Hidden;
 
+
+            // WORKAROUND: The MediaPlayer component sets the length inprecisely, 
+            // so we have to get it directly from the file
+            TimeSpan realLength;
+            using (InputMediaFile inputFile = new InputMediaFile(fileName))
+            {
+                realLength = inputFile.Length;
+            }
+
+            SetValue(VideoLengthProperty, realLength);
+
             this.timeline = new MediaTimeline(new Uri(fileName, UriKind.Absolute));
+            this.timeline.Duration = new Duration(realLength);
 
             this.clock = this.timeline.CreateClock();
             this.clock.CurrentTimeInvalidated += TimeInvalidatedHandler;
+
             this.mediaPlayer.Clock = this.clock;
             this.mediaPlayer.Clock.Completed += MediaEndedHandler;
+
         }
 
         public void PlayOrPause()
@@ -298,9 +314,6 @@ namespace VideoFritter.Controls.VideoPlayer
             IsVideoLoaded = true;
             this.endOfPlayback = TimeSpan.MaxValue;
 
-            TimeSpan videoLength = this.clock.NaturalDuration.HasTimeSpan ? this.clock.NaturalDuration.TimeSpan : TimeSpan.Zero;
-
-            SetValue(VideoLengthProperty, videoLength);
             SetValue(VolumeProperty, this.mediaPlayer.Volume);
 
             RaiseVideoOpenedEvent();
@@ -314,6 +327,11 @@ namespace VideoFritter.Controls.VideoPlayer
         private void MediaEndedHandler(object sender, EventArgs e)
         {
             PauseInternal();
+
+            // WORKAROUND: The clock's CurrentTime is lagging behind the real position, 
+            // so when the video playback is finished it remains sligthly before 'the real'.
+            // To hide it we need to set the position to the 'real end' manually.
+            UpdateVideoPositionInternally(VideoLength);
         }
 
         private void TimeInvalidatedHandler(object sender, EventArgs e)
@@ -329,8 +347,13 @@ namespace VideoFritter.Controls.VideoPlayer
             if (currentVideoPosition >= this.endOfPlayback)
             {
                 PauseInternal();
+
+                // WORKAROUND: The clock's CurrentTime is lagging behind the real position, 
+                // so when the video playback is finished it remains sligthly before 'the real'.
+                // To hide it we need to set the position to the 'real end' manually.
+                UpdateVideoPositionInternally(this.endOfPlayback);
             }
-            else
+            else if (IsPlaying)
             {
                 UpdateVideoPositionInternally(currentVideoPosition);
             }
