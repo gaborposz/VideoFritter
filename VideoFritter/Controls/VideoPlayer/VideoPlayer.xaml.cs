@@ -344,18 +344,21 @@ namespace VideoFritter.Controls.VideoPlayer
                 return;
             }
 
-            if (currentVideoPosition >= this.endOfPlayback)
+            if (IsPlaying)
             {
-                PauseInternal();
+                if (currentVideoPosition >= this.endOfPlayback)
+                {
+                    PauseInternal();
 
-                // WORKAROUND: The clock's CurrentTime is lagging behind the real position, 
-                // so when the video playback is finished it remains sligthly before 'the real'.
-                // To hide it we need to set the position to the 'real end' manually.
-                UpdateVideoPositionInternally(this.endOfPlayback);
-            }
-            else if (IsPlaying)
-            {
-                UpdateVideoPositionInternally(currentVideoPosition);
+                    // WORKAROUND: The clock's CurrentTime is lagging behind the real position, 
+                    // so when the video playback is finished it remains sligthly before 'the real'.
+                    // To hide it we need to set the position to the 'real end' manually.
+                    UpdateVideoPositionInternally(this.endOfPlayback);
+                }
+                else
+                {
+                    UpdateVideoPositionInternally(currentVideoPosition);
+                }
             }
         }
 
