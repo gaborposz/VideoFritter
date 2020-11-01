@@ -10,11 +10,11 @@ namespace FFmpegWrapper
             TimeBase = new FFmpegTime(avStreamPtrIn->time_base);
             FrameRate = new FFmpegFrameRate(avStreamPtrIn->r_frame_rate);
             NumberOfFrames = avStreamPtrIn->nb_frames;
-            Codec = avStreamPtrIn->codec->codec_id.ToString();
-            CodecType = avStreamPtrIn->codec->codec_type.ToString();
+            Codec = avStreamPtrIn->codecpar->codec_id.ConvertToCodecId();
+            CodecType = avStreamPtrIn->codecpar->codec_type.ConvertToMediaType();
             CodecParameters = *avStreamPtrIn->codecpar;
-            Width = avStreamPtrIn->codec->width;
-            Height = avStreamPtrIn->codec->height;
+            Width = avStreamPtrIn->codecpar->width;
+            Height = avStreamPtrIn->codecpar->height;
         }
 
         public int StreamIndex { get; private set; }
@@ -25,11 +25,9 @@ namespace FFmpegWrapper
 
         public long NumberOfFrames { get; private set; }
 
-        //TODO: Use specific enum instead of string
-        public string Codec { get; private set; }
+        public CodecId Codec { get; private set; }
 
-        //TODO: Use specific enum instead of string
-        public string CodecType { get; private set; }
+        public MediaType CodecType { get; private set; }
 
         public int Width { get; private set; }
 

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using FFmpegWrapper;
 
 namespace VideoFritter.Exporter
@@ -54,13 +55,14 @@ namespace VideoFritter.Exporter
 
                 using (InputMediaFile inputFile = new InputMediaFile(sourceFileName))
                 {
-                    List<MediaStream> openStreams = inputFile.Streams.ToList();
+                    // Filter out those streams which codec is not known
+                    List<MediaStream> openStreams = inputFile.Streams.Where(s => s.Codec != CodecId.AV_CODEC_ID_NONE).ToList();
 
                     inputFile.Seek(sliceStart);
 
                     using (OutputMediaFile outputFile = new OutputMediaFile(targetFileName))
                     {
-                        outputFile.Streams = inputFile.Streams;
+                        outputFile.Streams = openStreams.ToArray();
 
                         IDictionary<string, string> metaData = inputFile.MetaData;
 
