@@ -329,7 +329,7 @@ namespace VideoFritter.Controls.VideoPlayer
             PauseInternal();
 
             // WORKAROUND: The clock's CurrentTime is lagging behind the real position, 
-            // so when the video playback is finished it remains sligthly before 'the real'.
+            // so when the video playback is finished it remains sligthly before the 'real end'.
             // To hide it we need to set the position to the 'real end' manually.
             UpdateVideoPositionInternally(VideoLength);
         }
@@ -351,7 +351,7 @@ namespace VideoFritter.Controls.VideoPlayer
                     PauseInternal();
 
                     // WORKAROUND: The clock's CurrentTime is lagging behind the real position, 
-                    // so when the video playback is finished it remains sligthly before 'the real'.
+                    // so when the video playback is finished it remains sligthly before the 'real end'.
                     // To hide it we need to set the position to the 'real end' manually.
                     UpdateVideoPositionInternally(this.endOfPlayback);
                 }
