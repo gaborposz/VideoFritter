@@ -162,26 +162,34 @@ namespace VideoFritter.Controls.VideoPlayer
         {
             this.videoCanvas.Visibility = Visibility.Hidden;
 
-
-            // WORKAROUND: The MediaPlayer component sets the length inprecisely, 
-            // so we have to get it directly from the file
-            TimeSpan realLength;
-            using (InputMediaFile inputFile = new InputMediaFile(fileName))
+            try
             {
-                realLength = inputFile.Length;
+
+                // WORKAROUND: The MediaPlayer component sets the length inprecisely, 
+                // so we have to get it directly from the file
+                TimeSpan realLength;
+                using (InputMediaFile inputFile = new InputMediaFile(fileName))
+                {
+                    realLength = inputFile.Length;
+                }
+
+                SetValue(VideoLengthProperty, realLength);
+
+                this.timeline = new MediaTimeline(new Uri(fileName, UriKind.Absolute));
+                this.timeline.Duration = new Duration(realLength);
+
+                this.clock = this.timeline.CreateClock();
+                this.clock.CurrentTimeInvalidated += TimeInvalidatedHandler;
+
+                this.mediaPlayer.Clock = this.clock;
+                this.mediaPlayer.Clock.Completed += MediaEndedHandler;
             }
-
-            SetValue(VideoLengthProperty, realLength);
-
-            this.timeline = new MediaTimeline(new Uri(fileName, UriKind.Absolute));
-            this.timeline.Duration = new Duration(realLength);
-
-            this.clock = this.timeline.CreateClock();
-            this.clock.CurrentTimeInvalidated += TimeInvalidatedHandler;
-
-            this.mediaPlayer.Clock = this.clock;
-            this.mediaPlayer.Clock.Completed += MediaEndedHandler;
-
+            catch
+            {
+                // Reset the player in case of error during opening the file 
+                Reset();
+                throw;
+            }
         }
 
         public void PlayOrPause()
@@ -410,6 +418,15 @@ namespace VideoFritter.Controls.VideoPlayer
                 this.videoCanvas.Width = VideoWidth / heightRatio;
                 this.videoCanvas.Height = availableHeight;
             }
+        }
+
+        private void Reset()
+        {
+            SetValue(VideoLengthProperty, TimeSpan.FromSeconds(10));
+            SetValue(VideoPositionProperty, TimeSpan.Zero);
+            SetValue(IsVideoLoadedProperty, false);
+
+            RaiseVideoOpenedEvent();
         }
     }
 }

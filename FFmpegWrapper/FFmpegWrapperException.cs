@@ -29,7 +29,7 @@ namespace FFmpegWrapper
             var buffer = stackalloc byte[bufferSize];
             ffmpeg.av_strerror(ffmpegErrorCodeIn, buffer, (ulong)bufferSize);
             var message = Marshal.PtrToStringAnsi((IntPtr)buffer);
-            return $"{message} Error code: 0x{ffmpegErrorCodeIn:X}";
+            return $"{message}\nFFMpeg error code: 0x{ffmpegErrorCodeIn:X}";
         }
     }
 }
