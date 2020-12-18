@@ -142,7 +142,7 @@ namespace VideoFritter.MainWindow
             {
                 if (IsFileOpened)
                 {
-                    return $"{Resources.WindowTitle} - {OpenedFileName}";
+                    return $"{Resources.WindowTitle} - {EscapeUnderscores(OpenedFileName)}";
                 }
                 else
                 {
@@ -262,5 +262,11 @@ namespace VideoFritter.MainWindow
             }
         }
 
+        private static string EscapeUnderscores(string inputText)
+        {
+            // Workaround, because in the Window title the underscore characters 
+            // are also interpreted as "hotkeys", just like in menu texts.
+            return inputText.Replace("_", "__");
+        }
     }
 }
