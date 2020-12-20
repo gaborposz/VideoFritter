@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="WelcomeDlg_Title">[ProductName] [ProductVersion] Setup</String>
+  <String Id="InstallDirDlg_Title">[ProductName] [ProductVersion] Setup</String>
+  <String Id="LicenseAgreementDlg_Title">[ProductName] [ProductVersion] Setup</String>
+  <String Id="VerifyReadyDlg_Title">[ProductName] [ProductVersion] Setup</String>
+  <String Id="ProgressDlg_Title">[ProductName] [ProductVersion] Setup</String>
+  <String Id="UserExit_Title">[ProductName] [ProductVersion] Setup</String>
+</WixLocalization>

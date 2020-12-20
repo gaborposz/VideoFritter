@@ -128,8 +128,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-This software uses FFmpeg CLI that is licensed under the LGPLv2.1 license
+This software uses the FFmpeg library that is licensed under the LGPLv2.1 license
 and FFmpeg.AutoGen that is licensed under the LGPLv3.0 license.</value>
+  </data>
+  <data name="AboutText3" xml:space="preserve">
+    <value>If you want to provide feedback then please use:</value>
   </data>
   <data name="AboutWindowTitle" xml:space="preserve">
     <value>About</value>

@@ -30,12 +30,13 @@
                 </StackPanel>
 
                 <TextBlock Padding="15,2,10,15">
-                    <Hyperlink NavigateUri="https://github.com/gaborposz/VideoFritter" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/gaborposz/VideoFritter</Hyperlink>
+                    <Hyperlink NavigateUri="https://github.com/gaborposz/VideoFritter" RequestNavigate="OpenWebURL">https://github.com/gaborposz/VideoFritter</Hyperlink>
                 </TextBlock>
 
                 <StackPanel Orientation="Horizontal" >
-                    <Label x:Name="Copyright" Content="Copyright 2019" Padding="15,0,0,10"/>
+                    <Label x:Name="Copyright" Content="Copyright 2020" Padding="15,0,0,10"/>
                     <Label x:Name="CopyrightProductTitle" Content="{Binding AssemblyTitle}" Padding="5,0,0,10" />
+                    <Label x:Name="By" Content="by" Padding="5,0,0,10" />
                     <Label x:Name="CopyrightAuthor" Content="{Binding AssemblyCompany}" Padding="5,0,0,10" />
                 </StackPanel>
 
@@ -49,7 +50,7 @@
                     TextWrapping="Wrap"
                     Text="{x:Static p:Resources.AboutText1}" />
                 <TextBlock Padding="15,2,10,15">
-                    <Hyperlink NavigateUri="http://www.apache.org/licenses/LICENSE-2.0" RequestNavigate="Hyperlink_RequestNavigate">http://www.apache.org/licenses/LICENSE-2.0</Hyperlink>
+                    <Hyperlink NavigateUri="http://www.apache.org/licenses/LICENSE-2.0" RequestNavigate="OpenWebURL">http://www.apache.org/licenses/LICENSE-2.0</Hyperlink>
                 </TextBlock>
                 <TextBlock 
                     Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
@@ -60,6 +61,19 @@
                     HorizontalAlignment="Left"
                     TextWrapping="Wrap"
                     Text="{x:Static p:Resources.AboutText2}" />
+                <TextBlock 
+                    Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
+                    x:Name="aboutText3" 
+                    Padding="15,0,15,0"
+                    Background="Transparent"
+                    Foreground="White"
+                    HorizontalAlignment="Left"
+                    TextWrapping="Wrap"
+                    Text="{x:Static p:Resources.AboutText3}" />
+                <TextBlock Padding="15,2,10,30">
+                    <Hyperlink NavigateUri="https://github.com/gaborposz/VideoFritter/issues" RequestNavigate="OpenWebURL">https://github.com/gaborposz/VideoFritter/issues</Hyperlink>
+                </TextBlock>
+
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <Button x:Name="CloseWindowButton" Style="{StaticResource CloseCaptionButtonStyle}" Click="CloseWindowButton_Click" Margin="7" />

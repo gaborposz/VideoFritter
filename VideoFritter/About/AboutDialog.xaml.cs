@@ -18,9 +18,15 @@ namespace VideoFritter.About
             InitializeComponent();
         }
 
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void OpenWebURL(object sender, RequestNavigateEventArgs e)
         {
-            Process.Start(e.Uri.AbsoluteUri);
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = "cmd";
+            startInfo.Arguments = $"/c start {e.Uri.AbsoluteUri.Replace("&", "^&")}";
+            startInfo.CreateNoWindow = true;
+
+            Process.Start(startInfo);
+
             e.Handled = true;
         }
 

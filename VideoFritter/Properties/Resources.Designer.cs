@@ -19,7 +19,7 @@ namespace VideoFritter.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -77,11 +77,21 @@ namespace VideoFritter.Properties {
         ///See the License for the specific language governing permissions and
         ///limitations under the License.
         ///
-        ///This software uses FFmpeg CLI that is licensed under the LGPLv2.1 license..
+        ///This software uses the FFmpeg library that is licensed under the LGPLv2.1 license
+        ///and FFmpeg.AutoGen that is licensed under the LGPLv3.0 license..
         /// </summary>
         public static string AboutText2 {
             get {
                 return ResourceManager.GetString("AboutText2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you want to provide feedback then please use:.
+        /// </summary>
+        public static string AboutText3 {
+            get {
+                return ResourceManager.GetString("AboutText3", resourceCulture);
             }
         }
         
@@ -542,24 +552,6 @@ namespace VideoFritter.Properties {
         public static string VideoPosition {
             get {
                 return ResourceManager.GetString("VideoPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _View.
-        /// </summary>
-        public static string ViewMenu {
-            get {
-                return ResourceManager.GetString("ViewMenu", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Scale to _fit screen.
-        /// </summary>
-        public static string ViewMenu_Resize {
-            get {
-                return ResourceManager.GetString("ViewMenu_Resize", resourceCulture);
             }
         }
         

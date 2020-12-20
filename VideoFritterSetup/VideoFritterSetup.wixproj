@@ -49,13 +49,16 @@
   <ItemGroup>
     <Content Include="License.rtf" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.wxl" />
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
   <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
     <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>dotnet publish $(SolutionDir)\VideoFritter\VideoFritter.csproj -r win-x64 -c Release /p:PublishSingleFile=true /p:PublishTrimmed=true -o $(SolutionDir)\publish</PreBuildEvent>
+    <PreBuildEvent>dotnet publish $(SolutionDir)\VideoFritter\VideoFritter.csproj -r win-x64 -c Release /p:PublishSingleFile=true /p:PublishReadyToRun=true -o $(SolutionDir)\publish</PreBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

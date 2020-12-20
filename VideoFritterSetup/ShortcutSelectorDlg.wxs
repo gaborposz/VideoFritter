@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Fragment>
     <UI>
-      <Dialog Id="ShortcutSelectorDlg" Width="370" Height="270" Title="[ProductName] Setup" NoMinimize="yes">
+      <Dialog Id="ShortcutSelectorDlg" Width="370" Height="270" Title="[ProductName] [ProductVersion] Setup" NoMinimize="yes">
         <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
         <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes">
           <Text>{\WixUI_Font_Title}Shortcut selection</Text>

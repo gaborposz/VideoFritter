@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="VideoFritter 0.8" Language="1033" Version="1.0.0.0" Manufacturer="Gabor Posz" UpgradeCode="A7EEABAE-D876-471E-A73E-A531063D5D9E">
+  <Product Id="*" Name="VideoFritter" Language="1033" Version="0.9.0.0" Manufacturer="Gabor Posz" UpgradeCode="A7EEABAE-D876-471E-A73E-A531063D5D9E">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -13,15 +13,12 @@
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLFOLDER" Name="VideoFritter" >
           <Directory Id="ffmpegDirectory" Name="ffmpeg">
-            <Component Id='ffmpegExecutable' Guid='E05FBF81-1B85-4FD3-8D05-07E8D7390558'>
+            <Component Id='ffmpegLib' Guid='E05FBF81-1B85-4FD3-8D05-07E8D7390558'>
               <File Id="avcodec" Name="avcodec-58.dll" DiskId='1' Source='..\publish\ffmpeg\avcodec-58.dll' />
               <File Id="avdevice" Name="avdevice-58.dll" DiskId='1' Source='..\publish\ffmpeg\avdevice-58.dll' />
               <File Id="avfilter" Name="avfilter-7.dll" DiskId='1' Source='..\publish\ffmpeg\avfilter-7.dll' />
               <File Id="avformat" Name="avformat-58.dll" DiskId='1' Source='..\publish\ffmpeg\avformat-58.dll' />
               <File Id="avutil" Name="avutil-56.dll" DiskId='1' Source='..\publish\ffmpeg\avutil-56.dll' />
-              <File Id="ffmpeg" Name="ffmpeg.exe" DiskId='1' Source='..\publish\ffmpeg\ffmpeg.exe' />
-              <File Id="ffplay" Name="ffplay.exe" DiskId='1' Source='..\publish\ffmpeg\ffplay.exe' />
-              <File Id="ffprobe" Name="ffprobe.exe" DiskId='1' Source='..\publish\ffmpeg\ffprobe.exe' />
               <File Id="swresample" Name="swresample-3.dll" DiskId='1' Source='..\publish\ffmpeg\swresample-3.dll' />
               <File Id="swscale" Name="swscale-5.dll" DiskId='1' Source='..\publish\ffmpeg\swscale-5.dll' />
             </Component>
@@ -63,14 +60,13 @@
 
     <Feature Id='Complete' Level='1'>
       <ComponentRef Id='MainExecutable' />
-      <ComponentRef Id='ffmpegExecutable' />
+      <ComponentRef Id='ffmpegLib' />
       <ComponentRef Id='ProgramMenuDir' />
       <ComponentRef Id='DesktopShortcut' />
     </Feature>
 
     <UI Id="MyWixUI_InstallDir">
       <UIRef Id="WixUI_InstallDir" />
-
       <DialogRef Id="ShortcutSelectorDlg" />
 
       <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="ShortcutSelectorDlg" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
