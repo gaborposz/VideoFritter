@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="VideoFritter" Language="1033" Version="0.9.0.0" Manufacturer="Gabor Posz" UpgradeCode="A7EEABAE-D876-471E-A73E-A531063D5D9E">
+  <Product Id="*" Name="VideoFritter" Language="1033" Version="0.9.1.0" Manufacturer="Gabor Posz" UpgradeCode="A7EEABAE-D876-471E-A73E-A531063D5D9E">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />

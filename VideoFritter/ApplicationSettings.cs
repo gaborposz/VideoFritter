@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.Json;
 
 namespace VideoFritter
@@ -68,6 +69,11 @@ namespace VideoFritter
 
         public static void Save()
         {
+            if (!Directory.Exists(SettingsFilePath))
+            {
+                Directory.CreateDirectory(SettingsFilePath);
+            }
+
             using (FileStream fileStream =
                 new FileStream(SettingsFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
             {
@@ -78,7 +84,11 @@ namespace VideoFritter
             }
         }
 
-        private static string SettingsFileName = "VideoFritter.settings.json";
+        private static string SettingsFilePath =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VideoFritter");
+
+        private static string SettingsFileName =
+            Path.Combine(SettingsFilePath, "VideoFritter.settings.json");
 
         private struct SettingsData
         {
