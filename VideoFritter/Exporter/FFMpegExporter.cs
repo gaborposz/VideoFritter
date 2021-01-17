@@ -56,7 +56,12 @@ namespace VideoFritter.Exporter
                 using (InputMediaFile inputFile = new InputMediaFile(sourceFileName))
                 {
                     // Filter out those streams which codec is not known
-                    List<MediaStream> openStreams = inputFile.Streams.Where(s => s.Codec != CodecId.AV_CODEC_ID_NONE).ToList();
+                    List<MediaStream> openStreams = inputFile.Streams
+                        .Where(s =>
+                            s.CodecType == MediaType.AVMEDIA_TYPE_AUDIO ||
+                            s.CodecType == MediaType.AVMEDIA_TYPE_VIDEO ||
+                            s.CodecType == MediaType.AVMEDIA_TYPE_SUBTITLE)
+                        .ToList();
 
                     inputFile.Seek(sliceStart);
 
@@ -86,10 +91,30 @@ namespace VideoFritter.Exporter
                         outputFile.MetaData = metaData;
 
                         outputFile.WriteHeader();
+
+                        // Presentation time stamp of the first frame to copy, 
+                        // i.e. the "zero" time stamp of the new video file, 
+                        // that will be subtracted from all packets' time stamp.
+                        // It is needed because Seek will actually 
+                        // not seek to the given position, 
+                        // but to the first I-Frame before that.
+                        TimeSpan? firstFrameTimeStamp = null;
+
+                        // Workaround for the case if an "open stream" 
+                        // does not contain packets after the end of the slice
+                        TimeSpan emergencyExitTimeStamp = sliceEnd.Add(TimeSpan.FromSeconds(30));
+
                         while (inputFile.TryRead(out MediaPacket packet))
                         {
                             if (openStreams.Contains(packet.Stream))
                             {
+                                if (!firstFrameTimeStamp.HasValue)
+                                {
+                                    firstFrameTimeStamp = packet.StartTime;
+                                }
+
+                                packet.ShiftTime(-firstFrameTimeStamp.Value);
+
                                 outputFile.WritePacket(packet);
 
                                 if (packet.EndTime > sliceEnd && packet.KeyFrame)
@@ -103,8 +128,19 @@ namespace VideoFritter.Exporter
 
                                 if (progressHandler != null)
                                 {
-                                    TimeSpan totalLength = sliceEnd.Subtract(sliceStart);
-                                    progressHandler.Report((double)packet.EndTime.Ticks / totalLength.Ticks);
+                                    TimeSpan totalSliceLength = sliceEnd.Subtract(sliceStart);
+                                    TimeSpan currectPositionInSlice = packet.StartTime.Subtract(firstFrameTimeStamp.Value);
+                                    progressHandler.Report((double)currectPositionInSlice.Ticks / totalSliceLength.Ticks);
+                                }
+                            }
+                            else
+                            {
+                                // Stop reading packets if we are (in one stream) already way beyond the end of the slice.
+                                // With this we can avoid (the time consuming) reading of the whole file 
+                                // if an "open stream" does not contain any packets after the end of the slice.
+                                if (packet.StartTime > emergencyExitTimeStamp)
+                                {
+                                    break;
                                 }
                             }
                         }

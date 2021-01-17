@@ -15,8 +15,6 @@ namespace FFmpegWrapper
                 throw new ArgumentException($"The file ({filePath}) does not exists!", nameof(filePath));
             }
 
-            this.avFormatContextPtr = ffmpeg.avformat_alloc_context();
-
             int errorCode;
             fixed (AVFormatContext** formatContextPointerPointer = &this.avFormatContextPtr)
             {

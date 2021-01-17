@@ -10,9 +10,32 @@ namespace FFmpegWrapper
         {
             PacketPtr = packetPtrIn;
             Stream = streamIn;
-            StartTime = Stream.TimeBase.ToTimeSpan(packetPtrIn->dts);
-            EndTime = Stream.TimeBase.ToTimeSpan(packetPtrIn->dts + packetPtrIn->duration);
+            StartTime = Stream.TimeBase.ToTimeSpan(packetPtrIn->pts);
+            EndTime = Stream.TimeBase.ToTimeSpan(packetPtrIn->pts + packetPtrIn->duration);
             KeyFrame = (packetPtrIn->flags & ffmpeg.AV_PKT_FLAG_KEY) == ffmpeg.AV_PKT_FLAG_KEY;
+        }
+
+        public MediaStream Stream { get; private set; }
+
+        public TimeSpan StartTime { get; private set; }
+
+        public TimeSpan EndTime { get; private set; }
+
+        public bool KeyFrame { get; private set; }
+
+        public void ShiftTime(TimeSpan timeChange)
+        {
+            long timeBaseMultiplier = Stream.TimeBase.ToTimeBaseMultiplier(timeChange);
+
+            if (PacketPtr->dts != ffmpeg.AV_NOPTS_VALUE)
+            {
+                PacketPtr->dts += timeBaseMultiplier;
+            }
+
+            if (PacketPtr->pts != ffmpeg.AV_NOPTS_VALUE)
+            {
+                PacketPtr->pts += timeBaseMultiplier;
+            }
         }
 
         ~MediaPacket()
@@ -25,14 +48,6 @@ namespace FFmpegWrapper
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        public MediaStream Stream { get; private set; }
-
-        public TimeSpan StartTime { get; private set; }
-
-        public TimeSpan EndTime { get; private set; }
-
-        public bool KeyFrame { get; private set; }
 
         internal AVPacket* PacketPtr { get; private set; }
 

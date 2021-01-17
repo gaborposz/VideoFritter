@@ -22,5 +22,10 @@ namespace FFmpegWrapper
         {
             return TimeSpan.FromSeconds((double)multiplier * Numerator / Denominator);
         }
+
+        public long ToTimeBaseMultiplier(TimeSpan timeSpan)
+        {
+            return (long)(timeSpan.TotalSeconds * Denominator / Numerator);
+        }
     }
 }
