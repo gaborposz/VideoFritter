@@ -5,15 +5,17 @@ namespace VideoFritter.MainWindow.Commands
     internal class PlayUntilSelectionEndCommand : AbstractOpenedFileEnabledCommand
     {
         public PlayUntilSelectionEndCommand(MainWindowViewModel mainWindowViewModelIn, VideoPlayer videoPlayerIn)
-            : base(mainWindowViewModelIn, videoPlayerIn)
+            : base(mainWindowViewModelIn)
         {
+            VideoPlayer = videoPlayerIn;
+
             VideoPlayer.VideoPositionChanged += VideoPlayer_VideoPositionChanged;
             MainWindowViewModel.PropertyChanged += MainWindowViewModel_PropertyChanged;
         }
 
         public override bool CanExecute(object parameter)
         {
-            return base.CanExecute(parameter) && 
+            return base.CanExecute(parameter) &&
                 VideoPlayer.VideoPosition < MainWindowViewModel.SliceEnd;
         }
 
@@ -21,6 +23,8 @@ namespace VideoFritter.MainWindow.Commands
         {
             VideoPlayer.Play(VideoPlayer.VideoPosition, MainWindowViewModel.SliceEnd);
         }
+
+        private VideoPlayer VideoPlayer { get; }
 
         private void VideoPlayer_VideoPositionChanged(object sender, System.Windows.RoutedEventArgs e)
         {

@@ -258,7 +258,7 @@ namespace VideoFritter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Open file.
+        ///   Looks up a localized string similar to _Open File.
         /// </summary>
         public static string FileMenu_Open {
             get {

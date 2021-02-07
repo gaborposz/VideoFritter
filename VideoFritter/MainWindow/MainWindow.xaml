@@ -19,18 +19,24 @@
         Drop="Window_Drop"
         Closed="MainWindow_Closed">
     <Window.InputBindings>
-        <KeyBinding Key="Space"  Command="{Binding PlayOrPauseCommand}"/>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenFileCommand}"/>
+        <KeyBinding Key="Space" Command="{Binding PlayOrPauseCommand}"/>
         <KeyBinding Key="Left" Command="{Binding StepBackwardCommand}"/>
         <KeyBinding Key="Right" Command="{Binding StepForwardCommand}"/>
-        <KeyBinding Key="Left" Modifiers="Shift" Command="{Binding BackwardCommand}"/>
-        <KeyBinding Key="Right" Modifiers="Shift" Command="{Binding ForwardCommand}"/>
+        <KeyBinding Key="Left" Modifiers="Ctrl" Command="{Binding BackwardCommand}"/>
+        <KeyBinding Key="Right" Modifiers="Ctrl" Command="{Binding ForwardCommand}"/>
         <KeyBinding Key="E" Command="{Binding ExportSelectionCommand}"/>
+        <KeyBinding Key="E" Modifiers="Shift" Command="{Binding AddToQueueCommand}"/>
+        <KeyBinding Key="E" Modifiers="Ctrl" Command="{Binding OpenExportQueueCommand}"/>
+        <KeyBinding Key="A" Command="{Binding AddToQueueCommand}"/>
         <KeyBinding Key="N" Command="{Binding NextVideoCommand}"/>
         <KeyBinding Key="Enter" Command="{Binding PlaySelectionCommand}"/>
-        <KeyBinding Key="PageUp" Command="{Binding SetSectionStartCommand}"/>
-        <KeyBinding Key="PageDown" Command="{Binding SetSectionEndCommand}"/>
+        <KeyBinding Key="PageUp" Command="{Binding SetSectionEndCommand}"/>
+        <KeyBinding Key="PageDown" Command="{Binding SetSectionStartCommand}"/>
         <KeyBinding Key="Home" Command="{Binding PlayFromSelectionStartCommand}"/>
         <KeyBinding Key="End" Command="{Binding PlayUntilSelectionEndCommand}"/>
+        <KeyBinding Key="P" Modifiers="Ctrl" Command="{Binding OpenSettingsCommand}"/>
+        <KeyBinding Key="A" Modifiers="Ctrl" Command="{Binding OpenAboutCommand}"/>
     </Window.InputBindings>
     <Border Style="{StaticResource WindowBorderStyle}">
         <Grid x:Name="mainLayoutGrid">
@@ -59,11 +65,11 @@
                         <MenuItem Header="{x:Static p:Resources.FileMenu_Exit}" Click="Menu_File_Exit" />
                     </MenuItem>
                     <MenuItem Header="{x:Static p:Resources.ToolsMenu}">
-                        <MenuItem Header="{x:Static p:Resources.ToolsMenu_ExportQueue}" Click="Menu_ExportQueue"/>
-                        <MenuItem Header="{x:Static p:Resources.ToolsMenu_Settings}" Click="Menu_Settings" />
+                        <MenuItem Header="{x:Static p:Resources.ToolsMenu_ExportQueue}" Command="{Binding OpenExportQueueCommand}"/>
+                        <MenuItem Header="{x:Static p:Resources.ToolsMenu_Settings}" Command="{Binding OpenSettingsCommand}" />
                     </MenuItem>
                     <MenuItem Header="{x:Static p:Resources.HelpMenu}">
-                        <MenuItem Header="{x:Static p:Resources.HelpMenu_About}" Click="MenuAbout_Click" />
+                        <MenuItem Header="{x:Static p:Resources.HelpMenu_About}" Command="{Binding OpenAboutCommand}" />
                     </MenuItem>
                 </Menu>
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,3,0">
@@ -349,12 +355,13 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+                    
                     <Button x:Name="addToQueueButton" 
                         Grid.Row="0" 
                         Grid.Column="0" 
                         ToolTip="{x:Static p:Resources.AddToQueue}"
                         Content="{x:Static p:Resources.AddToQueue}"
-                        Click="AddToQueueButton_Click"
+                        Command="{Binding AddToQueueCommand}"
                         Style="{StaticResource BaseButtonStyle}" />
 
                     <Button x:Name="nextVideoButton" 

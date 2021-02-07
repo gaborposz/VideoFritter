@@ -4,8 +4,8 @@ namespace VideoFritter.MainWindow.Commands
 {
     internal abstract class AbstractOpenedFileEnabledCommand : AbstractMainWindowCommandBase
     {
-        public AbstractOpenedFileEnabledCommand(MainWindowViewModel mainWindowViewModelIn, VideoPlayer videoPlayerIn)
-            : base(mainWindowViewModelIn, videoPlayerIn)
+        public AbstractOpenedFileEnabledCommand(MainWindowViewModel mainWindowViewModelIn)
+            : base(mainWindowViewModelIn)
         {
             MainWindowViewModel.IsFileOpenedChanged += MainWindowViewModelIsFileOpenedChangedHandler;
         }

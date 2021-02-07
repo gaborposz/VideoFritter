@@ -6,8 +6,9 @@ namespace VideoFritter.MainWindow.Commands
     internal class SetSectionStartCommand : AbstractOpenedFileEnabledCommand
     {
         public SetSectionStartCommand(MainWindowViewModel mainWindowViewModelIn, VideoPlayer videoPlayerIn)
-            : base(mainWindowViewModelIn, videoPlayerIn)
+            : base(mainWindowViewModelIn)
         {
+            VideoPlayer = videoPlayerIn;
         }
 
         public override void Execute(object parameter)
@@ -19,5 +20,7 @@ namespace VideoFritter.MainWindow.Commands
 
             MainWindowViewModel.SliceStart = VideoPlayer.VideoPosition;
         }
+
+        private VideoPlayer VideoPlayer { get; }
     }
 }

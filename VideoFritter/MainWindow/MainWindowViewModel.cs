@@ -9,6 +9,7 @@ using System.Windows.Input;
 using VideoFritter.Common;
 using VideoFritter.Controls.VideoPlayer;
 using VideoFritter.Exporter;
+using VideoFritter.ExportQueue;
 using VideoFritter.MainWindow.Commands;
 using VideoFritter.Properties;
 
@@ -18,7 +19,12 @@ namespace VideoFritter.MainWindow
     {
         public MainWindowViewModel(VideoPlayer videoPlayerIn)
         {
+            this.exportQueueViewModel = new ExportQueueViewModel();
+
             OpenFileCommand = new OpenFileCommand(this, videoPlayerIn);
+            OpenExportQueueCommand = new OpenExportQueueCommand(this, this.exportQueueViewModel);
+            OpenSettingsCommand = new OpenSettingsCommand(this);
+            OpenAboutCommand = new OpenAboutCommand(this);
             PlayOrPauseCommand = new PlayOrPauseCommand(this, videoPlayerIn);
             SetSectionStartCommand = new SetSectionStartCommand(this, videoPlayerIn);
             SetSectionEndCommand = new SetSectionEndCommand(this, videoPlayerIn);
@@ -29,8 +35,9 @@ namespace VideoFritter.MainWindow
             PlayFromSelectionStartCommand = new PlayFromSelectionStartCommand(this, videoPlayerIn);
             PlaySelectionCommand = new PlaySelectionCommand(this, videoPlayerIn);
             PlayUntilSelectionEndCommand = new PlayUntilSelectionEndCommand(this, videoPlayerIn);
-            ExportSelectionCommand = new ExportSelectionCommand(this, videoPlayerIn);
+            ExportSelectionCommand = new ExportSelectionCommand(this);
             NextVideoCommand = new NextVideoCommand(this, videoPlayerIn);
+            AddToQueueCommand = new AddToQueueCommand(this, this.exportQueueViewModel);
 
             AudioVolume = ApplicationSettings.AudioVolume;
         }
@@ -40,6 +47,9 @@ namespace VideoFritter.MainWindow
         public event EventHandler<bool> IsFileOpenedChanged;
 
         public ICommand OpenFileCommand { get; }
+        public ICommand OpenExportQueueCommand { get; }
+        public ICommand OpenSettingsCommand { get; }
+        public ICommand OpenAboutCommand { get; }
         public ICommand PlayOrPauseCommand { get; }
         public ICommand SetSectionStartCommand { get; }
         public ICommand SetSectionEndCommand { get; }
@@ -52,6 +62,7 @@ namespace VideoFritter.MainWindow
         public ICommand PlayUntilSelectionEndCommand { get; }
         public ICommand ExportSelectionCommand { get; }
         public ICommand NextVideoCommand { get; }
+        public ICommand AddToQueueCommand { get; }
 
         public TimeSpan SliceStart
         {
@@ -232,6 +243,8 @@ namespace VideoFritter.MainWindow
                 ApplicationSettings.Save();
             }
         }
+
+        private readonly ExportQueueViewModel exportQueueViewModel;
 
         private string openedFileName;
         private TimeSpan sliceStart;

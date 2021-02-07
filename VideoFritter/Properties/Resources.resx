@@ -189,7 +189,7 @@ and FFmpeg.AutoGen that is licensed under the LGPLv3.0 license.</value>
     <value>_Export selection</value>
   </data>
   <data name="FileMenu_Open" xml:space="preserve">
-    <value>_Open file</value>
+    <value>_Open File</value>
   </data>
   <data name="Forward" xml:space="preserve">
     <value>Go to end</value>

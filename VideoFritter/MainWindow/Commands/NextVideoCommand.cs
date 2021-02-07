@@ -8,8 +8,9 @@ namespace VideoFritter.MainWindow.Commands
     internal class NextVideoCommand : AbstractOpenedFileEnabledCommand
     {
         public NextVideoCommand(MainWindowViewModel mainWindowViewModelIn, VideoPlayer videoPlayerIn)
-            : base(mainWindowViewModelIn, videoPlayerIn)
+            : base(mainWindowViewModelIn)
         {
+            VideoPlayer = videoPlayerIn;
             MainWindowViewModel.IsFileOpenedChanged += MainWindowViewModel_IsFileOpenedChanged;
         }
 
@@ -33,6 +34,7 @@ namespace VideoFritter.MainWindow.Commands
             SendCanExecuteChanged();
         }
 
+        private VideoPlayer VideoPlayer { get; }
         private bool isThereOneMoreFile = true;
         private readonly IList<string> videosInCurrentFolder = new List<string>();
 

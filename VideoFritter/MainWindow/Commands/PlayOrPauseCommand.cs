@@ -1,4 +1,6 @@
 ﻿
+using System.Windows;
+
 using VideoFritter.Controls.VideoPlayer;
 
 namespace VideoFritter.MainWindow.Commands
@@ -6,14 +8,15 @@ namespace VideoFritter.MainWindow.Commands
     internal class PlayOrPauseCommand : AbstractOpenedFileEnabledCommand
     {
         public PlayOrPauseCommand(MainWindowViewModel mainWindowViewModelIn, VideoPlayer videoPlayerIn)
-            : base(mainWindowViewModelIn, videoPlayerIn)
+            : base(mainWindowViewModelIn)
         {
+            VideoPlayer = videoPlayerIn;
             VideoPlayer.VideoPositionChanged += VideoPlayer_VideoPositionChanged;
         }
 
         public override bool CanExecute(object parameter)
         {
-            return base.CanExecute(parameter) && 
+            return base.CanExecute(parameter) &&
                 VideoPlayer.VideoPosition < VideoPlayer.VideoLength;
         }
 
@@ -22,7 +25,9 @@ namespace VideoFritter.MainWindow.Commands
             VideoPlayer.PlayOrPause();
         }
 
-        private void VideoPlayer_VideoPositionChanged(object sender, System.Windows.RoutedEventArgs e)
+        private VideoPlayer VideoPlayer { get; }
+
+        private void VideoPlayer_VideoPositionChanged(object sender, RoutedEventArgs e)
         {
             SendCanExecuteChanged();
         }

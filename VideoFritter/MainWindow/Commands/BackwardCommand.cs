@@ -7,9 +7,12 @@ namespace VideoFritter.MainWindow.Commands
     internal class BackwardCommand : AbstractOpenedFileEnabledCommand
     {
         public BackwardCommand(MainWindowViewModel mainWindowViewModelIn, VideoPlayer videoPlayerIn)
-            : base(mainWindowViewModelIn, videoPlayerIn)
+            : base(mainWindowViewModelIn)
         {
+            VideoPlayer = videoPlayerIn;
         }
+
+        private VideoPlayer VideoPlayer { get; }
 
         public override void Execute(object parameter)
         {

@@ -4,8 +4,8 @@ namespace VideoFritter.MainWindow.Commands
 {
     internal class ExportSelectionCommand : AbstractOpenedFileEnabledCommand
     {
-        public ExportSelectionCommand(MainWindowViewModel mainWindowViewModelIn, VideoPlayer videoPlayerIn)
-            : base(mainWindowViewModelIn, videoPlayerIn)
+        public ExportSelectionCommand(MainWindowViewModel mainWindowViewModelIn)
+            : base(mainWindowViewModelIn)
         {
             MainWindowViewModel.IsExportingChangedEvent += MainWindowViewModel_IsExportingChangedEvent;
         }

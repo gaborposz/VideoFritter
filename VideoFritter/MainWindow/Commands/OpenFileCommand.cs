@@ -6,8 +6,9 @@ namespace VideoFritter.MainWindow.Commands
     internal class OpenFileCommand : AbstractMainWindowCommandBase
     {
         public OpenFileCommand(MainWindowViewModel mainWindowViewModelIn, VideoPlayer videoPlayerIn)
-            : base(mainWindowViewModelIn, videoPlayerIn)
+            : base(mainWindowViewModelIn)
         {
+            VideoPlayer = videoPlayerIn;
         }
 
         public override bool CanExecute(object parameter)
@@ -22,5 +23,7 @@ namespace VideoFritter.MainWindow.Commands
                 VideoPlayer.OpenFile(MainWindowViewModel.OpenedFileName);
             }
         }
+
+        private VideoPlayer VideoPlayer { get; }
     }
 }

@@ -5,8 +5,9 @@ namespace VideoFritter.MainWindow.Commands
     internal class ForwardCommand : AbstractOpenedFileEnabledCommand
     {
         public ForwardCommand(MainWindowViewModel mainWindowViewModelIn, VideoPlayer videoPlayerIn)
-            : base(mainWindowViewModelIn, videoPlayerIn)
+            : base(mainWindowViewModelIn)
         {
+            VideoPlayer = videoPlayerIn;
         }
 
         public override void Execute(object parameter)
@@ -24,5 +25,7 @@ namespace VideoFritter.MainWindow.Commands
                 VideoPlayer.VideoPosition = MainWindowViewModel.SliceStart;
             }
         }
+
+        private VideoPlayer VideoPlayer { get; }
     }
 }
