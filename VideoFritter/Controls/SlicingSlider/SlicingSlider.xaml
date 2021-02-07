@@ -113,13 +113,13 @@
     </UserControl.Resources>
     
     <Grid>
-
         <Slider 
             Margin="5,0,-8,0"
             Name="selectionStartSlider"
             Minimum="{Binding Minimum, ElementName=slicingSlider}"
             Maximum="{Binding Maximum, ElementName=slicingSlider}"
-            Value="{Binding SelectionStart, ElementName=slicingSlider, Mode=TwoWay}">
+            Value="{Binding SelectionStart, ElementName=slicingSlider, Mode=TwoWay}"
+            Focusable="False">
             <Slider.Template>
                 <ControlTemplate x:Name="selectionStartThumb" TargetType="{x:Type Slider}">
                     <Track x:Name="PART_Track">
@@ -153,7 +153,8 @@
             Name="selectionEndSlider"
             Minimum="{Binding Minimum, ElementName=slicingSlider}"
             Maximum="{Binding Maximum, ElementName=slicingSlider}"
-            Value="{Binding SelectionEnd, ElementName=slicingSlider, Mode=TwoWay}">
+            Value="{Binding SelectionEnd, ElementName=slicingSlider, Mode=TwoWay}"
+            Focusable="False">
             <Slider.Template>
                 <ControlTemplate x:Name="selectionEndThumb" TargetType="{x:Type Slider}">
                     <Track x:Name="PART_Track">
@@ -195,6 +196,7 @@
             Background="{Binding Background, ElementName=slicingSlider}"
             Foreground="{Binding Foreground, ElementName=slicingSlider}" 
             Style="{DynamicResource MainSliderStyle}"
+            Focusable="False"
             />
     </Grid>
 </UserControl>
