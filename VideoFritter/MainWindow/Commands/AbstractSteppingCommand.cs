@@ -13,8 +13,6 @@ namespace VideoFritter.MainWindow.Commands
             VideoPlayer.VideoPositionChanged += VideoPlayer_VideoPositionChanged;
         }
 
-        protected static readonly TimeSpan FrameSteppingInterval = TimeSpan.FromMilliseconds(100);
-
         private void VideoPlayer_VideoPositionChanged(object sender, System.Windows.RoutedEventArgs e)
         {
             SendCanExecuteChanged();

@@ -158,6 +158,8 @@ namespace VideoFritter.Controls.VideoPlayer
             }
         }
 
+        public TimeSpan FrameTime { get; private set; }
+
         public void OpenFile(string fileName)
         {
             this.videoCanvas.Visibility = Visibility.Hidden;
@@ -171,6 +173,7 @@ namespace VideoFritter.Controls.VideoPlayer
                 using (InputMediaFile inputFile = new InputMediaFile(fileName))
                 {
                     realLength = inputFile.Length;
+                    FrameTime = inputFile.FrameTime;
                 }
 
                 SetValue(VideoLengthProperty, realLength);

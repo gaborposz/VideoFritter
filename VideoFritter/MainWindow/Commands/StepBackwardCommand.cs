@@ -20,7 +20,7 @@ namespace VideoFritter.MainWindow.Commands
 
         public override void Execute(object parameter)
         {
-            TimeSpan desiredPosition = VideoPlayer.VideoPosition.Subtract(FrameSteppingInterval);
+            TimeSpan desiredPosition = VideoPlayer.VideoPosition.Subtract(VideoPlayer.FrameTime);
             if (desiredPosition < TimeSpan.Zero)
             {
                 desiredPosition = TimeSpan.Zero;

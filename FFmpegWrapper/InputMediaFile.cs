@@ -4,6 +4,8 @@ using System.IO;
 
 using FFmpeg.AutoGen;
 
+using System.Linq;
+
 namespace FFmpegWrapper
 {
     public unsafe class InputMediaFile : IDisposable
@@ -26,6 +28,14 @@ namespace FFmpegWrapper
             FFmpegWrapperException.ThrowInCaseOfError(errorCode);
 
             Streams = CreateStreams();
+
+            MediaStream firstVideoStream = Streams.FirstOrDefault(s => s.CodecType == MediaType.AVMEDIA_TYPE_VIDEO);
+            if (firstVideoStream == null)
+            {
+                throw new NotSupportedException($"The video file ({filePath}) does not contain video stream!");
+            }
+
+            FrameTime = TimeSpan.FromSeconds(1 / firstVideoStream.FrameRate.Value);
         }
 
         public MediaStream[] Streams { get; private set; }
@@ -37,6 +47,8 @@ namespace FFmpegWrapper
                 return TimeSpan.FromSeconds((double)this.avFormatContextPtr->duration / ffmpeg.AV_TIME_BASE);
             }
         }
+
+        public TimeSpan FrameTime { get; }
 
         public IDictionary<string, string> MetaData
         {
