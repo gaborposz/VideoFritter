@@ -23,6 +23,8 @@
         <KeyBinding Key="Space" Command="{Binding PlayOrPauseCommand}"/>
         <KeyBinding Key="Left" Command="{Binding StepBackwardCommand}"/>
         <KeyBinding Key="Right" Command="{Binding StepForwardCommand}"/>
+        <KeyBinding Key="Left" Modifiers="Shift" Command="{Binding Step1sBackwardCommand}"/>
+        <KeyBinding Key="Right" Modifiers="Shift" Command="{Binding Step1sForwardCommand}"/>
         <KeyBinding Key="Left" Modifiers="Ctrl" Command="{Binding BackwardCommand}"/>
         <KeyBinding Key="Right" Modifiers="Ctrl" Command="{Binding ForwardCommand}"/>
         <KeyBinding Key="E" Command="{Binding ExportSelectionCommand}"/>

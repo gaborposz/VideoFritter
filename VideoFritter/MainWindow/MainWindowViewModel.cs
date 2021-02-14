@@ -30,8 +30,10 @@ namespace VideoFritter.MainWindow
             SetSectionEndCommand = new SetSectionEndCommand(this, videoPlayerIn);
             BackwardCommand = new BackwardCommand(this, videoPlayerIn);
             ForwardCommand = new ForwardCommand(this, videoPlayerIn);
-            StepBackwardCommand = new StepBackwardCommand(this, videoPlayerIn);
-            StepForwardCommand = new StepForwardCommand(this, videoPlayerIn);
+            StepBackwardCommand = new SeekCommand(this, videoPlayerIn, () => -videoPlayerIn.FrameTime);
+            StepForwardCommand = new SeekCommand(this, videoPlayerIn, () => videoPlayerIn.FrameTime);
+            Step1sBackwardCommand = new SeekCommand(this, videoPlayerIn, () => -TimeSpan.FromSeconds(1));
+            Step1sForwardCommand = new SeekCommand(this, videoPlayerIn, () => TimeSpan.FromSeconds(1));
             PlayFromSelectionStartCommand = new PlayFromSelectionStartCommand(this, videoPlayerIn);
             PlaySelectionCommand = new PlaySelectionCommand(this, videoPlayerIn);
             PlayUntilSelectionEndCommand = new PlayUntilSelectionEndCommand(this, videoPlayerIn);
@@ -57,6 +59,8 @@ namespace VideoFritter.MainWindow
         public ICommand ForwardCommand { get; }
         public ICommand StepBackwardCommand { get; }
         public ICommand StepForwardCommand { get; }
+        public ICommand Step1sBackwardCommand { get; }
+        public ICommand Step1sForwardCommand { get; }
         public ICommand PlayFromSelectionStartCommand { get; }
         public ICommand PlaySelectionCommand { get; }
         public ICommand PlayUntilSelectionEndCommand { get; }
